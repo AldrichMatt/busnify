@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('kategori', ['aset','beban','utang','modal','pendapatan']);
             $table->integer('debit')->default(0);
             $table->integer('kredit')->default(0);
+            $table->softDeletes('deleted_at', precision:0);
             $table->timestamps();
         });
     }

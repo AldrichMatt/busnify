@@ -11,7 +11,8 @@ Route::get('/dashboard', function () {
 });
 
 Route::get('/akun', [AkunController::class, 'index']);
-Route::post('/akun/add', [AkunController::class, 'akunBaru']);
+Route::post('/akun/add', [AkunController::class, 'tambahAkun']);
+Route::get('/akun/delete/{id}', [AkunController::class, 'hapusAkun']);
 
 Route::get('/stock', function () {
     return view('feature.stock');

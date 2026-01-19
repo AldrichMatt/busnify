@@ -49,7 +49,7 @@ class AkunController extends Controller
         ));
     }
     
-    public function akunBaru(Request $request){
+    public function tambahAkun(Request $request){
         $saldo = $request->saldo;
         $kategori = $request->kategori;
         $debit = 0;
@@ -74,6 +74,13 @@ class AkunController extends Controller
             Jurnal::logJurnal($request->kode, $debit, $kredit, "Saldo Awal", "Pencatatan");
         }
 
+        return redirect('/akun');
+    }
+
+    public function hapusAkun(Request $request){
+        $id = $request->id;
+
+        Akun::where('id',$id)->delete();
         return redirect('/akun');
     }
 }

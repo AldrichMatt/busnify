@@ -74,7 +74,9 @@
             <div class="w-[25%] text-[#635549]">{{ $aset->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $aset->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $aset->kredit_rupiah }}</div>
-            <a href='#' class="w-[10%] text-right text-[#f27f0d] cursor-pointer hover:underline">Edit</a>
+            <div class="w-[25%] text-end flex row justify-end gap-2">
+              <x-delete-button link="/akun/delete/{{ $aset->id }}" />
+            </div>
           </div>
           @endforeach
         {{-- all utang disini --}}
@@ -86,7 +88,9 @@
             <div class="w-[25%] text-[#635549]">{{ $utang->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $utang->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $utang->kredit_rupiah }}</div>
-            <a href='#' class="w-[10%] text-right text-[#f27f0d] cursor-pointer hover:underline">Edit</a>
+            <div class="w-[25%] text-end flex row justify-end gap-2">
+              <x-delete-button link="/akun/delete/{{ $utang->id }}" />
+            </div>
           </div>
           @endforeach
         {{-- all modal disini --}}
@@ -98,7 +102,9 @@
             <div class="w-[25%] text-[#635549]">{{ $modal->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $modal->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $modal->kredit_rupiah }}</div>
-            <a href='#' class="w-[10%] text-right text-[#f27f0d] cursor-pointer hover:underline">Edit</a>
+            <div class="w-[25%] text-end flex row justify-end gap-2">
+              <x-delete-button link="/akun/delete/{{ $modal->id }}" />
+            </div>
           </div>
           @endforeach
         {{-- all pendapatan disini --}}
@@ -110,7 +116,9 @@
             <div class="w-[25%] text-[#635549]">{{ $pendapatan->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $pendapatan->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $pendapatan->kredit_rupiah }}</div>
-            <a href='#' class="w-[10%] text-right text-[#f27f0d] cursor-pointer hover:underline">Edit</a>
+            <div class="w-[25%] text-end flex row justify-end gap-2">
+              <x-delete-button link="/akun/delete/{{ $pendapatan->id }}" />
+            </div>
           </div>
           @endforeach
         {{-- all beban disini --}}
@@ -122,7 +130,9 @@
             <div class="w-[25%] text-[#635549]">{{ $beban->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $beban->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $beban->kredit_rupiah }}</div>
-            <a href='#' class="w-[10%] text-right text-[#f27f0d] cursor-pointer hover:underline">Edit</a>
+            <div class="w-[25%] text-end flex row justify-end gap-2">
+              <x-delete-button link="/akun/delete/{{ $beban->id }}" />
+            </div>
           </div>
           @endforeach
         </div>
@@ -137,5 +147,7 @@
 </section>
 
 </body>
-
+<script>
+  feather.replace();
+</script>
 </html>

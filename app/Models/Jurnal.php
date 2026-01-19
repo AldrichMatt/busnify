@@ -24,7 +24,8 @@ class Jurnal extends Model
     ];
 
     public function akun(){
-        return $this->belongsTo(Akun::class, 'kode', 'kode');
+        return $this->belongsTo(Akun::class, 'kode', 'kode')
+                    ->withTrashed();
     }
 
     public static function logJurnal($kode, $debit = 0, $kredit = 0, $uraian, $tujuan)

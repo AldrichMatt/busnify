@@ -58,9 +58,13 @@
       <div class="w-[10%] text-right">Aksi</div>
     </div>
     @foreach ($dataJurnal as $itemJurnal)
+    @if ($itemJurnal->akun->deleted_at !== null)
+    <div class="bg-[#e43838] flex justify-between items-center px-6 py-4 border-t border-gray-100">
+      @else
     <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
+      @endif
       <div class="w-[5%] text-[#181411]">{{ $itemJurnal->kode }}</div>
-      <div class="w-[25%] text-[#635549]">{{ $itemJurnal->akun->nama }}</div>
+      <div class="w-[25%] text-[#181411]">{{ $itemJurnal->akun->nama }}</div>
       <div class="w-[25%] text-[#181411]">{{ $itemJurnal->debit_rupiah }}</div>
       <div class="w-[25%] text-[#181411]">{{ $itemJurnal->kredit_rupiah }}</div>
       <div class="w-[25%] text-[#181411]">{{ $itemJurnal->uraian }}</div>
