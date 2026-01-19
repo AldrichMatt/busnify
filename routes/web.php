@@ -2,10 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\JurnalController;
 
-Route::get('/', function () {
-    return view('landing');
-});
+Route::get('/', [JurnalController::class, 'index']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

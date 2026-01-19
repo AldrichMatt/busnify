@@ -4,45 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Akun;
+use App\Models\Jurnal;
 
 class AkunController extends Controller
 {
     public function index(){
         $allAset = Akun::where('kategori','=','aset')
-                    ->get()
-                    ->map(function ($akun){
-                        $akun->debitrupiah = rupiah($akun->debit);
-                        $akun->kreditrupiah = rupiah($akun->kredit);
-                        return $akun;
-                    });
+                    ->get();
         $allBeban = Akun::where('kategori','=','beban')
-                    ->get()
-                    ->map(function ($akun){
-                        $akun->debitrupiah = rupiah($akun->debit);
-                        $akun->kreditrupiah = rupiah($akun->kredit);
-                        return $akun;
-                    });
+                    ->get();
         $allUtang = Akun::where('kategori','=','utang')
-                    ->get()
-                    ->map(function ($akun){
-                        $akun->debitrupiah = rupiah($akun->debit);
-                        $akun->kreditrupiah = rupiah($akun->kredit);
-                        return $akun;
-                    });
+                    ->get();
         $allModal = Akun::where('kategori','=','modal')
-                    ->get()
-                    ->map(function ($akun){
-                        $akun->debitrupiah = rupiah($akun->debit);
-                        $akun->kreditrupiah = rupiah($akun->kredit);
-                        return $akun;
-                    });
+                    ->get();
         $allPendapatan = Akun::where('kategori','=','pendapatan')
-                    ->get()
-                    ->map(function ($akun){
-                        $akun->debitrupiah = rupiah($akun->debit);
-                        $akun->kreditrupiah = rupiah($akun->kredit);
-                        return $akun;
-                    });
+                    ->get();
 
         $allKredit = Akun::sum('kredit');
         $allDebit = Akun::sum('debit');
@@ -60,6 +36,7 @@ class AkunController extends Controller
             $selisih = $allDebit - $allKredit;
             $detailSelisih = "Kredit lebih dari Debit";
         }
+
         return view('feature.akun', compact(
             'allAset',
             'allBeban',
@@ -84,6 +61,7 @@ class AkunController extends Controller
             $kredit = $saldo;
         }
 
+        
         Akun::create([
             'kode' => $request->kode,
             'nama' => $request->nama,
@@ -91,6 +69,11 @@ class AkunController extends Controller
             'debit' => $debit,
             'kredit' => $kredit
         ]);
+
+        if($debit !== 0 || $kredit !== 0){
+            Jurnal::logJurnal($request->kode, $debit, $kredit, "Saldo Awal", "Pencatatan");
+        }
+
         return redirect('/akun');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Akun extends Model
@@ -17,4 +18,23 @@ class Akun extends Model
         'debit',
         'kredit'
     ];
+
+    protected $casts = [
+        'debit' => 'integer',
+        'kredit' => 'integer'
+    ];
+
+    protected function debitRupiah(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => rupiah($this->debit)
+        );
+    }
+
+    protected function kreditRupiah(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => rupiah($this->kredit)
+        );
+    }
 }

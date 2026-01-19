@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('kode');
             $table->integer('debit');
             $table->integer('kredit');
+            $table->text('uraian');
+            $table->text('tujuan');
             $table->timestamps();
 
             $table->foreign('kode')->references('kode')->on('akun');
