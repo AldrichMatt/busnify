@@ -18,7 +18,8 @@ return new class extends Migration
             $table->integer('kredit');
             $table->text('uraian');
             $table->text('tujuan');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 
             $table->foreign('kode')->references('kode')->on('akun');
         });

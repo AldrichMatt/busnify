@@ -19,7 +19,8 @@ return new class extends Migration
             $table->integer('charge');
             $table->integer('total');
             $table->enum('metode',['cash', 'transfer']);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

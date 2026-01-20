@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\JurnalController;
+use App\Http\Controllers\StockController;
 
 Route::get('/', [JurnalController::class, 'index']);
 
@@ -14,9 +15,8 @@ Route::get('/akun', [AkunController::class, 'index']);
 Route::post('/akun/add', [AkunController::class, 'tambahAkun']);
 Route::get('/akun/delete/{id}', [AkunController::class, 'hapusAkun']);
 
-Route::get('/stock', function () {
-    return view('feature.stock');
-});
+Route::get('/stock', [StockController::class, 'index']);
+Route::post('/stock/add', [StockController::class, 'tambahStock']);
 
 Route::get('/menus', function () {
     return view('feature.menus');

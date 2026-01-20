@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hpp', function (Blueprint $table) {
+        Schema::create('resep', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_barang');
-            $table->integer('modal');
-            $table->timestamps();
+            $table->unsignedBigInteger('id_bahan');
+            $table->integer('takaran');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+            $table->foreign('id_bahan')->references('id')->on('bahan');
         });
     }
 
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hpp');
+        Schema::dropIfExists('resep');
     }
 };

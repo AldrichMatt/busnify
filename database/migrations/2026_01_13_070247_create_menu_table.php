@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('menu', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('item_id');
             $table->string('nama');
             $table->integer('harga');
             $table->enum('tipe',['produksi', 'resell']);
-            $table->timestamps();
+            $table->softDeletes('deleted_at', precision:0);
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

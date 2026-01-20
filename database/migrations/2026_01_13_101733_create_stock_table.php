@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('stock', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_barang');
+            $table->morphs('item');
             $table->integer('jumlah');
             $table->enum('arah',['masuk', 'keluar']);
-            $table->enum('tipe',['bahan', 'menu']);
             $table->enum('sumber',['penjualan', 'pembelian', 'waste']);
-            $table->timestamps();
+            $table->softDeletes('deleted_at', precision:0);
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
     /**

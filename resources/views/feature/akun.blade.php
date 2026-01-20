@@ -50,7 +50,7 @@
         <!-- Card Header -->
         <div class="flex justify-between items-center px-10 mb-3">
           <h3 class="text-black text-4xl font-bold">Akun</h3>
-          <x-modalAddButton />
+          <x-modalAddButton modal_id="akun"/>
         </div>
         
         <!-- Table Content -->
