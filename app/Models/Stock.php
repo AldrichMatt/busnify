@@ -33,10 +33,10 @@ class Stock extends Model
     public static function logStock($id_barang, $jumlah, $arah, $tipe, $sumber)
     {
         return self::create([
-            'id_barang' => $id_barang,
+            'item_type' => $tipe,
+            'item_id' => $id_barang,
             'jumlah' => $jumlah,
             'arah' => $arah,
-            'tipe' => $tipe,
             'sumber' => $sumber,
         ]);
     }

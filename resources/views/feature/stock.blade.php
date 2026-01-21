@@ -10,7 +10,8 @@
 </head>
 <body class="bg-gradient-to-b from-[#B175FB] to-[#001476] min-h-screen">
 <x-header />
-<x-modalStock :barang="$dataBarang"/>
+<x-modalStockMenu :barang="$dataBarang->menu" />
+<x-modalStockBahan :barang="$dataBarang->bahan" />
   <!-- Hero Section: Back Button and Page Title -->
 <section class="w-full pb-20 pt-10">
 <section id="hero" class="w-full">
@@ -37,14 +38,14 @@
 </section>
   <!-- Tables Section -->
 <section id="tables" class="w-full pb-20">
-  <div class="mx-auto px-20 flex flex-col gap-4">
+  <div class="mx-auto px-20 flex flex-row gap-4">
     
     <!-- Table Card 1 -->
     <div class="bg-white rounded-xl py-3 w-full">
       <!-- Card Header -->
       <div class="flex justify-between items-center px-10 mb-3">
-        <h3 class="text-black text-4xl font-bold">Stock Flow</h3>
-        <x-modalAddButton modal_id="stock" />
+        <h3 class="text-black text-4xl font-bold">Stock Menu</h3>
+        <x-modalAddButton modal_id="stockMenu" />
       </div>
       
       <!-- Table Content -->
@@ -52,24 +53,59 @@
         <!-- Table Header Row -->
         <div class="bg-[#f8f7f5] flex justify-between items-center px-6 py-5 text-[#635549] text-base font-normal">
           <div class="w-[25%]">Tanggal</div>
-          <div class="w-[5%]">Id</div>
+          <div class="w-[25%]">Arah</div>
           <div class="w-[25%]">Nama Barang</div>
           <div class="w-[25%]">Jumlah</div>
-          <div class="w-[25%]">Arah</div>
           <div class="w-[25%]">Tipe</div>
           <div class="w-[25%]">Sumber</div>
+          <div class="w-[5%]">Id</div>
         </div>        
         <!-- Table Data Row -->
-        @foreach ($dataBarang as $barang)
+        @foreach ($dataStockMenu as $stok)
+        <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
+          <div class="w-[25%] text-[#635549]">{{ date_format($stok->created_at, "d M Y H:i") }}</div>
+          <div class="w-[25%] text-[#181411]">{{ $stok->arah }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $stok->item->nama }}</div>
+          <div class="w-[25%] text-[#181411]">{{ $stok->jumlah }}</div>
+          <div class="w-[25%] text-[#181411]">{{ $stok->item_type }}</div>
+          <div class="w-[25%] text-[#181411]">{{ $stok->sumber }}</div>
+          <div class="w-[5%] text-[#181411]">{{ $stok->item_id }}</div>
+        </div>
+        @endforeach
+      </div>
+    </div>
+
+    <!-- Table Card 1 -->
+    <div class="bg-white rounded-xl py-3 w-full">
+      <!-- Card Header -->
+      <div class="flex justify-between items-center px-10 mb-3">
+        <h3 class="text-black text-4xl font-bold">Stock Bahan</h3>
+        <x-modalAddButton modal_id="stockBahan" />
+      </div>
+      
+      <!-- Table Content -->
+      <div class="w-full flex flex-col">
+        <!-- Table Header Row -->
+        <div class="bg-[#f8f7f5] flex justify-between items-center px-6 py-5 text-[#635549] text-base font-normal">
+          <div class="w-[25%]">Tanggal</div>
+          <div class="w-[25%]">Arah</div>
+          <div class="w-[25%]">Nama Barang</div>
+          <div class="w-[25%]">Jumlah</div>
+          <div class="w-[25%]">Tipe</div>
+          <div class="w-[25%]">Sumber</div>
+          <div class="w-[5%]">Id</div>
+        </div>        
+        <!-- Table Data Row -->
+        @foreach ($dataStockBahan as $stok)
           
         <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
-          <div class="w-[25%] text-[#635549]">{{ $barang->created_at }}</div>
-          <div class="w-[5%] text-[#181411]">{{ $barang->item_id }}</div>
-          <div class="w-[25%] text-[#635549]">{{ $barang->item->nama }}</div>
-          <div class="w-[25%] text-[#181411]">{{ $barang->jumlah }}</div>
-          <div class="w-[25%] text-[#181411]">{{ $barang->arah }}</div>
-          <div class="w-[25%] text-[#181411]">{{ $barang->item_type }}</div>
-          <div class="w-[25%] text-[#181411]">{{ $barang->sumber }}</div>
+          <div class="w-[25%] text-[#635549]">{{ date_format($stok->created_at, "d-M-Y H:i") }}</div>
+          <div class="w-[25%] text-[#181411]">{{ $stok->arah }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $stok->item->nama }}</div>
+          <div class="w-[25%] text-[#181411]">{{ $stok->jumlah }}</div>
+          <div class="w-[25%] text-[#181411]">{{ $stok->item_type }}</div>
+          <div class="w-[25%] text-[#181411]">{{ $stok->sumber }}</div>
+          <div class="w-[5%] text-[#181411]">{{ $stok->item_id }}</div>
         </div>
         @endforeach
       </div>
