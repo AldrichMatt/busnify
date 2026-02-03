@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Akun;
 use App\Models\Jurnal;
+use App\DTO\JurnalEntry;
 
 class AkunController extends Controller
 {
@@ -70,8 +71,10 @@ class AkunController extends Controller
             'kredit' => $kredit
         ]);
 
+        $jurnalEntry = new JurnalEntry($request->kode, $debit, $kredit, "Saldo Awal", "Pencatatan");
+
         if($debit !== 0 || $kredit !== 0){
-            Jurnal::logJurnal($request->kode, $debit, $kredit, "Saldo Awal", "Pencatatan");
+            Jurnal::singleEntry($jurnalEntry);
         }
 
         return redirect('/akun');
@@ -82,5 +85,41 @@ class AkunController extends Controller
 
         Akun::where('id',$id)->delete();
         return redirect('/akun');
+    }
+
+    public function fetchAkunByKategori(Request $request){
+        $kategori = $request->kategori; //penjualan, pembelian, waste
+
+        $kas = Akun::where("kategori", '=', 'aset')->get();
+        $penjualan = Akun::where('kategori', '=', 'pendapatan')->get();
+        $beban = Akun::where('kategori', '=', 'beban')->get();
+        
+        switch($kategori):
+            case "penjualan" : 
+                $akun = (object)[
+                "kiri" => $kas,
+                "kanan" => $penjualan
+                ];
+                break;
+            case "pembelian" : 
+                $akun = (object)[
+                "kiri" => $kas,
+                "kanan" => $kas
+                ];
+                break;
+            case "produksi" : 
+                $akun = (object)[
+                    "kiri" => $kas,
+                    "kanan" => $beban
+                ];
+                break;
+            case "waste" : 
+                $akun = (object)[
+                    "kiri" => '',
+                    "kanan" => ''
+                ];
+                break;
+        endswitch;
+        return $akun;
     }
 }

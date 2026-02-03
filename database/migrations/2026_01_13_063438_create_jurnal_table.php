@@ -11,14 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bahan', function (Blueprint $table) {
+        Schema::create('jurnal', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->integer('jumlah');
-            $table->string('satuan');
-            $table->integer('harga');
+            $table->string('ref');
+            $table->unsignedBigInteger('kode');
+            $table->integer('debit');
+            $table->integer('kredit');
+            $table->text('uraian');
+            $table->text('tujuan');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+            $table->foreign('kode')->references('kode')->on('akun');
         });
     }
 
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bahan');
+        Schema::dropIfExists('jurnal');
     }
 };

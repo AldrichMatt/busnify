@@ -3,8 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Menu;
+use App\Models\Resep;
 
 class MenuController extends Controller
 {
-    //
+    public function index(){
+        $allMenu = Menu::all();
+        return view('feature.menus',compact('allMenu'));
+    }
+
+    public function tambahMenu(Request $request)
+    {
+
+        //tambah resep jika tipe == produksi
+        if($request->tipe == "produksi"){
+
+        }
+
+        Menu::create(
+            [
+                "nama" => $request->nama,
+                "tipe" => $request->tipe,
+                "harga" => $request->harga
+            ]
+        );
+        return redirect('/menus');
+    }
+
+    public function hapusMenu(Request $request)
+    {
+        Menu::where('id', $request->id)->delete();
+        return redirect('/menus');
+    }
 }

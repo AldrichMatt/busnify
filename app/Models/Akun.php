@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Akun extends Model
 {
@@ -39,5 +40,14 @@ class Akun extends Model
         return Attribute::make(
             get: fn () => rupiah($this->kredit)
         );
+    }
+
+    public static function updateAkun($kode, $debit, $kredit){
+
+        return Akun::where('kode','=',$kode)->lockForUpdate()
+                    ->update([
+                        'debit' => DB::raw("debit + $debit"),
+                        'kredit' => DB::raw("kredit + $kredit")
+                    ]);
     }
 }

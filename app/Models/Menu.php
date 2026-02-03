@@ -16,8 +16,7 @@ class Menu extends Model
     protected $fillable = [
         'nama',
         'harga',
-        'variant',
-        'tipe'
+        'tipe' //produksi, resell
     ];
 
     protected $casts = [

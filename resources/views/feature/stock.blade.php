@@ -10,8 +10,8 @@
 </head>
 <body class="bg-gradient-to-b from-[#B175FB] to-[#001476] min-h-screen">
 <x-header />
-<x-modalStockMenu :barang="$dataBarang->menu" />
-<x-modalStockBahan :barang="$dataBarang->bahan" />
+<x-modalStockMenu :dataBarang="$dataBarang->menu" />
+<x-modalStockBahan :dataBarang="$dataBarang->bahan" />
   <!-- Hero Section: Back Button and Page Title -->
 <section class="w-full pb-20 pt-10">
 <section id="hero" class="w-full">
@@ -20,8 +20,7 @@
     <a href="/" class="flex items-center gap-2 mb-4 cursor-pointer hover:opacity-80 w-fit">
       <img src="{{ asset('I13_392_13_83.svg') }}" alt="Back" class="w-18 h-18">
       <span class="text-white text-sm font-medium">Back</span>
-    </a>
-    
+    </a>    
     <!-- Page Title -->
     <h2 class="text-white text-4xl md:text-5xl font-medium">
       Stock
@@ -41,7 +40,7 @@
   <div class="mx-auto px-20 flex flex-row gap-4">
     
     <!-- Table Card 1 -->
-    <div class="bg-white rounded-xl py-3 w-full">
+    <div class="bg-white rounded-xl py-3 w-full h-min flex flex-col ">
       <!-- Card Header -->
       <div class="flex justify-between items-center px-10 mb-3">
         <h3 class="text-black text-4xl font-bold">Stock Menu</h3>
@@ -76,7 +75,7 @@
     </div>
 
     <!-- Table Card 1 -->
-    <div class="bg-white rounded-xl py-3 w-full">
+    <div class="bg-white rounded-xl py-3 w-full h-min flex flex-col">
       <!-- Card Header -->
       <div class="flex justify-between items-center px-10 mb-3">
         <h3 class="text-black text-4xl font-bold">Stock Bahan</h3>
@@ -97,7 +96,6 @@
         </div>        
         <!-- Table Data Row -->
         @foreach ($dataStockBahan as $stok)
-          
         <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
           <div class="w-[25%] text-[#635549]">{{ date_format($stok->created_at, "d-M-Y H:i") }}</div>
           <div class="w-[25%] text-[#181411]">{{ $stok->arah }}</div>
@@ -121,6 +119,68 @@
 
   <script>
     feather.replace();
+    var akunKananMenu = document.getElementById('akunKananMenu');
+    var akunKiriMenu = document.getElementById('akunKiriMenu');
+    var akunKananBahan = document.getElementById('akunKananBahan');
+    var akunKiriBahan = document.getElementById('akunKiriBahan');
+
+    document.querySelectorAll('input[id="sumberBahan"]').forEach(radio => {
+        radio.addEventListener('change', e => {
+            fetchAkun(e.target.value, 'bahan');
+        });
+    });
+
+    document.querySelectorAll('input[id="sumberMenu"]').forEach(radio => {
+        radio.addEventListener('change', e => {
+            fetchAkun(e.target.value, "menu");
+        });
+    });
+
+    function fetchAkun(kategori, tipe){
+      fetch(`/fetch/akun/${encodeURIComponent(kategori)}`)
+          .then(res => res.json())
+          .then(data => renderAkun(data, tipe));
+    }
+    function renderAkun(data, tipe){
+      let kanan = '';
+      let kiri = '';
+
+      console.log(tipe);
+
+      data.kanan.forEach(data => {
+        kanan += 
+        `
+          <option value=${data.kode}>
+            #${data.kode} ${data.nama}
+          </option>
+        `
+      });
+
+      data.kiri.forEach(data => {
+        kiri += 
+        `
+          <option value=${data.kode}>
+            #${data.kode} ${data.nama}
+          </option>
+        `
+      });
+
+      switch(tipe){
+        case "menu" : 
+          akunKananMenu.innerHTML = kanan;
+          akunKiriMenu.innerHTML = kiri;
+        break;
+
+        case "bahan" : 
+          akunKananBahan.innerHTML = kanan;
+          akunKiriBahan.innerHTML = kiri;
+          break;
+        default : 
+        break;
+      }
+
+    }
+</script>
   </script>
 </body>
 </html>

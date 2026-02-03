@@ -59,8 +59,9 @@
           <div class="bg-[#f8f7f5] flex justify-between items-center px-6 py-5 text-[#635549] text-base font-normal">
             <div class="w-[5%]">Ref</div>
             <div class="w-[25%]">Nama</div>
-            <div class="w-[25%]">Debit</div>
-            <div class="w-[25%]">Kredit</div>
+            <div class="w-[25%] text-start">Debit</div>
+            <div class="w-[25%] text-start">Kredit</div>
+            <div class="w-[25%] text-start">Saldo</div>
             <div class="w-[10%] text-right">Aksi</div>
           </div>
           
@@ -74,6 +75,7 @@
             <div class="w-[25%] text-[#635549]">{{ $aset->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $aset->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $aset->kredit_rupiah }}</div>
+            <div class="w-[25%] text-[#181411]">{{ rupiah($aset->debit - $aset->kredit) }}</div>
             <div class="w-[25%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $aset->id }}" />
             </div>
@@ -88,6 +90,7 @@
             <div class="w-[25%] text-[#635549]">{{ $utang->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $utang->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $utang->kredit_rupiah }}</div>
+            <div class="w-[25%] text-[#181411]">{{ rupiah($utang->kredit - $utang->debit) }}</div>
             <div class="w-[25%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $utang->id }}" />
             </div>
@@ -102,6 +105,7 @@
             <div class="w-[25%] text-[#635549]">{{ $modal->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $modal->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $modal->kredit_rupiah }}</div>
+            <div class="w-[25%] text-[#181411]">{{ rupiah($modal->kredit - $modal->debit) }}</div>
             <div class="w-[25%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $modal->id }}" />
             </div>
@@ -116,6 +120,7 @@
             <div class="w-[25%] text-[#635549]">{{ $pendapatan->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $pendapatan->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $pendapatan->kredit_rupiah }}</div>
+            <div class="w-[25%] text-[#181411]">{{ rupiah($pendapatan->kredit - $pendapatan->debit) }}</div>
             <div class="w-[25%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $pendapatan->id }}" />
             </div>
@@ -130,6 +135,7 @@
             <div class="w-[25%] text-[#635549]">{{ $beban->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $beban->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $beban->kredit_rupiah }}</div>
+            <div class="w-[25%] text-[#181411]">{{ rupiah($beban->debit - $beban->kredit) }}</div>
             <div class="w-[25%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $beban->id }}" />
             </div>
@@ -149,5 +155,23 @@
 </body>
 <script>
   feather.replace();
+    const saldo = document.getElementById('saldo');
+
+function formatRupiah(element) {
+   let angka = element.value.replace(/[^0-9]/g, '');
+  
+    let number_string = angka.toString();
+    let sisa = number_string.length % 3;
+    let rupiah = number_string.substr(0, sisa);
+    let ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+    if (ribuan) {
+        let separator = sisa ? ',' : '';
+        rupiah += separator + ribuan.join(',');
+    }
+
+    element.value = 'Rp ' + rupiah;
+    saldo.value = angka;
+}
 </script>
 </html>

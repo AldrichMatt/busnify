@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Akun;
 use Illuminate\Http\Request;
 use App\Models\Stock;
 use App\Models\Menu;
 use App\Models\Bahan;
 use App\Models\Jurnal;
+use App\DTO\JurnalEntry;
 
 class StockController extends Controller
 {
@@ -16,16 +18,55 @@ class StockController extends Controller
         $dataStockMenu = Stock::where('item_type', "=", "menu")->with('item')->get();
         $dataStockBahan = Stock::where('item_type', "=", "bahan")->with('item')->get();
         $dataBarang = (object)['menu' => Menu::all(), 'bahan' => Bahan::all()];
-        return view('feature.stock',compact('dataStockMenu', 'dataStockBahan' ,'dataBarang'));
+        $dataAkunAset = Akun::where('kategori', '=', 'aset')->get();
+        $dataAkunBeban = Akun::where('kategori', '=', 'beban')->get();
+        $dataAkunPendapatan = Akun::where('kategori', '=', 'pendapatan')->get();
+        return view('feature.stock',compact(
+            'dataStockMenu',
+            'dataStockBahan',
+            'dataBarang',
+            'dataAkunAset',
+            'dataAkunBeban',
+            'dataAkunPendapatan',
+        ));
     }
 
     public function tambahStock(Request $request)
     {
-        $item = Stock::where("item_id", $request->id_barang)->with('item')->first();
-        // dd($item);
-        Stock::logStock($request->id_barang, $request->jumlah, $request->arah, $request->tipe, $request->sumber);
-        Jurnal::logJurnal(102, $request->jumlah*$item->item->harga, 0, $request->tipe, $request->sumber);
-        Jurnal::logJurnal(501, 0, $request->jumlah*$item->item->harga, $request->tipe, $request->sumber);
+        // dd($request);
+        switch($request->sumber) :
+            case "penjualan" :
+                $arah = "keluar";
+                break;
+            case "produksi" :
+                $arah = "keluar";
+                break;
+            case "pembelian" :
+                $arah = "masuk";
+                break;
+            case "waste" :
+                $arah = "keluar";
+                break;
+        endswitch;
+        switch($request->tipe):
+            case "menu" :
+            $item = Menu::where("id", $request->id_barang)->first();
+            break;
+            case "bahan" :
+            $item = Bahan::where("id", $request->id_barang)->first();
+            break;
+        endswitch;
+
+        // dd($request);
+        $totalHarga = $request->jumlah*$item->harga;
+        $entryKiri = new JurnalEntry($request->akunKiri, $totalHarga, 0, $request->tipe, $request->sumber);
+        $entryKanan = new JurnalEntry($request->akunKanan, 0, $totalHarga, $request->tipe, $request->sumber);
+
+        Stock::logStock($request->id_barang, $request->jumlah, $arah, $request->tipe, $request->sumber);
+        Akun::updateAkun($request->akunKiri, $totalHarga, 0);
+        Akun::updateAkun($request->akunKanan, 0, $totalHarga);
+        Jurnal::doubleEntry($entryKiri, $entryKanan);
+        
         return redirect('/stock');
     }
 }

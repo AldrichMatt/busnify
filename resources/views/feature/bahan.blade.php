@@ -60,20 +60,23 @@
           <div class="w-[25%]">Nama Bahan</div>
           <div class="w-[25%]">Jumlah</div> 
           {{-- jumlah / satuan --}}
-          <div class="w-[25%]">Harga</div>
-          <div class="w-[25%]">Aksi</div>
+          <div class="w-[25%]">Harga / Satuan</div>
+          <div class="w-[25%] text-end">Aksi</div>
         </div>        
         <!-- Table Data Row -->
+        @foreach ($allBahan as $bahan)
         <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
-          <div class="w-[5%] text-[#181411]">100</div>
-          <div class="w-[25%] text-[#635549]">Lorem ipsum</div>
-          <div class="w-[25%] text-[#635549]">10 gram</div>
-          <div class="w-[25%] text-[#635549]">Rp 95.000</div>
-          <div class="w-[25%] text-[#635549]">
-            <a href='#' class="w-[10%] text-right text-[#f27f0d] cursor-pointer hover:underline">Edit</a>
-            <a href='#' class="w-[10%] text-right text-[#f20d0d] cursor-pointer hover:underline">Hapus</a>
+          <div class="w-[5%] text-[#181411]">{{ $bahan->id }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $bahan->nama }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $bahan->stocks->jumlah }} {{ $bahan->satuan }}</div>
+          <div class="w-[25%] text-[#635549]">{{ rupiah($bahan->harga) }}/{{$bahan->satuan}}</div>
+          <div class="w-[25%] text-end flex row justify-end gap-2">
+            <x-modalEditBahan :bahan="$bahan" modal_id="editBahan{{ $bahan->id }}" />
+            <x-edit-button modal_id="editBahan{{ $bahan->id }}" />
+            <x-delete-button link="/bahan/delete/{{ $bahan->id }}" />
           </div>
         </div>
+        @endforeach
       </div>
     </div>
     <div class="bg-white rounded-xl py-3 grow">
@@ -118,7 +121,25 @@
 </section>
 
   <script>
-// No custom JS required
+    feather.replace();
+    const saldo = document.getElementById('harga');
+
+function formatRupiah(element) {
+   let angka = element.value.replace(/[^0-9]/g, '');
+  
+    let number_string = angka.toString();
+    let sisa = number_string.length % 3;
+    let rupiah = number_string.substr(0, sisa);
+    let ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+    if (ribuan) {
+        let separator = sisa ? ',' : '';
+        rupiah += separator + ribuan.join(',');
+    }
+
+    element.value = 'Rp ' + rupiah;
+    saldo.value = angka;
+    }
   </script>
 </body>
 </html>

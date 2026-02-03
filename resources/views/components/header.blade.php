@@ -9,7 +9,7 @@
         </div>
         
         <!-- Navigation -->
-        <nav class="hidden md:flex gap-8 items-center">
+        <nav class="md:flex gap-8 items-center">
             <a href="/dashboard" class="text-black font-medium hover:opacity-70 transition-opacity">Dashboard</a>
             <a href="/laporan" class="text-black font-medium hover:opacity-70 transition-opacity">Laporan Keuangan</a>
             <a href="/laba" class="text-black font-medium hover:opacity-70 transition-opacity">Laba Rugi</a>
@@ -17,3 +17,14 @@
         </nav>
     </div>
 </div>
+<a href="#top"
+   class="fixed bottom-6 right-6 z-50
+          rounded-full bg-black/80 text-white
+          w-12 h-12 flex items-center justify-center
+          shadow-lg
+          hover:bg-black
+          transition">
+    ↑
+</a>
+
+<div id="top"></div>

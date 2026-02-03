@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Menu;
 use App\Models\Bahan;
+use Illuminate\Support\Facades\DB;
 
 class Stock extends Model
 {
@@ -31,13 +32,21 @@ class Stock extends Model
     }
 
     public static function logStock($id_barang, $jumlah, $arah, $tipe, $sumber)
-    {
-        return self::create([
+{
+    $stock = self::firstOrCreate(
+        [
             'item_type' => $tipe,
-            'item_id' => $id_barang,
-            'jumlah' => $jumlah,
-            'arah' => $arah,
+            'item_id'   => $id_barang,
+        ],
+        [
+            'jumlah' => 0,
+            'arah'   => $arah,
             'sumber' => $sumber,
-        ]);
-    }
+        ]
+    );
+
+    $stock->increment('jumlah', $jumlah);
+
+    return $stock;
+}
 }
