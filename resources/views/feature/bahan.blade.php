@@ -10,6 +10,7 @@
 </head>
 <body class="bg-gradient-to-b from-[#B175FB] to-[#001476] min-h-screen">
 <x-header />
+<x-modalBahan />
   <!-- Hero Section: Back Button and Page Title -->
 <section class="w-full pb-20 pt-10">
 <section id="hero" class="w-full">
@@ -46,10 +47,7 @@
       <div class="flex justify-between items-center px-10 mb-3">
         <h3 class="text-black text-4xl font-bold">Bahan</h3>
         <!-- Plus Button with Radial Gradient -->
-        <button class="w-[49px] h-[49px] rounded-xl flex items-center justify-center text-white text-2xl shadow-md hover:opacity-90 transition-opacity"
-                style="background: radial-gradient(circle, rgba(177,117,251,0.5) 0%, rgba(0,20,118,0.5) 100%);">
-          +
-        </button>
+        <x-modalAddButton modal_id="bahan"/>
       </div>
       
       <!-- Table Content -->
@@ -68,7 +66,7 @@
         <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
           <div class="w-[5%] text-[#181411]">{{ $bahan->id }}</div>
           <div class="w-[25%] text-[#635549]">{{ $bahan->nama }}</div>
-          <div class="w-[25%] text-[#635549]">{{ $bahan->stocks->jumlah }} {{ $bahan->satuan }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $bahan->jumlah }} {{ $bahan->satuan }}</div>
           <div class="w-[25%] text-[#635549]">{{ rupiah($bahan->harga) }}/{{$bahan->satuan}}</div>
           <div class="w-[25%] text-end flex row justify-end gap-2">
             <x-modalEditBahan :bahan="$bahan" modal_id="editBahan{{ $bahan->id }}" />

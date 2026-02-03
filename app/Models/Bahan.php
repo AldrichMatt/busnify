@@ -31,6 +31,19 @@ class Bahan extends Model
         return $this->morphOne(Stock::class, 'item');
     }
 
+    public static function updateStock($id, $jumlah, $arah)
+    {
+        $bahan = self::findOrFail($id);
+
+        if($arah === "masuk"){
+            $bahan->increment('jumlah', $jumlah);
+        }else{
+            $bahan->decrement('jumlah', $jumlah);
+        }
+
+        return $bahan;
+    }
+
     protected function hargaRupiah(): Attribute
     {
         return Attribute::make(

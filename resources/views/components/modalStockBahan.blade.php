@@ -54,7 +54,6 @@
             </div>
           </div>
 
-          
             <div class="flex flex-col gap-2 w-full pb-4">
               <label class="text-black text-sm font-normal">Barang</label>
               <div class="w-full bg-white border border-[#8c8c8c] rounded-lg py-2 px-2 flex items-center">
@@ -62,7 +61,7 @@
                 name="id_barang" required>
                 <option>-------</option>
                 @foreach ($dataBarang as $barang)
-                  <option value="{{ $barang->id }}">#{{ $barang->id }} {{ $barang->nama }}</option>
+                  <option value="{{ $barang->id }}">#{{ $barang->id }} {{ $barang->nama }} / {{ $barang->satuan }}</option>
                 @endforeach
               </select>
             </div>

@@ -14,6 +14,18 @@ class BahanController extends Controller
         return view('feature.bahan', compact('allBahan'));
     }
 
+    public function tambahBahan(Request $request)
+    {
+        Bahan::create([
+            'nama' => $request->nama,
+            'jumlah' => 0,
+            'satuan' => $request->satuan,
+            'harga' => $request->harga
+        ]);
+
+        return redirect('/bahan');
+    }
+
     public function updateBahan(Request $request)
     {
         Bahan::where('id', '=', $request->id)->lockForUpdate()

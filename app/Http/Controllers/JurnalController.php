@@ -10,7 +10,7 @@ class JurnalController extends Controller
 {
     public function index(){
         $dataJurnal = Jurnal::with('akun')
-                    ->orderBy('ref', 'asc')
+                    ->orderBy('id', 'desc')
                     ->get()
                     ->groupBy('ref')
                     ->map(function ($items) {

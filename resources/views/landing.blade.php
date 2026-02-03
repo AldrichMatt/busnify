@@ -41,7 +41,7 @@
     @foreach ($dataJurnal as $itemJurnal)
     
     <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
-        <div class="w-[25%] text-[#181411]">{{ date_format($itemJurnal->kiri->created_at, 'D, d-M-Y H:i') }}</div>
+        <div class="w-[25%] text-[#181411]">{{ date_format($itemJurnal->kiri->created_at, 'D, d M y H:i') }}</div>
       @if ($itemJurnal->kiri->akun->deleted_at !== null)
         <div class="w-[25%] text-[#e43838]">
       @else

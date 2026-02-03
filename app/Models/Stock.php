@@ -33,20 +33,33 @@ class Stock extends Model
 
     public static function logStock($id_barang, $jumlah, $arah, $tipe, $sumber)
 {
-    $stock = self::firstOrCreate(
-        [
-            'item_type' => $tipe,
-            'item_id'   => $id_barang,
-        ],
-        [
-            'jumlah' => 0,
-            'arah'   => $arah,
-            'sumber' => $sumber,
-        ]
-    );
+    return DB::transaction(function () use ($id_barang, $jumlah, $arah, $tipe, $sumber) {
 
-    $stock->increment('jumlah', $jumlah);
+        $stock = self::firstOrCreate(
+            [
+                'item_type' => $tipe,
+                'item_id'   => $id_barang,
+            ],
+            [
+                'jumlah' => 0,
+                'arah'   => $arah,
+                'sumber' => $sumber,
+            ]
+        );
 
-    return $stock;
-}
+        if ($arah === 'masuk') {
+            $stock->increment('jumlah', $jumlah);
+        } else {
+            $stock->decrement('jumlah', $jumlah);
+        }
+
+        if ($tipe === "menu") {
+            Menu::updateStock($id_barang, $jumlah, $arah);
+        } else {
+            Bahan::updateStock($id_barang, $jumlah, $arah);
+        }
+
+        return $stock->fresh();
+    });
+    }
 }
