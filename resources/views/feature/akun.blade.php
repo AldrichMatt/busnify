@@ -32,7 +32,7 @@
   <section id="stats" class="w-full py-6">
     <div class="mx-auto px-20 grid grid-cols-1 md:grid-cols-3 gap-4">
       
-      <x-card :title="rupiah($totalSaldo)" subtitle='Total Saldo' />
+      <x-card :title="rupiah($totalSaldo)" subtitle='Total Aset' />
       @if ($selisih == 0)
         <x-card :title="Rupiah($selisih)" subtitle='Selisih' :caption="$detailSelisih" />
       @else

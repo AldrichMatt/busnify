@@ -28,18 +28,19 @@ class Menu extends Model
         return $this->morphMany(Stock::class, 'item');
     }
 
-    public static function updateStock($id, $jumlah, $arah)
-    {
-        $menu = self::findOrFail($id);
+    // MENU TIDAK DI STOCK (UNTUK SEKARANG)
+    // public static function updateStock($id, $jumlah, $arah)
+    // {
+    //     $menu = self::findOrFail($id);
 
-        if($arah === "masuk"){
-            $menu->increment('jumlah', $jumlah);
-        }else{
-            $menu->decrement('jumlah', $jumlah);
-        }
+    //     if($arah === "masuk"){
+    //         $menu->increment('jumlah', $jumlah);
+    //     }else{
+    //         $menu->decrement('jumlah', $jumlah);
+    //     }
 
-        return $menu;
-    }
+    //     return $menu;
+    // }
 
     protected function hargaRupiah(): Attribute
     {

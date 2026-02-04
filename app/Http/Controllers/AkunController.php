@@ -24,6 +24,9 @@ class AkunController extends Controller
         $allKredit = Akun::sum('kredit');
         $allDebit = Akun::sum('debit');
 
+        // $totalSaldo = Akun::where('kategori','=','aset')
+        //             ->sum('debit');
+
         if($allKredit == $allDebit){
             $totalSaldo = $allDebit;
             $selisih = 0;

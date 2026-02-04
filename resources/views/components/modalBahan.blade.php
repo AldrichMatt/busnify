@@ -22,7 +22,7 @@
                   placeholder="Rp "
                   type="text"
                   oninput="formatRupiah(this)"
-                  >
+                  required >
                 </div>
                 <input type="hidden"
                 name="harga"
@@ -37,7 +37,8 @@
                     placeholder="Satuan"
                     type="text"
                     name="satuan"
-                    id="satuan">
+                    id="satuan"
+                    required>
                 </div>
             </div>
           </div>

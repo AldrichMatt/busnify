@@ -53,9 +53,7 @@ class Stock extends Model
             $stock->decrement('jumlah', $jumlah);
         }
 
-        if ($tipe === "menu") {
-            Menu::updateStock($id_barang, $jumlah, $arah);
-        } else {
+        if ($tipe === "bahan") {
             Bahan::updateStock($id_barang, $jumlah, $arah);
         }
 
