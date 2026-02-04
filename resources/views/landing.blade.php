@@ -13,11 +13,13 @@
   <div class="max-w-7xl mx-auto">
     <h3 class="text-2xl font-medium text-black mb-8">Menu Cepat</h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-      <x-quick-btn link="/dashboard" label="Dashboard" />
+      {{-- <x-quick-btn link="/dashboard" label="Dashboard" /> --}}
       <x-quick-btn link="/akun" label="Akun" />
       <x-quick-btn link="/stock" label="Stock" />
-      <x-quick-btn link="/menus" label="Menus" />
-      <x-quick-btn link="/bahan" label="Bahan & Resep" />
+      <x-quick-btn link="/menus" label="Menu" />
+      <x-quick-btn link="/bahan" label="Bahan" />
+      <x-quick-btn link="/resep" label="Resep" />
+      <x-quick-btn link="/produksi" label="Produksi" />
       <x-quick-btn link="/sales" label="Input Penjualan" />
     </div>
   </div>

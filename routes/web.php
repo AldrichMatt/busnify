@@ -6,6 +6,7 @@ use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\BahanController;
+use App\Http\Controllers\ResepController;
 
 Route::get('/', [JurnalController::class, 'index']);
 
@@ -30,6 +31,8 @@ Route::get('/bahan', [BahanController::class, 'index']);
 Route::post('/bahan/add', [BahanController::class, 'tambahBahan']);
 Route::post('/bahan/update', [BahanController::class, 'updateBahan']);
 Route::get('/bahan/delete/{id}', [BahanController::class, 'hapusBahan']);
+
+Route::get('/resep', [ResepController::class, 'index']);
 
 Route::get('/sales', function () {
     return view('feature.sales');
