@@ -10,16 +10,9 @@ use App\DTO\JurnalEntry;
 class AkunController extends Controller
 {
     public function index(){
-        $allAset = Akun::where('kategori','=','aset')
-                    ->get();
-        $allBeban = Akun::where('kategori','=','beban')
-                    ->get();
-        $allUtang = Akun::where('kategori','=','utang')
-                    ->get();
-        $allModal = Akun::where('kategori','=','modal')
-                    ->get();
-        $allPendapatan = Akun::where('kategori','=','pendapatan')
-                    ->get();
+        $allAkun = Akun::all()
+                    ->groupBy('kategori');
+        // dd($allAkun);
 
         $allKredit = Akun::sum('kredit');
         $allDebit = Akun::sum('debit');
@@ -42,11 +35,7 @@ class AkunController extends Controller
         }
 
         return view('feature.akun', compact(
-            'allAset',
-            'allBeban',
-            'allUtang',
-            'allModal',
-            'allPendapatan',
+            'allAkun',
             'totalSaldo',
             'selisih',
             'detailSelisih'

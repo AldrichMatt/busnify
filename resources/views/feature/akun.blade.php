@@ -68,7 +68,8 @@
           <!-- Table Category Row -->
         {{-- all asset disini --}}
           <x-table-category-row label="Aset" />
-          @foreach ($allAset as $aset)
+          @if(isset($allAkun['aset']))
+          @foreach ($allAkun['aset'] as $aset)
           
           <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
             <div class="w-[5%] text-[#181411]">{{ $aset->kode }}</div>
@@ -81,9 +82,12 @@
             </div>
           </div>
           @endforeach
+          @else
+          @endif
         {{-- all utang disini --}}
           <x-table-category-row label="Utang" />
-          @foreach ($allUtang as $utang)
+          @if(isset($allAkun['utang']))
+          @foreach ($allAkun['utang'] as $utang)
             
           <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
             <div class="w-[5%] text-[#181411]">{{ $utang->kode }}</div>
@@ -96,9 +100,12 @@
             </div>
           </div>
           @endforeach
+          @else
+          @endif
         {{-- all modal disini --}}
           <x-table-category-row label="Ekuitas" />
-          @foreach ($allModal as $modal)
+          @if(isset($allAkun['modal']))
+          @foreach ($allAkun['modal'] as $modal)
             
           <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
             <div class="w-[5%] text-[#181411]">{{ $modal->kode }}</div>
@@ -111,9 +118,13 @@
             </div>
           </div>
           @endforeach
+          @else
+          @endif
         {{-- all pendapatan disini --}}
+        
           <x-table-category-row label="Pendapatan" />
-          @foreach ($allPendapatan as $pendapatan)
+          @if(isset($allAkun['pendapatan']))
+          @foreach ($allAkun['pendapatan'] as $pendapatan)
             
           <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
             <div class="w-[5%] text-[#181411]">{{ $pendapatan->kode }}</div>
@@ -126,9 +137,12 @@
             </div>
           </div>
           @endforeach
+          @else
+          @endif
         {{-- all beban disini --}}
           <x-table-category-row label="Beban" />
-          @foreach ($allBeban as $beban)
+          @if(isset($allAkun['beban']))
+          @foreach ($allAkun['beban'] as $beban)
             
           <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
             <div class="w-[5%] text-[#181411]">{{ $beban->kode }}</div>
@@ -141,6 +155,8 @@
             </div>
           </div>
           @endforeach
+          @else
+          @endif
         </div>
       </div>
 
