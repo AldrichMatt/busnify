@@ -32,11 +32,13 @@
   <section id="stats" class="w-full py-6">
     <div class="mx-auto px-20 grid grid-cols-1 md:grid-cols-3 gap-4">
       
-      <x-card :title="rupiah($totalSaldo)" subtitle='Total Saldo' />
+
+      <x-card :title="rupiah($totalSaldo)" subtitle='Total Uang Tunai' />
+      <x-card :title="rupiah($totalAset)" subtitle='Total Aset' />
       @if ($selisih == 0)
-        <x-card :title="Rupiah($selisih)" subtitle='Selisih' :caption="$detailSelisih" />
+        <x-card :title="Rupiah($selisih)" subtitle='Difference' :caption="$detailSelisih" />
       @else
-        <x-card :title="rupiah($selisih)" subtitle='Selisih' :caption="$detailSelisih"  type="danger"/>
+        <x-card :title="rupiah($selisih)" subtitle='Difference' :caption="$detailSelisih"  type="danger"/>
       @endif
 
     </div>
@@ -50,7 +52,7 @@
         <!-- Card Header -->
         <div class="flex justify-between items-center px-10 mb-3">
           <h3 class="text-black text-4xl font-bold">Akun</h3>
-          <x-modalAddButton />
+          <x-modalAddButton modal_id="akun"/>
         </div>
         
         <!-- Table Content -->
@@ -59,82 +61,104 @@
           <div class="bg-[#f8f7f5] flex justify-between items-center px-6 py-5 text-[#635549] text-base font-normal">
             <div class="w-[5%]">Ref</div>
             <div class="w-[25%]">Nama</div>
-            <div class="w-[25%]">Debit</div>
-            <div class="w-[25%]">Kredit</div>
+            <div class="w-[25%] text-start">Debit</div>
+            <div class="w-[25%] text-start">Kredit</div>
+            <div class="w-[25%] text-start">Saldo</div>
             <div class="w-[10%] text-right">Aksi</div>
           </div>
           
           <!-- Table Category Row -->
         {{-- all asset disini --}}
           <x-table-category-row label="Aset" />
-          @foreach ($allAset as $aset)
+          @if(isset($allAkun['aset']))
+          @foreach ($allAkun['aset'] as $aset)
           
           <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
             <div class="w-[5%] text-[#181411]">{{ $aset->kode }}</div>
             <div class="w-[25%] text-[#635549]">{{ $aset->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $aset->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $aset->kredit_rupiah }}</div>
+            <div class="w-[25%] text-[#181411]">{{ rupiah($aset->debit - $aset->kredit) }}</div>
             <div class="w-[25%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $aset->id }}" />
             </div>
           </div>
           @endforeach
+          @else
+          @endif
         {{-- all utang disini --}}
           <x-table-category-row label="Utang" />
-          @foreach ($allUtang as $utang)
+          @if(isset($allAkun['utang']))
+          @foreach ($allAkun['utang'] as $utang)
             
           <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
             <div class="w-[5%] text-[#181411]">{{ $utang->kode }}</div>
             <div class="w-[25%] text-[#635549]">{{ $utang->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $utang->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $utang->kredit_rupiah }}</div>
+            <div class="w-[25%] text-[#181411]">{{ rupiah($utang->kredit - $utang->debit) }}</div>
             <div class="w-[25%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $utang->id }}" />
             </div>
           </div>
           @endforeach
+          @else
+          @endif
         {{-- all modal disini --}}
           <x-table-category-row label="Ekuitas" />
-          @foreach ($allModal as $modal)
+          @if(isset($allAkun['modal']))
+          @foreach ($allAkun['modal'] as $modal)
             
           <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
             <div class="w-[5%] text-[#181411]">{{ $modal->kode }}</div>
             <div class="w-[25%] text-[#635549]">{{ $modal->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $modal->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $modal->kredit_rupiah }}</div>
+            <div class="w-[25%] text-[#181411]">{{ rupiah($modal->kredit - $modal->debit) }}</div>
             <div class="w-[25%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $modal->id }}" />
             </div>
           </div>
           @endforeach
+          @else
+          @endif
         {{-- all pendapatan disini --}}
+        
           <x-table-category-row label="Pendapatan" />
-          @foreach ($allPendapatan as $pendapatan)
+          @if(isset($allAkun['pendapatan']))
+          @foreach ($allAkun['pendapatan'] as $pendapatan)
             
           <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
             <div class="w-[5%] text-[#181411]">{{ $pendapatan->kode }}</div>
             <div class="w-[25%] text-[#635549]">{{ $pendapatan->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $pendapatan->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $pendapatan->kredit_rupiah }}</div>
+            <div class="w-[25%] text-[#181411]">{{ rupiah($pendapatan->kredit - $pendapatan->debit) }}</div>
             <div class="w-[25%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $pendapatan->id }}" />
             </div>
           </div>
           @endforeach
+          @else
+          @endif
         {{-- all beban disini --}}
           <x-table-category-row label="Beban" />
-          @foreach ($allBeban as $beban)
+          @if(isset($allAkun['beban']))
+          @foreach ($allAkun['beban'] as $beban)
             
           <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
             <div class="w-[5%] text-[#181411]">{{ $beban->kode }}</div>
             <div class="w-[25%] text-[#635549]">{{ $beban->nama }}</div>
             <div class="w-[25%] text-[#181411]">{{ $beban->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $beban->kredit_rupiah }}</div>
+            <div class="w-[25%] text-[#181411]">{{ rupiah($beban->debit - $beban->kredit) }}</div>
             <div class="w-[25%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $beban->id }}" />
             </div>
           </div>
           @endforeach
+          @else
+          @endif
         </div>
       </div>
 
@@ -149,5 +173,23 @@
 </body>
 <script>
   feather.replace();
+    const saldo = document.getElementById('saldo');
+
+function formatRupiah(element) {
+   let angka = element.value.replace(/[^0-9]/g, '');
+  
+    let number_string = angka.toString();
+    let sisa = number_string.length % 3;
+    let rupiah = number_string.substr(0, sisa);
+    let ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+    if (ribuan) {
+        let separator = sisa ? ',' : '';
+        rupiah += separator + ribuan.join(',');
+    }
+
+    element.value = 'Rp ' + rupiah;
+    saldo.value = angka;
+}
 </script>
 </html>

@@ -19,7 +19,8 @@ return new class extends Migration
             $table->integer('debit')->default(0);
             $table->integer('kredit')->default(0);
             $table->softDeletes('deleted_at', precision:0);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

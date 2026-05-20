@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('jurnal', function (Blueprint $table) {
             $table->id();
+            $table->string('ref');
             $table->unsignedBigInteger('kode');
             $table->integer('debit');
             $table->integer('kredit');
             $table->text('uraian');
             $table->text('tujuan');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 
             $table->foreign('kode')->references('kode')->on('akun');
         });

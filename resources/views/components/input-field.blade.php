@@ -4,6 +4,7 @@
     'placeholder' => '',
     'name',
     'id' => '',
+    'value' => '',
     'required' => TRUE
 ])
 
@@ -15,6 +16,7 @@
             type="{{ $type }}"
             name="{{ $name }}"
             id="{{ $id }}"
+            value="{{ $value }}"
             {{ $required ? 'required' : ""; }}>
         </div>
     </div>

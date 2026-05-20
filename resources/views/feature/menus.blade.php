@@ -10,6 +10,8 @@
 </head>
 <body class="bg-gradient-to-b from-[#B175FB] to-[#001476] min-h-screen">
 <x-header />
+
+<x-modalMenu />
   <!-- Hero Section: Back Button and Page Title -->
 <section class="w-full pb-20 pt-10">
 <section id="hero" class="w-full">
@@ -30,34 +32,17 @@
 <section id="stats" class="w-full py-6">
   <div class="mx-auto px-20 grid grid-cols-1 md:grid-cols-3 gap-4">
     
-    <!-- Card 1 -->
-    <div class="bg-white rounded-xl border-2 border-[#8c8c8c] p-4 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col">
-      <div class="text-[#1e1e1e] text-3xl font-bold mb-4">Rp 1.575.000</div>
-      <div class="w-full h-px bg-gray-200 mb-2"></div>
-      <div class="text-[#8c8c8c] text-base mb-1">Total Debit</div>
-      <div class="text-[#67d25f] text-sm font-medium">+35% dari Dec 2025</div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="bg-white rounded-xl border-2 border-[#8c8c8c] p-4 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col">
-      <div class="text-[#1e1e1e] text-3xl font-bold mb-4">Rp 1.575.000</div>
-      <div class="w-full h-px bg-gray-200 mb-2"></div>
-      <div class="text-[#8c8c8c] text-base mb-1">Total Kredit</div>
-      <div class="text-[#67d25f] text-sm font-medium">+35% dari Dec 2025</div>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="bg-white rounded-xl border-2 border-[#8c8c8c] p-4 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col">
-      <div class="text-[#1e1e1e] text-3xl font-bold mb-4">Rp 1.575.000</div>
-      <div class="w-full h-px bg-gray-200 mb-2"></div>
-      <div class="text-[#8c8c8c] text-base mb-1">Subtitle</div>
-      <div class="text-[#67d25f] text-sm font-medium">+35% dari Dec 2025</div>
-    </div>
+    <x-card title="Lorem" subtitle="lorem" caption="" />
+    <x-card title="Lorem" subtitle="lorem" caption="" />
+    <x-card title="Lorem" subtitle="lorem" caption="" />
 
   </div>
 </section>
+
+
   <!-- Tables Section -->
 <section id="tables" class="w-full pb-20">
+  <x-todo text="editing menu bug, SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'harga' cannot be null" />
   <div class="mx-auto px-20 flex flex-col gap-4">
     
     <!-- Table Card 1 -->
@@ -65,6 +50,7 @@
       <!-- Card Header -->
       <div class="flex justify-between items-center px-10 mb-3">
         <h3 class="text-black text-4xl font-bold">Menus</h3>
+        <x-modalAddButton modal_id="menu"/>
       </div>
       
       <!-- Table Content -->
@@ -75,19 +61,22 @@
           <div class="w-[25%]">Nama Menu</div>
           <div class="w-[25%]">Harga</div>
           <div class="w-[25%]">Tipe</div>
-          <div class="w-[25%]">Aksi</div>
+          <div class="w-[25%] text-right">Aksi</div>
         </div>        
         <!-- Table Data Row -->
+        @foreach($allMenu as $menu)
         <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
-          <div class="w-[5%] text-[#181411]">100</div>
-          <div class="w-[25%] text-[#635549]">Lorem ipsum</div>
-          <div class="w-[25%] text-[#635549]">Rp 95.000</div>
-          <div class="w-[25%] text-[#635549]">produksi</div>
-          <div class="w-[25%] text-[#635549]">
-            <a href='#' class="w-[10%] text-right text-[#f27f0d] cursor-pointer hover:underline">Edit</a>
-            <a href='#' class="w-[10%] text-right text-[#f20d0d] cursor-pointer hover:underline">Hapus</a>
+          <div class="w-[5%] text-[#181411]">{{ $menu->id }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $menu->nama }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $menu->harga_rupiah }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $menu->tipe }}</div>
+          <div class="w-[25%] text-end flex row justify-end gap-2">
+            <x-modalEditMenu :menu="$menu" modal_id="editMenu{{ $menu->id }}"/>
+            <x-edit-button modal_id="editMenu{{ $menu->id }}"/>
+            <x-delete-button link="/menu/delete/{{ $menu->id }}" />
           </div>
         </div>
+        @endforeach
       </div>
     </div>
 
@@ -100,7 +89,25 @@
 </section>
 
   <script>
-// No custom JS required
+    feather.replace();
+    const saldo = document.getElementById('harga');
+
+function formatRupiah(element) {
+   let angka = element.value.replace(/[^0-9]/g, '');
+  
+    let number_string = angka.toString();
+    let sisa = number_string.length % 3;
+    let rupiah = number_string.substr(0, sisa);
+    let ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+    if (ribuan) {
+        let separator = sisa ? ',' : '';
+        rupiah += separator + ribuan.join(',');
+    }
+
+    element.value = 'Rp ' + rupiah;
+    saldo.value = angka;
+}
   </script>
 </body>
 </html>

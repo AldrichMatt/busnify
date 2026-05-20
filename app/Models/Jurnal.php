@@ -11,6 +11,7 @@ class Jurnal extends Model
     protected $table = 'jurnal';
 
     protected $fillable = [
+        'ref',
         'kode',
         'debit',
         'kredit',
@@ -22,20 +23,51 @@ class Jurnal extends Model
         'debit'  => 'integer',
         'kredit' => 'integer',
     ];
+    
+    // public function pasangan()
+    // {
+    //     return self::where('ref', $this->ref)
+    //                ->where('id', '!=', $this->id);
+    // }
 
     public function akun(){
         return $this->belongsTo(Akun::class, 'kode', 'kode')
                     ->withTrashed();
     }
 
-    public static function logJurnal($kode, $debit = 0, $kredit = 0, $uraian, $tujuan)
-    {
-        return self::create([
-            'kode' => $kode,
-            'debit' => $debit,
-            'kredit' => $kredit,
-            'uraian' => $uraian,
-            'tujuan' => $tujuan,
+    // public static function singleEntry($transaction)
+    // {
+    //     return self::create([
+    //         'kode' => $transaction->kode,
+    //         'debit' => $transaction->debit,
+    //         'kredit' => $transaction->kredit,
+    //         'uraian' => $transaction->uraian,
+    //         'tujuan' => $transaction->tujuan,
+    //     ]);
+    // }
+
+    public static function doubleEntry($kiri, $kanan) {
+
+        $ref = generateRefJurnal();
+
+        // DEBIT
+        self::create([
+            'ref' => $ref,
+            'kode' => $kiri->kode,
+            'debit' => $kiri->debit,
+            'kredit' => $kiri->kredit,
+            'uraian' => $kiri->uraian,
+            'tujuan' => $kiri->tujuan,
+        ]);
+
+        // KREDIT
+        self::create([
+            'ref' => $ref,
+            'kode' => $kanan->kode,
+            'debit' => $kanan->debit,
+            'kredit' => $kanan->kredit,
+            'uraian' => $kanan->uraian,
+            'tujuan' => $kanan->tujuan,
         ]);
     }
 

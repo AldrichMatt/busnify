@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Akun extends Model
 {
@@ -13,6 +14,18 @@ class Akun extends Model
     //aset = aktiva
     //utang & modal = pasiva
     protected $table = "akun";
+
+    const KATEGORI = [
+        'aset',
+        'beban',
+        'utang',
+        'modal',
+        'pendapatan',
+    ];
+
+    const KAS_BESAR = '101';
+
+    const PERSEDIAAN = '102';
 
     protected $fillable = [
         'kode',
@@ -39,5 +52,44 @@ class Akun extends Model
         return Attribute::make(
             get: fn () => rupiah($this->kredit)
         );
+    }
+
+    public static function TotalKode(String $kode) {
+        $akun = Akun::whereKode($kode)->first();
+        if ($akun->kategori == 'aset' || $akun->kategori == "beban"){
+            return $akun->debit - $akun->kredit;
+        }else{
+            return $akun->kredit - $akun->debit;
+        }
+    }
+
+    public static function TotalKategori(String $kategori) {
+        $akun = Akun::whereKategori($kategori);
+        $sumDebit = $akun->sum('debit');
+        $sumKredit = $akun->sum('kredit');
+        if ($kategori == 'aset' || $kategori == "beban"){
+            return $sumDebit - $sumKredit;
+        }else{
+            return $sumKredit - $sumDebit;
+        }
+    }
+
+    public static function TotalSaldo(){
+        $totalSaldo = 0;
+
+        foreach(Akun::KATEGORI as $kategori){
+            $totalSaldo += Akun::TotalKategori($kategori);
+        }
+
+        return $totalSaldo;
+    }
+
+    public static function updateAkun(String $kode, int $debit, int $kredit){
+
+        return Akun::where('kode','=',$kode, true)->lockForUpdate()
+                    ->update([
+                        'debit' => DB::raw("debit + $debit"),
+                        'kredit' => DB::raw("kredit + $kredit")
+                    ]);
     }
 }

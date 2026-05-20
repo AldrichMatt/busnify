@@ -5,47 +5,37 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Akun;
 use App\Models\Jurnal;
+use App\DTO\JurnalEntry;
 
 class AkunController extends Controller
 {
     public function index(){
-        $allAset = Akun::where('kategori','=','aset')
-                    ->get();
-        $allBeban = Akun::where('kategori','=','beban')
-                    ->get();
-        $allUtang = Akun::where('kategori','=','utang')
-                    ->get();
-        $allModal = Akun::where('kategori','=','modal')
-                    ->get();
-        $allPendapatan = Akun::where('kategori','=','pendapatan')
-                    ->get();
+        $allAkun = Akun::all()
+                    ->groupBy('kategori');
+        // dd($allAkun);
 
         $allKredit = Akun::sum('kredit');
         $allDebit = Akun::sum('debit');
-
+        $totalSaldo = Akun::TotalKode(Akun::KAS_BESAR);
+        $totalAset = Akun::TotalKode(Akun::PERSEDIAAN);
+        
         if($allKredit == $allDebit){
-            $totalSaldo = $allDebit;
             $selisih = 0;
             $detailSelisih = "Seimbang";
         }elseif($allDebit > $allKredit){
-            $totalSaldo = $allDebit;
             $selisih = $allKredit - $allDebit;
             $detailSelisih = "Debit lebih dari Kredit";
         }elseif($allKredit > $allDebit){
-            $totalSaldo = $allKredit;
             $selisih = $allDebit - $allKredit;
             $detailSelisih = "Kredit lebih dari Debit";
         }
 
         return view('feature.akun', compact(
-            'allAset',
-            'allBeban',
-            'allUtang',
-            'allModal',
-            'allPendapatan',
+            'allAkun',
             'totalSaldo',
             'selisih',
-            'detailSelisih'
+            'detailSelisih',
+            'totalAset'
         ));
     }
     
@@ -66,12 +56,14 @@ class AkunController extends Controller
             'kode' => $request->kode,
             'nama' => $request->nama,
             'kategori' => $request->kategori,
-            'debit' => $debit,
-            'kredit' => $kredit
+            'debit' => $debit || '0',
+            'kredit' => $kredit || '0'
         ]);
 
+        $jurnalEntry = new JurnalEntry($request->kode, $debit, $kredit, "Saldo Awal", "Pencatatan");
+
         if($debit !== 0 || $kredit !== 0){
-            Jurnal::logJurnal($request->kode, $debit, $kredit, "Saldo Awal", "Pencatatan");
+            Jurnal::singleEntry($jurnalEntry);
         }
 
         return redirect('/akun');
@@ -80,7 +72,43 @@ class AkunController extends Controller
     public function hapusAkun(Request $request){
         $id = $request->id;
 
-        Akun::where('id',$id)->delete();
+        Akun::where('id','=',$id, TRUE)->delete();
         return redirect('/akun');
+    }
+
+    public function fetchAkunByKategori(Request $request){
+        $kategori = $request->kategori; //penjualan, pembelian, waste
+
+        $kas = Akun::whereKategori('aset')->get();
+        $penjualan = Akun::whereKategori('pendapatan')->get();
+        $beban = Akun::whereKategori('beban')->get();
+        
+        switch($kategori):
+            case "penjualan" : 
+                $akun = (object)[
+                "kiri" => $kas,
+                "kanan" => $penjualan
+                ];
+                break;
+            case "pembelian" : 
+                $akun = (object)[
+                "kiri" => $kas,
+                "kanan" => $kas
+                ];
+                break;
+            case "produksi" : 
+                $akun = (object)[
+                    "kiri" => $kas,
+                    "kanan" => $beban
+                ];
+                break;
+            case "waste" : 
+                $akun = (object)[
+                    "kiri" => $beban,
+                    "kanan" => $kas
+                ];
+                break;
+        endswitch;
+        return $akun;
     }
 }
