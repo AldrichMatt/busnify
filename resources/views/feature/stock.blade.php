@@ -40,11 +40,12 @@
   <div class="mx-auto px-20 flex flex-row gap-4">
     
     <!-- Table Card 1 -->
-    <div class="bg-white rounded-xl py-3 w-full h-min flex flex-col ">
+    <div class="bg-white rounded-xl py-3 w-full h-min flex flex-col">
       <!-- Card Header -->
-      <div class="flex justify-between items-center px-10 mb-3">
+      <div class="flex justify-between items-center px-10 mb-3 py-1 pb-1">
         <h3 class="text-black text-4xl font-bold">Stock Menu</h3>
-        <x-modalAddButton modal_id="stockMenu" />
+        {{-- STOCK MENU BERTAMBAH DARI INPUT PRODUKSI DAN BERKURANG DARI PENJUALAN --}}
+        {{-- <x-modalAddButton modal_id="stockMenu" /> --}}
       </div>
       
       <!-- Table Content -->
@@ -144,8 +145,6 @@
     function renderAkun(data, tipe){
       let kanan = '';
       let kiri = '';
-
-      console.log(tipe);
 
       data.kanan.forEach(data => {
         kanan += 

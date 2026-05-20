@@ -37,6 +37,7 @@
                   <input type="hidden"
                   name="saldo"
                   id="saldo"
+                  value="0"
                   >
           </div>
           

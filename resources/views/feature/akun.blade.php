@@ -32,11 +32,13 @@
   <section id="stats" class="w-full py-6">
     <div class="mx-auto px-20 grid grid-cols-1 md:grid-cols-3 gap-4">
       
-      <x-card :title="rupiah($totalSaldo)" subtitle='Total Aset' />
+
+      <x-card :title="rupiah($totalSaldo)" subtitle='Total Uang Tunai' />
+      <x-card :title="rupiah($totalAset)" subtitle='Total Aset' />
       @if ($selisih == 0)
-        <x-card :title="Rupiah($selisih)" subtitle='Selisih' :caption="$detailSelisih" />
+        <x-card :title="Rupiah($selisih)" subtitle='Difference' :caption="$detailSelisih" />
       @else
-        <x-card :title="rupiah($selisih)" subtitle='Selisih' :caption="$detailSelisih"  type="danger"/>
+        <x-card :title="rupiah($selisih)" subtitle='Difference' :caption="$detailSelisih"  type="danger"/>
       @endif
 
     </div>

@@ -16,20 +16,16 @@ class AkunController extends Controller
 
         $allKredit = Akun::sum('kredit');
         $allDebit = Akun::sum('debit');
-
-        // $totalSaldo = Akun::where('kategori','=','aset')
-        //             ->sum('debit');
-
+        $totalSaldo = Akun::TotalKode(Akun::KAS_BESAR);
+        $totalAset = Akun::TotalKode(Akun::PERSEDIAAN);
+        
         if($allKredit == $allDebit){
-            $totalSaldo = $allDebit;
             $selisih = 0;
             $detailSelisih = "Seimbang";
         }elseif($allDebit > $allKredit){
-            $totalSaldo = $allDebit;
             $selisih = $allKredit - $allDebit;
             $detailSelisih = "Debit lebih dari Kredit";
         }elseif($allKredit > $allDebit){
-            $totalSaldo = $allKredit;
             $selisih = $allDebit - $allKredit;
             $detailSelisih = "Kredit lebih dari Debit";
         }
@@ -38,7 +34,8 @@ class AkunController extends Controller
             'allAkun',
             'totalSaldo',
             'selisih',
-            'detailSelisih'
+            'detailSelisih',
+            'totalAset'
         ));
     }
     
@@ -59,8 +56,8 @@ class AkunController extends Controller
             'kode' => $request->kode,
             'nama' => $request->nama,
             'kategori' => $request->kategori,
-            'debit' => $debit,
-            'kredit' => $kredit
+            'debit' => $debit || '0',
+            'kredit' => $kredit || '0'
         ]);
 
         $jurnalEntry = new JurnalEntry($request->kode, $debit, $kredit, "Saldo Awal", "Pencatatan");
@@ -75,16 +72,16 @@ class AkunController extends Controller
     public function hapusAkun(Request $request){
         $id = $request->id;
 
-        Akun::where('id',$id)->delete();
+        Akun::where('id','=',$id, TRUE)->delete();
         return redirect('/akun');
     }
 
     public function fetchAkunByKategori(Request $request){
         $kategori = $request->kategori; //penjualan, pembelian, waste
 
-        $kas = Akun::where("kategori", '=', 'aset')->get();
-        $penjualan = Akun::where('kategori', '=', 'pendapatan')->get();
-        $beban = Akun::where('kategori', '=', 'beban')->get();
+        $kas = Akun::whereKategori('aset')->get();
+        $penjualan = Akun::whereKategori('pendapatan')->get();
+        $beban = Akun::whereKategori('beban')->get();
         
         switch($kategori):
             case "penjualan" : 
@@ -107,8 +104,8 @@ class AkunController extends Controller
                 break;
             case "waste" : 
                 $akun = (object)[
-                    "kiri" => '',
-                    "kanan" => ''
+                    "kiri" => $beban,
+                    "kanan" => $kas
                 ];
                 break;
         endswitch;

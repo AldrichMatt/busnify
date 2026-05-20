@@ -19,6 +19,7 @@ Route::post('/akun/add', [AkunController::class, 'tambahAkun']);
 Route::get('/akun/delete/{id}', [AkunController::class, 'hapusAkun']);
 
 Route::get('/fetch/akun/{kategori}', [AkunController::class, 'fetchAkunByKategori']);
+Route::get('/fetch/resep/{idBarang}', [ResepController::class, 'getBahanbyMenu']);
 
 Route::get('/stock', [StockController::class, 'index']);
 Route::post('/stock/add', [StockController::class, 'tambahStock']);
@@ -33,6 +34,9 @@ Route::post('/bahan/update', [BahanController::class, 'updateBahan']);
 Route::get('/bahan/delete/{id}', [BahanController::class, 'hapusBahan']);
 
 Route::get('/resep', [ResepController::class, 'index']);
+Route::post('/resep/add', [ResepController::class, 'tambahResep']);
+Route::get('/resep/edit/{id}', [ResepController::class, 'editResep']);
+Route::post('/resep/update/{id}', [ResepController::class, 'updateResep']);
 
 Route::get('/sales', function () {
     return view('feature.sales');

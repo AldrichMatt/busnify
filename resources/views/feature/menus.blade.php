@@ -38,8 +38,11 @@
 
   </div>
 </section>
+
+
   <!-- Tables Section -->
 <section id="tables" class="w-full pb-20">
+  <x-todo text="editing menu bug, SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'harga' cannot be null" />
   <div class="mx-auto px-20 flex flex-col gap-4">
     
     <!-- Table Card 1 -->

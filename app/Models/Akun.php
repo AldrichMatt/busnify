@@ -15,6 +15,18 @@ class Akun extends Model
     //utang & modal = pasiva
     protected $table = "akun";
 
+    const KATEGORI = [
+        'aset',
+        'beban',
+        'utang',
+        'modal',
+        'pendapatan',
+    ];
+
+    const KAS_BESAR = '101';
+
+    const PERSEDIAAN = '102';
+
     protected $fillable = [
         'kode',
         'nama',
@@ -42,9 +54,39 @@ class Akun extends Model
         );
     }
 
-    public static function updateAkun($kode, $debit, $kredit){
+    public static function TotalKode(String $kode) {
+        $akun = Akun::whereKode($kode)->first();
+        if ($akun->kategori == 'aset' || $akun->kategori == "beban"){
+            return $akun->debit - $akun->kredit;
+        }else{
+            return $akun->kredit - $akun->debit;
+        }
+    }
 
-        return Akun::where('kode','=',$kode)->lockForUpdate()
+    public static function TotalKategori(String $kategori) {
+        $akun = Akun::whereKategori($kategori);
+        $sumDebit = $akun->sum('debit');
+        $sumKredit = $akun->sum('kredit');
+        if ($kategori == 'aset' || $kategori == "beban"){
+            return $sumDebit - $sumKredit;
+        }else{
+            return $sumKredit - $sumDebit;
+        }
+    }
+
+    public static function TotalSaldo(){
+        $totalSaldo = 0;
+
+        foreach(Akun::KATEGORI as $kategori){
+            $totalSaldo += Akun::TotalKategori($kategori);
+        }
+
+        return $totalSaldo;
+    }
+
+    public static function updateAkun(String $kode, int $debit, int $kredit){
+
+        return Akun::where('kode','=',$kode, true)->lockForUpdate()
                     ->update([
                         'debit' => DB::raw("debit + $debit"),
                         'kredit' => DB::raw("kredit + $kredit")
