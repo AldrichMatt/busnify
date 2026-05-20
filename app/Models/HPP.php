@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class HPP extends Model
 {
+    protected $table = 'hpp';
     //
     protected $fillable = [
         'id_barang',
