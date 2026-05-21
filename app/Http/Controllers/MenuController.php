@@ -15,17 +15,20 @@ class MenuController extends Controller
 
     public function tambahMenu(Request $request)
     {
+        $harga = $request->harga;
 
-        //tambah resep jika tipe == produksi
-        if($request->tipe == "produksi"){
-
+        if($request->id !== NULL){
+            $harga = $request->harga_edit;
         }
 
-        Menu::create(
+        Menu::updateOrInsert(
+            [
+                "id" => $request->id,
+            ],
             [
                 "nama" => $request->nama,
                 "tipe" => $request->tipe,
-                "harga" => $request->harga
+                "harga" => $harga
             ]
         );
         return redirect('/menus');
@@ -33,7 +36,7 @@ class MenuController extends Controller
 
     public function hapusMenu(Request $request)
     {
-        Menu::where('id', $request->id)->delete();
+        Menu::whereId($request->id)->delete();
         return redirect('/menus');
     }
 }

@@ -31,7 +31,7 @@
                   placeholder="Rp "
                   type="text"
                   id="rupiah"
-                  oninput="formatRupiah(this.value)"
+                  oninput="formatRupiah(this, 0)"
                   >
               </div>
                   <input type="hidden"

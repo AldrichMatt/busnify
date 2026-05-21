@@ -27,7 +27,7 @@ Route::post('/stock/add', [StockController::class, 'tambahStock']);
 
 Route::get('/menus', [MenuController::class, 'index']);
 Route::post('/menu/add', [MenuController::class, 'tambahMenu']);
-Route::post('/menu/delete/{id}', [MenuController::class, 'hapusMenu']);
+Route::get('/menu/delete/{id}', [MenuController::class, 'hapusMenu']);
 
 Route::get('/bahan', [BahanController::class, 'index']);
 Route::post('/bahan/add', [BahanController::class, 'tambahBahan']);

@@ -23,9 +23,9 @@
     </a>
     
     <!-- Page Title -->
-    <h2 class="text-white text-4xl md:text-5xl font-medium">
+    {{-- <h2 class="text-white text-4xl md:text-5xl font-medium">
       Menus
-    </h2>
+    </h2> --}}
   </div>
 </section>
   <!-- Stats Section: 3 Summary Cards -->
@@ -42,7 +42,6 @@
 
   <!-- Tables Section -->
 <section id="tables" class="w-full pb-20">
-  <x-todo text="editing menu bug, SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'harga' cannot be null" />
   <div class="mx-auto px-20 flex flex-col gap-4">
     
     <!-- Table Card 1 -->
@@ -90,10 +89,15 @@
 
   <script>
     feather.replace();
-    const saldo = document.getElementById('harga');
+    let saldo = document.getElementById('harga');
 
-function formatRupiah(element) {
+function formatRupiah(element, id) {
    let angka = element.value.replace(/[^0-9]/g, '');
+   if(id !== 0){
+    saldo = document.getElementById(`harga${id}`);
+  }else {
+    saldo = document.getElementById(`harga`);  
+  }
   
     let number_string = angka.toString();
     let sisa = number_string.length % 3;
@@ -104,6 +108,9 @@ function formatRupiah(element) {
         let separator = sisa ? ',' : '';
         rupiah += separator + ribuan.join(',');
     }
+
+    console.log(saldo);
+    
 
     element.value = 'Rp ' + rupiah;
     saldo.value = angka;

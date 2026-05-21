@@ -64,7 +64,7 @@
           <div class="w-[25%] text-right">Aksi</div>
         </div>        
         <!-- Table Data Row -->
-        @foreach($allMenu as $menu)
+        {{-- @foreach($allMenu as $menu)
         <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
           <div class="w-[5%] text-[#181411]">{{ $menu->id }}</div>
           <div class="w-[25%] text-[#635549]">{{ $menu->nama }}</div>
@@ -76,7 +76,7 @@
             <x-delete-button link="/menu/delete/{{ $menu->id }}" />
           </div>
         </div>
-        @endforeach
+        @endforeach --}}
       </div>
     </div>
 
