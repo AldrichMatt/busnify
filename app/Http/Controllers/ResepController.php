@@ -26,6 +26,10 @@ class ResepController extends Controller
     }
 
     public function getBahanbyMenu(Request $request){
+        // dd(Resep::with('bahan')
+        //             ->where('id_barang', $request->idBarang)
+        //             ->get()
+        // );
         return response()->json(
             Resep::with('bahan')
                     ->where('id_barang', $request->idBarang)

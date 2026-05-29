@@ -10,6 +10,7 @@
 </head>
 <body class="bg-gradient-to-b from-[#B175FB] to-[#001476] min-h-screen">
 <x-header />
+<x-todo text="sambungkan produksi ke stock, make sure akun berubah saat produksi" />
   <!-- Dashboard Content Section -->
 <section class="w-full pb-20 pt-10">
     <div class="mx-20 flex flex-col gap-8">

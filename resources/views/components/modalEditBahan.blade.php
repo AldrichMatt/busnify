@@ -24,12 +24,13 @@
                   placeholder="Rp "
                   type="text"
                   value="{{ rupiah($bahan->harga) }}"
-                  oninput="formatRupiah(this)"
+                  oninput="formatRupiah(this,{{ $bahan->id }})"
                   >
                 </div>
                 <input type="hidden"
-                name="harga"
-                id="harga"
+                name="harga_edit"
+                id="harga{{ $bahan->id }}"
+                value="{{ $bahan->harga }}"
                 >
               </div>
               <div class="flex flex-col gap-2 w-full pb-4">

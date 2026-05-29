@@ -27,6 +27,8 @@ class Akun extends Model
 
     const PERSEDIAAN = '102';
 
+    const HPP = '501';
+
     protected $fillable = [
         'kode',
         'nama',
@@ -86,7 +88,7 @@ class Akun extends Model
 
     public static function updateAkun(String $kode, int $debit, int $kredit){
 
-        return Akun::where('kode','=',$kode, true)->lockForUpdate()
+        return Akun::whereKode($kode)->lockForUpdate()
                     ->update([
                         'debit' => DB::raw("debit + $debit"),
                         'kredit' => DB::raw("kredit + $kredit")

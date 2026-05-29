@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('produksi', function (Blueprint $table) {
             $table->id();
-            $table->timestamps('timestamp');
-            $table->string('nomor_batch');
+            $table->string('id_batch')->unique();
             $table->unsignedBigInteger('id_barang');
+            $table->softDeletes('deleted_at', precision:0);
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

@@ -12,7 +12,7 @@
 <body class="bg-gradient-to-b from-[#B175FB] to-[#001476] min-h-screen">
 <x-header />
   <!-- Hero Section: Back Button and Page Title -->
-<section class="w-full pb-20 pt-10">
+<section class="w-full py-10">
 <section id="hero" class="w-full">
   <div class="mx-20 flex flex-col gap-8">
     <!-- Back Button -->
@@ -71,7 +71,7 @@
     </div>
   </div>
 </section>
-<section id="stats" class="w-full py-6">
+<section id="stats" class="w-full pt-3">
     <div class="mx-20 py-3 my-3 bg-white rounded-xl border-2 border-[#8c8c8c] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col">
       <div class="text-[#1e1e1e] text-3xl font-bold mb-4 pt-3 px-10">Tambah Resep</div>
       <div class="flex row justify-b">
@@ -172,7 +172,6 @@
 
   if (!container) return;
 
-  // Toggle buka/tutup
   if (container.innerHTML.trim() !== "") {
     container.innerHTML = "";
     return;
@@ -188,12 +187,12 @@
     `;
   } else {
     data.forEach(item => {
-      html += `
+      html.addAdjacentHTML('beforeend', `
         <div class="bg-gray-50 flex justify-between px-6 py-3 border-t border-gray-100">
           <div>${item.bahan.nama}</div>
           <div>${item.takaran} ${item.bahan.satuan ?? ""}</div>
         </div>
-      `;
+      `);
     });
   }
 

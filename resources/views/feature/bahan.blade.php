@@ -86,10 +86,15 @@
 
   <script>
     feather.replace();
-    const saldo = document.getElementById('harga');
 
-function formatRupiah(element) {
+function formatRupiah(element, id) {
    let angka = element.value.replace(/[^0-9]/g, '');
+
+   if(id !== 0){
+    saldo = document.getElementById(`harga${id}`);
+  }else {
+    saldo = document.getElementById(`harga`);  
+  }
   
     let number_string = angka.toString();
     let sisa = number_string.length % 3;

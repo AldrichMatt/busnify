@@ -135,15 +135,7 @@
       }
     });
 
-    function fetchBahan(idBarang){
-      try {
-          fetch(`/fetch/resep/${encodeURIComponent(idBarang)}`)
-          .then(res => res.json())
-          .then(data => showResep(idBarang, data));
-      } catch (error) {
-        console.error(error)
-      }
-    }
+    
 
     function showResep(idBarang, data) {
 
@@ -167,12 +159,12 @@
     `;
   } else {
     data.forEach(item => {
-      html += `
+      html.addAdjacentHTML('beforeend',  `
         <div class="bg-gray-50 flex justify-between px-6 py-3 border-t border-gray-100">
           <div>${item.bahan.nama}</div>
           <div>${item.takaran} ${item.bahan.satuan ?? ""}</div>
         </div>
-      `;
+      `);
     });
   }
 
