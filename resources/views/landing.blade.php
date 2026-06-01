@@ -8,6 +8,8 @@
 </head>
 <body>  <!-- Header Section: Navigation and Logo -->
 <x-header />
+<x-todo text="Produksi, editResep" />
+
 <!-- Menu Section: Quick Access Buttons -->
 <section id="menu" class="w-full pb-10 px-6 md:px-12 lg:px-20">
   <div class="max-w-7xl mx-auto">

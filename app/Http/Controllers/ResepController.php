@@ -16,6 +16,10 @@ class ResepController extends Controller
                     ->groupBy(fn($item)=> $item->barang->nama);
         $allBahan = Bahan::all();
         $allMenu = Menu::whereTipe("produksi")
+                    ->whereNotIn(
+                        'id',
+                        Resep::select('id_barang')
+                    )
                     ->get();
 
         return view('feature.resep', compact(
@@ -74,8 +78,9 @@ class ResepController extends Controller
     {
         $idBahan = collect($request->bahan)->pluck('id');
 
-        // dd($idBahan);
-
+        
+        // dd($request->menu_id);
+        
         Resep::whereIdBarang($request->menu_id)
                 ->whereNotIn('id_bahan',$idBahan)
                 ->delete();

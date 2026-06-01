@@ -29,7 +29,7 @@
     </h2>
 </div>
 </section>
-<x-todo text="Pakai sistem seperti tambah resep aja; buat fungsi fetch resep dan bahan dari resep"/>
+<x-todo text="Akun belum berubah saat produksi dijurnal, hubungkan produksi ke stock juga"/>
 
 <section id="stats" class="w-full py-3">
   <div class="mx-auto px-20 grid grid-cols-1 md:grid-cols-3 gap-4">
