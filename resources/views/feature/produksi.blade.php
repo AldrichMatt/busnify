@@ -29,7 +29,7 @@
     </h2>
 </div>
 </section>
-<x-todo text="Akun belum berubah saat produksi dijurnal, hubungkan produksi ke stock juga"/>
+<x-todo text="hubungkan produksi ke stock juga, kode produksi masih error (tidak mau increment +1)"/>
 
 <section id="stats" class="w-full py-3">
   <div class="mx-auto px-20 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -102,27 +102,25 @@
       <div class="w-full flex flex-col">
         <!-- Table Header Row -->
         <div class="bg-[#f8f7f5] flex justify-between items-center px-6 py-5 text-[#635549] text-base font-normal">
-          <div class="w-[5%]">Id</div>
-          <div class="w-[25%]">Tanggal Produksi</div>
           <div class="w-[25%]">Batch No.</div>
           <div class="w-[25%]">Nama Barang</div>
-          <div class="w-[25%]">Tipe</div>
+          <div class="w-[25%]">Tanggal Produksi</div>
           <div class="w-[25%] text-right">Aksi</div>
-        </div>        
+        </div>
         <!-- Table Data Row -->
-        {{-- @foreach($allMenu as $menu)
+        @foreach($dataProduksi as $produksi)
         <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
-          <div class="w-[5%] text-[#181411]">{{ $menu->id }}</div>
-          <div class="w-[25%] text-[#635549]">{{ $menu->nama }}</div>
-          <div class="w-[25%] text-[#635549]">{{ $menu->harga_rupiah }}</div>
-          <div class="w-[25%] text-[#635549]">{{ $menu->tipe }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $produksi->id_batch }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $produksi->barang->nama }}</div>
+          <div class="w-[25%] text-[#635549]">{{ date_format($produksi->created_at, 'D, d M y H:i') }}</div>
           <div class="w-[25%] text-end flex row justify-end gap-2">
-            <x-modalEditMenu :menu="$menu" modal_id="editMenu{{ $menu->id }}"/>
+            Detail
+            {{-- <x-modalEditMenu :menu="$menu" modal_id="editMenu{{ $menu->id }}"/>
             <x-edit-button modal_id="editMenu{{ $menu->id }}"/>
-            <x-delete-button link="/menu/delete/{{ $menu->id }}" />
+            <x-delete-button link="/menu/delete/{{ $menu->id }}" /> --}}
           </div>
         </div>
-        @endforeach --}}
+        @endforeach
       </div>
     </div>
 

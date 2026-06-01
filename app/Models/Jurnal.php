@@ -46,7 +46,7 @@ class Jurnal extends Model
     //     ]);
     // }
 
-    public static function doubleEntry($kiri, $kanan) {
+    public static function doubleEntry($kiri, $kanan, $sum) {
 
         $ref = generateRefJurnal();
 
@@ -69,6 +69,9 @@ class Jurnal extends Model
             'uraian' => $kanan->uraian,
             'tujuan' => $kanan->tujuan,
         ]);
+
+        Akun::updateAkun($kiri->kode, $sum, 0);
+        Akun::updateAkun($kanan->kode, 0, $sum);
     }
 
     protected function debitRupiah(): Attribute

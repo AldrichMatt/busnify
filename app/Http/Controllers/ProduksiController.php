@@ -20,7 +20,10 @@ class ProduksiController extends Controller
                     ->get()
                     ->groupBy('id_barang');
 
-        // dd($dataResep);
+        $dataProduksi = Produksi::with('barang')
+                        ->orderBy('created_at', 'desc')
+                        ->get()
+                        ;
     
         $dataMenu = Menu::whereTipe('produksi')
                     ->get();
@@ -28,7 +31,8 @@ class ProduksiController extends Controller
             'feature.produksi',
             compact([
                 'dataResep',
-                'dataMenu'
+                'dataMenu',
+                'dataProduksi'
             ])
         );
     }
@@ -87,7 +91,7 @@ class ProduksiController extends Controller
 
         $kiri = new JurnalEntry(Akun::HPP, $request->detail['total'], 0, $idBatch, "Produksi");
         $kanan = new JurnalEntry(Akun::KAS_BESAR, 0, $request->detail['total'], $idBatch, "Produksi");
-        Jurnal::doubleEntry($kiri, $kanan);
+        Jurnal::doubleEntry($kiri, $kanan, $request->detail['total']);
 
         return redirect('/produksi');
     }

@@ -50,10 +50,10 @@ class StockController extends Controller
         endswitch;
         switch($request->tipe):
             case "menu" :
-            $item = Menu::where("id", $request->id_barang)->first();
+            $item = Menu::whereId($request->id_barang)->first();
             break;
             case "bahan" :
-            $item = Bahan::where("id", $request->id_barang)->first();
+            $item = Bahan::whereId($request->id_barang)->first();
             break;
         endswitch;
 
@@ -63,9 +63,7 @@ class StockController extends Controller
         $entryKanan = new JurnalEntry($request->akunKanan, 0, $totalHarga, $request->tipe, $request->sumber);
 
         Stock::logStock($request->id_barang, $request->jumlah, $arah, $request->tipe, $request->sumber);
-        Akun::updateAkun($request->akunKiri, $totalHarga, 0);
-        Akun::updateAkun($request->akunKanan, 0, $totalHarga);
-        Jurnal::doubleEntry($entryKiri, $entryKanan);
+        Jurnal::doubleEntry($entryKiri, $entryKanan, $totalHarga);
         
         return redirect('/stock');
     }

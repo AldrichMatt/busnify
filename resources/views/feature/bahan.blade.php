@@ -23,7 +23,7 @@
     
     <!-- Page Title -->
     <h2 class="text-white text-4xl md:text-5xl font-medium">
-      Bahan & Resep
+      Bahan
     </h2>
   </div>
 </section>
