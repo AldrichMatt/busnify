@@ -28,6 +28,7 @@ class MenuController extends Controller
             [
                 "nama" => $request->nama,
                 "tipe" => $request->tipe,
+                "gramasi" => $request->gramasi == null ? '0' : '1',
                 "harga" => $harga
             ]
         );

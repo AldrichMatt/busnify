@@ -59,6 +59,7 @@
           <div class="w-[5%]">Id</div>
           <div class="w-[25%]">Nama Menu</div>
           <div class="w-[25%]">Harga</div>
+          <div class="w-[25%]">Gramasi</div>
           <div class="w-[25%]">Tipe</div>
           <div class="w-[25%] text-right">Aksi</div>
         </div>        
@@ -68,6 +69,7 @@
           <div class="w-[5%] text-[#181411]">{{ $menu->id }}</div>
           <div class="w-[25%] text-[#635549]">{{ $menu->nama }}</div>
           <div class="w-[25%] text-[#635549]">{{ $menu->harga_rupiah }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $menu->gramasi == 1 ? 'Ya' : 'Tidak' }}</div>
           <div class="w-[25%] text-[#635549]">{{ $menu->tipe }}</div>
           <div class="w-[25%] text-end flex row justify-end gap-2">
             <x-modalEditMenu :menu="$menu" modal_id="editMenu{{ $menu->id }}"/>

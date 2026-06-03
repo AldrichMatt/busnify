@@ -13,17 +13,30 @@
           <form action="menu/add" method="post">
             @csrf
             <x-input-field label="Nama Menu" name="nama"/>
-            <div class="flex flex-col gap-2 w-full pb-4">
-              <label class="text-black text-sm font-normal">Tipe</label>
-              <div class="w-full bg-white border border-[#8c8c8c] rounded-lg py-2 flex items-center">
-                <select class="w-full h-full outline-none text-sm bg-transparent px-2" 
-                name="tipe">
-                <option>-------</option>
-                <option value="produksi">Produksi</option>
-                <option value="Resell">Resell</option>
-              </select>
+            <div class="flex gap-2 w-full pb-4">
+              <div class="flex flex-col gap-2 ">
+                <label class="text-black text-sm font-normal">Gramasi</label>
+                <div class="text-center align-middle">
+                  <input
+                    type="checkbox"
+                    name="gramasi"
+                    class="w-7 h-7 accent-[#001476] px-auto"
+                  />
+                </div>
+              </div>
+              <div class="flex flex-col w-full gap-2">
+                <label class="text-black text-sm font-normal">Tipe</label>
+                <div class="w-full text-center bg-white border border-[#8c8c8c] rounded-lg py-2 flex items-center">
+                  <select class="w-full h-full outline-none text-sm bg-transparent px-2" 
+                  name="tipe"
+                  required>
+                    <option>-------</option>
+                    <option value="produksi">Produksi</option>
+                    <option value="Resell">Resell</option>
+                  </select>
+                </div>
+              </div>
             </div>
-          </div>
           <div class="flex flex-col gap-2 w-full pb-4">
               <label class="text-black text-sm font-normal">Harga</label>
               <div class="w-full bg-white border border-[#8c8c8c] rounded-lg py-2 flex items-center">
@@ -32,6 +45,7 @@
                   type="text"
                   id="rupiah"
                   oninput="formatRupiah(this, 0)"
+                  required
                   >
               </div>
                   <input type="hidden"
@@ -40,7 +54,7 @@
                   >
           </div>
           
-          <button type="submit" command="close" commandfor="{{ $modal_id }}" class="inline-flex w-full justify-center rounded-md bg-gradient-to-b from-[#B175FB] to-[#001476] px-3 py-2 text-sm font-semibold text-white hover:opacity-50 sm:w-auto">Tambah Akun</button>
+          <button type="submit" command="close" commandfor="{{ $modal_id }}" class="inline-flex w-full justify-center rounded-md bg-gradient-to-b from-[#B175FB] to-[#001476] px-3 py-2 text-sm font-semibold text-white hover:opacity-50 sm:w-auto">Tambah Menu</button>
           <button type="button" command="close" commandfor="{{ $modal_id }}" class="inline-flex w-full justify-center rounded-md bg-black/50 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:opacity-50 sm:w-auto">Cancel</button>
         </form>
         </div>

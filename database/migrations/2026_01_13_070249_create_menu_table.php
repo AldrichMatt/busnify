@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->integer('harga');
+            $table->boolean('gramasi');
             $table->enum('tipe',['produksi', 'resell']);
             $table->softDeletes('deleted_at', precision:0);
             $table->timestamp('created_at')->useCurrent();
