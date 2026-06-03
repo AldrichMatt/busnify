@@ -68,7 +68,7 @@
           <div class="w-[25%] text-[#181411]">Rp 95.000</div>
           <div class="w-[25%] text-[#181411]">cash</div>
           <a href='#' class="w-[10%] text-right text-[#3b3b3b] cursor-pointer hover:underline">Detail</a>
-        </div>
+        </div>  
       </div>
     </div>
 

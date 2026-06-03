@@ -15,12 +15,12 @@ class StockController extends Controller
     //
     public function index(){
         // $dataStock = Stock::with('item')->get();
-        $dataStockMenu = Stock::where('item_type', "=", "menu")->with('item')->get();
-        $dataStockBahan = Stock::where('item_type', "=", "bahan")->with('item')->get();
+        $dataStockMenu = Stock::whereItemType("menu")->with('item')->get();
+        $dataStockBahan = Stock::whereItemType("bahan")->with('item')->get();
         $dataBarang = (object)['menu' => Menu::all(), 'bahan' => Bahan::all()];
-        $dataAkunAset = Akun::where('kategori', '=', 'aset')->get();
-        $dataAkunBeban = Akun::where('kategori', '=', 'beban')->get();
-        $dataAkunPendapatan = Akun::where('kategori', '=', 'pendapatan')->get();
+        $dataAkunAset = Akun::whereKategori('aset')->get();
+        $dataAkunBeban = Akun::whereKategori('beban')->get();
+        $dataAkunPendapatan = Akun::whereKategori('pendapatan')->get();
         return view('feature.stock',compact(
             'dataStockMenu',
             'dataStockBahan',

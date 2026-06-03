@@ -61,7 +61,7 @@
                 name="id_barang" required>
                 <option>-------</option>
                 @foreach ($dataBarang as $barang)
-                  <option value="{{ $barang->id }}">#{{ $barang->id }} {{ $barang->nama }} / {{ $barang->satuan }}</option>
+                  <option value="{{ $barang->id }}">#{{ $barang->id }} {{ $barang->nama }} - Rp{{ $barang->harga }} / {{ $barang->satuan }}</option>
                 @endforeach
               </select>
             </div>

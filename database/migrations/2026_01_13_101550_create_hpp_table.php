@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('takaran');
 
             $table->foreign('id_produksi')->references('id')->on('produksi');
+            $table->foreign('id_bahan')->references('id')->on('bahan');
         });
     }
 

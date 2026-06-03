@@ -41,6 +41,7 @@ Route::get('/resep/edit/{id}', [ResepController::class, 'editResep']);
 Route::post('/resep/update/{id}', [ResepController::class, 'updateResep']);
 
 Route::get('/produksi', [ProduksiController::class, 'index']);
+Route::get('/produksi/{id}', [ProduksiController::class, 'detailProduksi']);
 Route::post('/produksi/add', [ProduksiController::class, 'tambahProduksi']);
 
 Route::get('/sales', function () {

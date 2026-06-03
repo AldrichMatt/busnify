@@ -35,29 +35,21 @@ class Stock extends Model
 {
     return DB::transaction(function () use ($id_barang, $jumlah, $arah, $tipe, $sumber) {
 
-        $stock = self::firstOrCreate(
+        self::Create(
             [
                 'item_type' => $tipe,
                 'item_id'   => $id_barang,
-            ],
-            [
-                'jumlah' => 0,
+                'jumlah' => $jumlah,
                 'arah'   => $arah,
                 'sumber' => $sumber,
             ]
         );
 
-        if ($arah === 'masuk') {
-            $stock->increment('jumlah', $jumlah);
-        } else {
-            $stock->decrement('jumlah', $jumlah);
-        }
-
         if ($tipe === "bahan") {
             Bahan::updateStock($id_barang, $jumlah, $arah);
         }
 
-        return $stock->fresh();
+        return;
     });
     }
 }

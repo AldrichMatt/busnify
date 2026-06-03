@@ -30,11 +30,11 @@ class BahanController extends Controller
 
     public function updateBahan(Request $request)
     {
-        Bahan::where('id', '=', $request->id)->lockForUpdate()
+        Bahan::whereId($request->id)->lockForUpdate()
             ->update([
                 'nama' => $request->nama,
                 'satuan' => $request->satuan,
-                'harga' => $request->harga
+                'harga' => $request->harga_edit
             ]);
 
         return redirect('/bahan');

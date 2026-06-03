@@ -26,10 +26,10 @@
             <!-- Page Title -->
             <h2 class="text-white text-4xl md:text-5xl font-medium">
                 Produksi
-    </h2>
-</div>
-</section>
-<x-todo text="hubungkan produksi ke stock juga, kode produksi masih error (tidak mau increment +1)"/>
+            </h2>
+        </div>
+    </section>
+<x-todo text="hubungkan produksi ke stock juga ini how plis..."/>
 
 <section id="stats" class="w-full py-3">
   <div class="mx-auto px-20 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -52,7 +52,7 @@
             id="menu"
             onchange="fetchBahan()" {{-- HERE HERE --}}
             class="idBarang w-full outline-none text-sm bg-transparent px-2">
-            <option selected>------</option>
+            <option selected value="0">------</option>
             @foreach ($dataMenu as $menu)
             <option value={{ $menu->id }}>{{ $menu->nama }}</option>
             @endforeach
@@ -68,9 +68,10 @@
             <div class="bg-[#f8f7f5] flex justify-between items-center px-6 py-5 text-[#635549] font-normal rounded-t-lg border border-gray-100">
               <div class="w-[5%]">Id</div>
               <div class="w-[25%]">Nama Bahan</div>
-              <div class="w-[25%]">Takaran</div>
-              <div class="w-[25%]">Harga</div>
-              <div class="w-[5%] text-end">Aksi</div>
+              <div class="w-[15%]">Stock</div>
+              <div class="w-[15%] text-center">Pakai Stock</div>
+              <div class="w-[15%]">Takaran</div>
+              <div class="w-[15%]">Harga</div>
             </div>
             <div class="w-full max-h-[275px] overflow-y-scroll" id="tempat_bahan">
             </div>
@@ -99,29 +100,29 @@
       </div>
       
       <!-- Table Content -->
-      <div class="w-full flex flex-col">
-        <!-- Table Header Row -->
-        <div class="bg-[#f8f7f5] flex justify-between items-center px-6 py-5 text-[#635549] text-base font-normal">
-          <div class="w-[25%]">Batch No.</div>
-          <div class="w-[25%]">Nama Barang</div>
-          <div class="w-[25%]">Tanggal Produksi</div>
-          <div class="w-[25%] text-right">Aksi</div>
-        </div>
-        <!-- Table Data Row -->
-        @foreach($dataProduksi as $produksi)
-        <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
-          <div class="w-[25%] text-[#635549]">{{ $produksi->id_batch }}</div>
-          <div class="w-[25%] text-[#635549]">{{ $produksi->barang->nama }}</div>
-          <div class="w-[25%] text-[#635549]">{{ date_format($produksi->created_at, 'D, d M y H:i') }}</div>
-          <div class="w-[25%] text-end flex row justify-end gap-2">
-            Detail
-            {{-- <x-modalEditMenu :menu="$menu" modal_id="editMenu{{ $menu->id }}"/>
-            <x-edit-button modal_id="editMenu{{ $menu->id }}"/>
-            <x-delete-button link="/menu/delete/{{ $menu->id }}" /> --}}
+        <div class="w-full flex flex-col">
+
+
+          {{-- Tabel bahan --}}
+          <!-- Table Header Row -->
+          <div class="bg-gray-300 flex justify-between items-center px-6 py-5 text-[#635549] text-base font-normal">
+            <div class="w-[25%]">Batch No.</div>
+            <div class="w-[25%]">Nama Barang</div>
+            <div class="w-[25%]">Tanggal Produksi</div>
+            <div class="w-[25%] text-right">Aksi</div>
+          </div>
+          <!-- Table Data Row -->
+          <div class="flex flex-col max-h-64 overflow-y-scroll">
+            @foreach($dataProduksi as $produksi)
+            <div class="odd:bg-white even:bg-gray-200 flex justify-between items-center px-6 py-4 border-t border-gray-100">
+              <div class="w-[25%] text-[#635549]">{{ $produksi->id_batch }}</div>
+              <div class="w-[25%] text-[#635549]">{{ $produksi->barang->nama }}</div>
+              <div class="w-[25%] text-[#635549]">{{ date_format($produksi->created_at, 'D, d M y H:i') }}</div>
+              <a href='/produksi/{{ $produksi->id }}' class="w-[25%] text-right text-[#635549] cursor-pointer hover:underline">Detail</a>
+            </div>
+            @endforeach
           </div>
         </div>
-        @endforeach
-      </div>
     </div>
 
   </div>
@@ -172,44 +173,75 @@
               ${ i }
             </div>
             <div class="w-[25%] text-[#635549]">${item.bahan.nama}</div>
-            <div class="w-[25%] text-[#635549] flex-row">
+            <div 
+              class="w-[15%] 
+              text-center 
+              text-[#635549]"
+              id="stock${i}"  
+            >
+            ${item.bahan.jumlah} ${item.bahan.satuan}
+            </div>
+
+            <div class="w-[25%] text-center text-[#635549]">
+              <input 
+                type="checkbox" 
+                class="pakaiStock" 
+                onchange="cekStock(${i})"
+                ${item.bahan.jumlah <= 0 ? 'disabled' : ''}
+              />
+            </div>
+
+            
+            <div class="w-[15%] text-[#635549] flex-row">
               <div class="w-full bg-white border border-[#8c8c8c] rounded-lg py-2 px-2 flex items-center">
-                <input class="bahanQty w-full h-full outline-none text-sm bg-transparent"
-                type="number"
-                value="${item.takaran}"
-                required>
+                <input 
+                  class="bahanQty w-full h-full outline-none text-sm bg-transparent"
+                  type="number"
+                  id="qty${i}"
+                  value="${item.takaran}"
+                  oninput="cek"
+                  required
+                >
                 ${item.bahan.satuan}
                 </div>
-                </div>
-              <div class="w-[25%] bg-white border border-[#8c8c8c] rounded-lg py-2 px-2 flex items-center">
-                Rp
-                <input class="w-full ps-2 h-full outline-none text-sm bg-transparent"
-                type="text"
-                id="hargaBahan${i}"
-                value="${item.takaran*item.bahan.harga}"
-                oninput="formatRupiah(this,${ i })"
-                />
-                <input class="bahanHarga"
-                type="hidden"
-                name="harga"
-                id="harga${ i }"
-                value=${item.takaran*item.bahan.harga}
-                />
               </div>
-              <button class="hapus-btn w-[5%] text-white bg-[#e43838] hover:bg-[#bc4343] p-2 rounded">x</button>
+              <div 
+                class="w-[15%] flex items-center
+                bg-white 
+                border border-[#8c8c8c] 
+                rounded-lg 
+                py-2 px-2"
+              >
+                Rp
+                <input 
+                  class="w-full ps-2 h-full 
+                  outline-none 
+                  text-sm bg-transparent"
+                  type="text"
+                  id="hargaBahan${i}"
+                  value="${item.takaran*item.bahan.harga}"
+                  oninput="formatRupiah(this,${ i })"
+                />
+                <input 
+                  class="bahanHarga"
+                  type="hidden"
+                  name="harga"
+                  id="harga${ i }"
+                  value=${item.takaran*item.bahan.harga}
+                />
             </div>
-            `);
+          </div>
+          `);
             // console.log(i);
-            formatRupiah(
-              document.getElementById(`hargaBahan${i}`),
-              i);
-            i++;      
-    }
-  );
+      formatRupiah(document.getElementById(`hargaBahan${i}`),i);
+      i++;      
+      }
+    );
 
   }
 
-  function formatRupiah(element, id) {
+  function formatRupiah(element, id) 
+  {
     let angka = element.value.replace(/[^0-9]/g, '');
 
     let saldo = document.getElementById(`harga${id}`);
@@ -225,60 +257,92 @@
     }
     element.value = rupiah;
     saldo.value = angka;
+  }
+
+  function getFormData()
+  {
+    let menuId = document.querySelector('.idBarang').value;
+
+    if(menuId == 0){
+      return;
+    }
+    
+
+    let dataBahan = {
+      menuId,
+      detail : []
+      };        
+
+    let total = 0;
+
+    document.querySelectorAll('.bahan-row').forEach(row => {
+      let id = row.querySelector('.bahanId').value;
+      let qty = row.querySelector('.bahanQty').value;
+      let harga = row.querySelector('.bahanHarga').value;
+      let stock = row.querySelector('.pakaiStock').checked;
+      
+      total += Number(harga)  ;
+
+      dataBahan.detail.push({
+        id : Number(id),
+        takaran : Number(qty),
+        harga : Number(harga),
+        stock
+      });
+
+    });
+
+    // console.log(total);
+    
+    dataBahan.total = total; 
+              
+    return dataBahan;
+  }
+
+  async function submitForm(e)
+  {
+    e.preventDefault();
+    let formData = getFormData();
+
+    if(!formData){
+      return;
     }
 
-    function getFormData(){
-          let menuId = document.querySelector('.idBarang').value;
-          let dataBahan = {
-            menuId,
-            detail : []
-            };        
-
-          let total = 0;
-
-          document.querySelectorAll('.bahan-row').forEach(row => {
-            let id = row.querySelector('.bahanId').value;
-            let qty = row.querySelector('.bahanQty').value;
-            let harga = row.querySelector('.bahanHarga').value;
-            total += Number(harga)  ;
-
-            dataBahan.detail.push({
-              id : Number(id),
-              takaran : Number(qty),
-              harga : Number(harga)}
-            );
-
+    try {
+      const res = await fetch(`/produksi/add`,{
+            method : "POST",
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body : JSON.stringify({
+              detail : formData
+            })
           });
 
-          // console.log(total);
-          
-          dataBahan.total = total; 
-                   
-          return dataBahan;
-        }
-
-    async function submitForm(e)
-    {
-      e.preventDefault();
-      let formData = getFormData();
-      try {
-        const res = await fetch(`/produksi/add`,{
-              method : "POST",
-              headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-              },
-              body : JSON.stringify({
-                detail : formData
-              })
-            });
-
-            // window.location.href = '/produksi'
-      } catch (error) {
-          console.error('Server response:', error); // lihat HTML error-nya
-          // throw new Error(`Request gagal: ${res.status}`);
-      }
-      
+          location.reload();
+    } catch (error) {
+        console.error('Server response:', error); // lihat HTML error-nya
+        // throw new Error(`Request gagal: ${res.status}`);
     }
+    
+  }
+
+  function cekStock(id)
+  {
+    let stockBahan = document.getElementById(`stock${id}`).innerText
+    let takaranBahan = document.getElementById(`qty${id}`).value
+
+    console.log(stockBahan);
+    console.log(takaranBahan);
+    
+
+    if(Number(stockBahan) < Number(takaranBahan)){
+      console.log('stock kurang');
+    }else{
+      console.log('stock cukup');
+    }
+
+  }
 </script>
 </html>
