@@ -3,19 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\DetailPenjualan;
 
 class Penjualan extends Model
 {
     //
+    protected $table = "penjualan";
+
     protected $fillable = [
         'nama_cust',
         'jumlah_menu',
-        'detail',
         'charge',
-        'total'
+        'ongkir',
+        'total',
+        'metode'
     ];
 
-    protected $casts = [
-        'detail' => 'array'
-    ];
+    public function detail()
+    {
+      return $this->hasMany(DetailPenjualan::class, "id_penjualan", "id");
+    }
 }

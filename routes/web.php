@@ -6,8 +6,8 @@ use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\BahanController;
-use App\Http\Controllers\HPPController;
 use App\Http\Controllers\ProduksiController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ResepController;
 
 Route::get('/', [JurnalController::class, 'index']);
@@ -44,9 +44,8 @@ Route::get('/produksi', [ProduksiController::class, 'index']);
 Route::get('/produksi/{id}', [ProduksiController::class, 'detailProduksi']);
 Route::post('/produksi/add', [ProduksiController::class, 'tambahProduksi']);
 
-Route::get('/sales', function () {
-    return view('feature.sales');
-});
+Route::get('/sales', [PenjualanController::class, 'index']);
+Route::get('/sales/{id}', [PenjualanController::class, 'detailPenjualan']);
 
 Route::get('/page', function () {
     return view('page');

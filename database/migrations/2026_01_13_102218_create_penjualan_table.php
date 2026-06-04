@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nama_cust');
             $table->integer('jumlah_menu');
-            $table->json('detail');
             $table->integer('charge');
+            $table->integer('ongkir');
             $table->integer('total');
             $table->enum('metode',['cash', 'transfer']);
             $table->timestamp('created_at')->useCurrent();

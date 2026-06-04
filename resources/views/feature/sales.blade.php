@@ -47,6 +47,8 @@
           +
         </button>
       </div>
+
+      {{-- @dd($dataPenjualan) --}}
       
       <!-- Table Content -->
       <div class="w-full flex flex-col">
@@ -61,14 +63,16 @@
         </div>
         
         <!-- Table Data Row -->
-        <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
-          <div class="w-[5%] text-[#181411]">100</div>
-          <div class="w-[25%] text-[#635549]">17 Jan 2026</div>
-          <div class="w-[25%] text-[#635549]">John Doe</div>
-          <div class="w-[25%] text-[#181411]">Rp 95.000</div>
-          <div class="w-[25%] text-[#181411]">cash</div>
-          <a href='#' class="w-[10%] text-right text-[#3b3b3b] cursor-pointer hover:underline">Detail</a>
-        </div>  
+        @foreach ($dataPenjualan as $penjualan)
+          <div class="bg-white flex justify-between odd:bg-white even:bg-gray-200 items-center px-6 py-4 border-t border-gray-100">
+            <div class="w-[5%] text-[#181411]">{{ $penjualan->id }}</div>
+            <div class="w-[25%] text-[#635549]">{{ date_format($penjualan->created_at, 'D, d M Y') }}</div>
+            <div class="w-[25%] text-[#635549]">{{ $penjualan->nama_cust }}</div>
+            <div class="w-[25%] text-[#181411]">Rp {{ number_format($penjualan->total, 0, '.', ',') }}</div>
+            <div class="w-[25%] text-[#181411]">{{ $penjualan->metode }}</div>
+            <a href='sales/{{ $penjualan->id }}' class="w-[10%] text-right text-[#3b3b3b] cursor-pointer hover:underline">Detail</a>
+          </div>
+        @endforeach
       </div>
     </div>
 
