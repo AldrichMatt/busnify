@@ -7,6 +7,7 @@ use App\Models\Menu;
 
 class DetailPenjualan extends Model
 {
+    public $timestamps = false;
     
     protected $table = "detail_penjualan";
 

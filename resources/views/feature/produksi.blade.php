@@ -82,7 +82,7 @@
         <button
           type="button"
           onclick="submitForm(event)"
-          class="inline-flex w-full justify-center rounded-md bg-gradient-to-b from-[#B175FB] to-[#001476] px-3 py-2 text-sm font-semibold text-white hover:opacity-50 sm:w-auto">
+          class="inline-flex w-[25%] justify-center rounded-md bg-gradient-to-b from-[#B175FB] to-[#001476] px-3 py-2 mx-3 my-2 text-sm font-semibold text-white hover:opacity-50">
           Catat Produksi
           </button>
   </div>
