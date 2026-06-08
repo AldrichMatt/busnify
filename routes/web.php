@@ -3,9 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\JurnalController;
-use App\Http\Controllers\StockController;
+use App\Http\Controllers\JurnalBarangController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\BahanController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\ProduksiController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ResepController;
 
 Route::get('/', [JurnalController::class, 'index']);
@@ -21,12 +24,16 @@ Route::get('/akun/delete/{id}', [AkunController::class, 'hapusAkun']);
 Route::get('/fetch/akun/{kategori}', [AkunController::class, 'fetchAkunByKategori']);
 Route::get('/fetch/resep/{idBarang}', [ResepController::class, 'getBahanbyMenu']);
 
+Route::get('/barang', [JurnalBarangController::class, 'index']);
+Route::post('/barang/stock', [JurnalBarangController::class, 'tambahStock']);
+
 Route::get('/stock', [StockController::class, 'index']);
 Route::post('/stock/add', [StockController::class, 'tambahStock']);
+// Route::get('/stock/detail/{id}', [StockController::class, 'tambahStock']);
 
 Route::get('/menus', [MenuController::class, 'index']);
 Route::post('/menu/add', [MenuController::class, 'tambahMenu']);
-Route::post('/menu/delete/{id}', [MenuController::class, 'hapusMenu']);
+Route::get('/menu/delete/{id}', [MenuController::class, 'hapusMenu']);
 
 Route::get('/bahan', [BahanController::class, 'index']);
 Route::post('/bahan/add', [BahanController::class, 'tambahBahan']);
@@ -38,9 +45,13 @@ Route::post('/resep/add', [ResepController::class, 'tambahResep']);
 Route::get('/resep/edit/{id}', [ResepController::class, 'editResep']);
 Route::post('/resep/update/{id}', [ResepController::class, 'updateResep']);
 
-Route::get('/sales', function () {
-    return view('feature.sales');
-});
+Route::get('/produksi', [ProduksiController::class, 'index']);
+Route::get('/produksi/{id}', [ProduksiController::class, 'detailProduksi']);
+Route::post('/produksi/add', [ProduksiController::class, 'tambahProduksi']);
+
+Route::get('/sales', [PenjualanController::class, 'index']);
+Route::get('/sales/{id}', [PenjualanController::class, 'detailPenjualan']);
+Route::post('/sales/add', [PenjualanController::class, 'tambahPenjualan']);
 
 Route::get('/page', function () {
     return view('page');

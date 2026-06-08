@@ -21,7 +21,7 @@
                   <input class="w-full h-full outline-none text-sm bg-transparent px-2" 
                   placeholder="Rp "
                   type="text"
-                  oninput="formatRupiah(this)"
+                  oninput="formatRupiah(this,0)"
                   required >
                 </div>
                 <input type="hidden"

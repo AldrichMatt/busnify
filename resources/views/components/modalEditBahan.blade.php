@@ -24,12 +24,13 @@
                   placeholder="Rp "
                   type="text"
                   value="{{ rupiah($bahan->harga) }}"
-                  oninput="formatRupiah(this)"
+                  oninput="formatRupiah(this,{{ $bahan->id }})"
                   >
                 </div>
                 <input type="hidden"
-                name="harga"
-                id="harga"
+                name="harga_edit"
+                id="harga{{ $bahan->id }}"
+                value="{{ $bahan->harga }}"
                 >
               </div>
               <div class="flex flex-col gap-2 w-full pb-4">
@@ -46,7 +47,7 @@
             </div>
           </div>
           
-          <button type="submit" command="close" commandfor="{{ $modal_id }}" class="inline-flex w-full justify-center rounded-md bg-gradient-to-b from-[#B175FB] to-[#001476] px-3 py-2 text-sm font-semibold text-white hover:opacity-50 sm:w-auto">Tambah Akun</button>
+          <button type="submit" command="close" commandfor="{{ $modal_id }}" class="inline-flex w-full justify-center rounded-md bg-gradient-to-b from-[#B175FB] to-[#001476] px-3 py-2 text-sm font-semibold text-white hover:opacity-50 sm:w-auto">Simpan</button>
           <button type="button" command="close" commandfor="{{ $modal_id }}" class="inline-flex w-full justify-center rounded-md bg-black/50 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:opacity-50 sm:w-auto">Cancel</button>
         </form>
         </div>

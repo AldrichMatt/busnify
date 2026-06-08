@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penjualan', function (Blueprint $table) {
+        Schema::create('resep', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_cust');
-            $table->integer('jumlah_menu');
-            $table->json('detail');
-            $table->integer('charge');
-            $table->integer('total');
-            $table->enum('metode',['cash', 'transfer']);
+            $table->unsignedBigInteger('id_barang');
+            $table->unsignedBigInteger('id_bahan');
+            $table->integer('takaran');
+            $table->softDeletes('deleted_at', precision:0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+            $table->foreign('id_barang')->references('id')->on('stock');
+            $table->foreign('id_bahan')->references('id')->on('bahan');
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penjualan');
+        Schema::dropIfExists('resep');
     }
 };

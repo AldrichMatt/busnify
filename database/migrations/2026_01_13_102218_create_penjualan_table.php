@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu', function (Blueprint $table) {
+        Schema::create('penjualan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->integer('harga');
-            $table->enum('tipe',['produksi', 'resell']);
-            $table->softDeletes('deleted_at', precision:0);
+            $table->string('nama_cust');
+            $table->integer('jumlah_menu');
+            $table->integer('charge');
+            $table->integer('ongkir');
+            $table->integer('total');
+            $table->enum('metode',['cash', 'transfer']);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menu');
+        Schema::dropIfExists('penjualan');
     }
 };

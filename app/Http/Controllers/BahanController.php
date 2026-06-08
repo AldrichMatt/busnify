@@ -10,7 +10,6 @@ class BahanController extends Controller
     public function index()
     {
         $allBahan = Bahan::with('stocks')
-        ->orderBy('jumlah', 'asc')
         ->get();
 
         return view('feature.bahan', compact('allBahan'));
@@ -30,11 +29,11 @@ class BahanController extends Controller
 
     public function updateBahan(Request $request)
     {
-        Bahan::where('id', '=', $request->id)->lockForUpdate()
+        Bahan::whereId($request->id)->lockForUpdate()
             ->update([
                 'nama' => $request->nama,
                 'satuan' => $request->satuan,
-                'harga' => $request->harga
+                'harga' => $request->harga_edit
             ]);
 
         return redirect('/bahan');

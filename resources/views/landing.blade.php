@@ -8,6 +8,7 @@
 </head>
 <body>  <!-- Header Section: Navigation and Logo -->
 <x-header />
+
 <!-- Menu Section: Quick Access Buttons -->
 <section id="menu" class="w-full pb-10 px-6 md:px-12 lg:px-20">
   <div class="max-w-7xl mx-auto">
@@ -16,7 +17,7 @@
       {{-- <x-quick-btn link="/dashboard" label="Dashboard" /> --}}
       <x-quick-btn link="/akun" label="Akun" />
       <x-quick-btn link="/stock" label="Stock" />
-      <x-quick-btn link="/menus" label="Menu" />
+      <x-quick-btn link="/menus" label="Katalog" />
       <x-quick-btn link="/bahan" label="Bahan" />
       <x-quick-btn link="/resep" label="Resep" />
       <x-quick-btn link="/produksi" label="Produksi" />
@@ -41,6 +42,8 @@
       <div class="w-[25%]">Tujuan</div>
     </div>
     @foreach ($dataJurnal as $itemJurnal)
+
+    {{-- @dd($itemJurnal) --}}
     
     <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
         <div class="w-[25%] text-[#181411]">{{ date_format($itemJurnal->kiri->created_at, 'D, d M y H:i') }}</div>

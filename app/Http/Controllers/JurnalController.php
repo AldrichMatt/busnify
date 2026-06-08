@@ -15,8 +15,11 @@ class JurnalController extends Controller
                     ->groupBy('ref')
                     ->map(function ($items) {
                         return (object)[
-                            'kiri'  => $items->firstWhere('debit', '>', 0),
-                            'kanan' => $items->firstWhere('kredit', '>', 0),
+                            'kiri' => $items->firstWhere('debit', '>', 0)
+                                        ?? $items->first(),
+
+                            'kanan' => $items->firstWhere('kredit', '>', 0)
+                                        ?? $items->last(),
                         ];
                     })
                     ->values();

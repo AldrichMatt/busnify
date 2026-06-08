@@ -12,10 +12,10 @@
 <body class="bg-gradient-to-b from-[#B175FB] to-[#001476] min-h-screen">
 <x-header />
 
+<x-todo text="fitur reorder bahan (drag and drop?, sort? bebas)" />
 <!-- Hero Section: Back Button and Page Title -->
 <section class="w-full pb-20 pt-10">
   <section id="hero" class="w-full">
-    <x-todo text="ketika user menambah bahan baru pada tabel yang sudah diubah, setiap value yang ada akan hilang, kecuali value awal"/>
   <div class="mx-20 flex flex-col gap-8">
     <!-- Back Button -->
     <a href="/resep" class="flex items-center gap-2 mb-4 cursor-pointer hover:opacity-80 w-fit">
@@ -84,7 +84,7 @@
                 $i = 1;
               @endphp
               @foreach ($dataResep as $item)
-              <div id="bahan{{ $item->id }}" class="bahan-row flex justify-between items-center px-6 py-3 text-[#635549] font-normal bg-gray-100 border-t text-start">
+              <div id="bahan{{ $i }}" class="bahan-row flex justify-between items-center px-6 py-3 text-[#635549] font-normal bg-gray-100 border-t text-start">
                   <div class="w-[5%] text-[#635549] index-bahan">
                     <input 
                     class="bahanId"
@@ -99,6 +99,7 @@
                 <div class="w-92 bg-white border border-[#8c8c8c] rounded-lg py-2 px-2 flex items-center">
                   <input class="bahanQty w-full h-full outline-none text-sm bg-transparent"
                   type="number"
+                  oninput="updateDOM(this)"
                   value={{ $item->takaran }}
                   required>
                   {{ $item->bahan?->satuan }}
@@ -124,9 +125,13 @@
 </section>
 
   <script>
+
     feather.replace();
     const saldo = document.getElementById('harga');
-    const tabelBahan = document.getElementById('bahan_resep');    
+
+    //declared globally, the function tambahBahan does update this
+    //but changing bahanQty doesn't update the tabelBahan
+    let tabelBahan = document.getElementById('bahan_resep');
 
     tabelBahan.addEventListener('click', function(e){
       if(e.target.classList.contains('hapus-btn')){
@@ -135,55 +140,10 @@
       }
     });
 
-    function fetchBahan(idBarang){
-      try {
-          fetch(`/fetch/resep/${encodeURIComponent(idBarang)}`)
-          .then(res => res.json())
-          .then(data => showResep(idBarang, data));
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    function showResep(idBarang, data) {
-
-  const container = document.querySelector(`.tempat-resep${idBarang}`);
-
-  if (!container) return;
-
-  // Toggle buka/tutup
-  if (container.innerHTML.trim() !== "") {
-    container.innerHTML = "";
-    return;
-  }
-
-  let html = "";
-
-  if (data.length === 0) {
-    html = `
-      <div class="bg-gray-50 px-6 py-3 text-sm text-gray-500">
-        Tidak ada bahan
-      </div>
-    `;
-  } else {
-    data.forEach(item => {
-      html += `
-        <div class="bg-gray-50 flex justify-between px-6 py-3 border-t border-gray-100">
-          <div>${item.bahan.nama}</div>
-          <div>${item.takaran} ${item.bahan.satuan ?? ""}</div>
-        </div>
-      `;
-    });
-  }
-
-  container.innerHTML = html;
-
-  // rotate icon kalau mau
-  const icon = document.querySelector(`.chev${idBarang}`);
-  if (icon) {
-    icon.classList.toggle("rotate-180");
-  }
-}
+    function updateDOM(element)
+    {  
+      
+    } 
 
     function reindexBahan(){
       let rows = tabelBahan.querySelectorAll('[id^="bahan"]');
@@ -192,21 +152,21 @@
       });
     }
 
-    function formatRupiah(element) {
-      let angka = element.value.replace(/[^0-9]/g, '');
-    
-      let number_string = angka.toString();
-      let sisa = number_string.length % 3;
-      let rupiah = number_string.substr(0, sisa);
-      let ribuan = number_string.substr(sisa).match(/\d{3}/g);
+      function formatRupiah(element) {
+        let angka = element.value.replace(/[^0-9]/g, '');
+      
+        let number_string = angka.toString();
+        let sisa = number_string.length % 3;
+        let rupiah = number_string.substr(0, sisa);
+        let ribuan = number_string.substr(sisa).match(/\d{3}/g);
 
-      if (ribuan) {
-          let separator = sisa ? ',' : '';
-          rupiah += separator + ribuan.join(',');
-      }
+        if (ribuan) {
+            let separator = sisa ? ',' : '';
+            rupiah += separator + ribuan.join(',');
+        }
 
-      element.value = 'Rp ' + rupiah;
-      saldo.value = angka;
+        element.value = 'Rp ' + rupiah;
+        saldo.value = angka;
       }
 
       function filterBahan(bahan){
@@ -220,8 +180,8 @@
       function tambahBahan(bahan) {
         let nextIndex = tabelBahan.children.length + 1;     
         if(filterBahan(bahan)){
-          tabelBahan.innerHTML += `
-            <div id="bahan${ nextIndex }" class="bahan-row flex justify-between items-center px-6 py-3 text-[#635549] font-normal bg-gray-100 border-t text-start">
+          tabelBahan.insertAdjacentHTML('beforeend', `
+            <div id="bahan${nextIndex}" class="bahan-row flex justify-between items-center px-6 py-3 text-[#635549] font-normal bg-gray-100 border-t text-start">
               <div class="w-[5%] text-[#635549] index-bahan">
                 <input class="bahanId" type="hidden" value="${bahan.id}"/>
                 ${ nextIndex }
@@ -237,7 +197,7 @@
               </div>
               <button type="button" class="hapus-btn w-[5%] text-white bg-[#e43838] hover:bg-[#bc4343] p-2 rounded">x</button>
             </div>
-          `
+          `)
         }
       }
 

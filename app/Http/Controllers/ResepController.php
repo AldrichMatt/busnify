@@ -6,16 +6,21 @@ use Illuminate\Http\Request;
 use App\Models\Resep;
 use App\Models\Bahan;
 use App\Models\Menu;
+use App\Models\Stock;
 
 class ResepController extends Controller
 {
     public function index()
     {
+
         $allResep = Resep::with('barang')
                     ->get('id_barang')
                     ->groupBy(fn($item)=> $item->barang->nama);
         $allBahan = Bahan::all();
-        $allMenu = Menu::whereTipe("produksi")
+        $allMenu = Stock::whereNotIn(
+                        'id',
+                        Resep::select('id_barang')
+                    )
                     ->get();
 
         return view('feature.resep', compact(
@@ -26,6 +31,10 @@ class ResepController extends Controller
     }
 
     public function getBahanbyMenu(Request $request){
+        // dd(Resep::with('bahan')
+        //             ->where('id_barang', $request->idBarang)
+        //             ->get()
+        // );
         return response()->json(
             Resep::with('bahan')
                     ->where('id_barang', $request->idBarang)
@@ -70,8 +79,9 @@ class ResepController extends Controller
     {
         $idBahan = collect($request->bahan)->pluck('id');
 
-        // dd($idBahan);
-
+        
+        // dd($request->menu_id);
+        
         Resep::whereIdBarang($request->menu_id)
                 ->whereNotIn('id_bahan',$idBahan)
                 ->delete();

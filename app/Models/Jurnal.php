@@ -24,29 +24,30 @@ class Jurnal extends Model
         'kredit' => 'integer',
     ];
     
-    // public function pasangan()
-    // {
-    //     return self::where('ref', $this->ref)
-    //                ->where('id', '!=', $this->id);
-    // }
+        // public function pasangan()
+        // {
+        //     return self::where('ref', $this->ref)
+        //                ->where('id', '!=', $this->id);
+        // }
 
     public function akun(){
         return $this->belongsTo(Akun::class, 'kode', 'kode')
                     ->withTrashed();
     }
 
-    // public static function singleEntry($transaction)
-    // {
-    //     return self::create([
-    //         'kode' => $transaction->kode,
-    //         'debit' => $transaction->debit,
-    //         'kredit' => $transaction->kredit,
-    //         'uraian' => $transaction->uraian,
-    //         'tujuan' => $transaction->tujuan,
-    //     ]);
-    // }
+    public static function singleEntry($transaction)
+    {
+        return self::create([
+            'kode' => $transaction->kode,
+            'ref' => generateRefJurnal(),
+            'debit' => $transaction->debit,
+            'kredit' => $transaction->kredit,
+            'uraian' => $transaction->uraian,
+            'tujuan' => $transaction->tujuan,
+        ]);
+    }
 
-    public static function doubleEntry($kiri, $kanan) {
+    public static function doubleEntry($kiri, $kanan, $sum) {
 
         $ref = generateRefJurnal();
 
@@ -69,6 +70,9 @@ class Jurnal extends Model
             'uraian' => $kanan->uraian,
             'tujuan' => $kanan->tujuan,
         ]);
+
+        Akun::updateAkun($kiri->kode, $sum, 0);
+        Akun::updateAkun($kanan->kode, 0, $sum);
     }
 
     protected function debitRupiah(): Attribute

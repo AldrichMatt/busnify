@@ -45,19 +45,22 @@ class AkunController extends Controller
         $debit = 0;
         $kredit = 0;
 
-        if($kategori == 'aset' || $kategori == 'beban'){
+
+        if($kategori == 'aset' || $kategori == 'beban')
+        {
             $debit = $saldo;
         }else{
             $kredit = $saldo;
         }
 
+        // dd($kredit);
         
         Akun::create([
             'kode' => $request->kode,
             'nama' => $request->nama,
             'kategori' => $request->kategori,
-            'debit' => $debit || '0',
-            'kredit' => $kredit || '0'
+            'debit' => $debit,
+            'kredit' => $kredit
         ]);
 
         $jurnalEntry = new JurnalEntry($request->kode, $debit, $kredit, "Saldo Awal", "Pencatatan");
@@ -71,8 +74,15 @@ class AkunController extends Controller
 
     public function hapusAkun(Request $request){
         $id = $request->id;
+        $akun = Akun::whereId($id);
+        $akun->update([
+            'kode' => $akun->first()->kode.time()
+        ]);
+        dd($akun->first()->kode);
 
-        Akun::where('id','=',$id, TRUE)->delete();
+        if($akun->first()->debit == 0 && $akun->first()->kredit == 0){
+            $akun->delete();
+        }
         return redirect('/akun');
     }
 

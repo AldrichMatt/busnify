@@ -22,7 +22,7 @@ class Resep extends Model
 
     public function barang()
     {
-        return $this->belongsTo(Menu::class, 'id_barang');
+        return $this->belongsTo(Stock::class, 'id_barang');
     }
     
     public function bahan()

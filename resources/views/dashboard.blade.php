@@ -22,9 +22,6 @@
             <span class="text-white text-sm font-medium">Back</span>
         </a>
 
-        <!-- Page Title -->
-        <h2 class="text-white text-4xl md:text-5xl font-medium">Dashboard</h2>
-
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             
