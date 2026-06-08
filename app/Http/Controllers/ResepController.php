@@ -6,17 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\Resep;
 use App\Models\Bahan;
 use App\Models\Menu;
+use App\Models\Stock;
 
 class ResepController extends Controller
 {
     public function index()
     {
+
         $allResep = Resep::with('barang')
                     ->get('id_barang')
                     ->groupBy(fn($item)=> $item->barang->nama);
         $allBahan = Bahan::all();
-        $allMenu = Menu::whereTipe("produksi")
-                    ->whereNotIn(
+        $allMenu = Stock::whereNotIn(
                         'id',
                         Resep::select('id_barang')
                     )

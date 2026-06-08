@@ -27,10 +27,19 @@ class Akun extends Model
 
     const PERSEDIAAN = '102';
 
+    const UTANG = '201';
+
+    const MODAL = '301';
+
+    const PENJUALAN = '401';
+    
     const HPP = '501';
+
+    const WASTE = "502";
 
     protected $fillable = [
         'kode',
+        'main',
         'nama',
         'kategori', // ['aset','beban','utang','modal','pendapatan']
         'debit',
@@ -58,6 +67,9 @@ class Akun extends Model
 
     public static function TotalKode(String $kode) {
         $akun = Akun::whereKode($kode)->first();
+        if($akun == null){
+            return;
+        }
         if ($akun->kategori == 'aset' || $akun->kategori == "beban"){
             return $akun->debit - $akun->kredit;
         }else{
@@ -67,6 +79,9 @@ class Akun extends Model
 
     public static function TotalKategori(String $kategori) {
         $akun = Akun::whereKategori($kategori);
+        if($akun == null){
+            return;
+        }
         $sumDebit = $akun->sum('debit');
         $sumKredit = $akun->sum('kredit');
         if ($kategori == 'aset' || $kategori == "beban"){

@@ -20,6 +20,6 @@ class Produksi extends Model
 
     public function barang()
     {
-      return $this->belongsTo(Menu::class, "id_barang", "id");
+      return $this->belongsTo(Stock::class, "id_barang", "id");
     }
 }

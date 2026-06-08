@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Akun;
 use App\Models\Resep;
 use App\Models\Produksi;
-use App\Models\Menu;
+use App\Models\JurnalBarang;
 use App\Models\Stock;
 use App\Models\HPP;
 use App\Models\Jurnal;
@@ -26,13 +26,12 @@ class ProduksiController extends Controller
                         ->get()
                         ;
     
-        $dataMenu = Menu::whereTipe('produksi')
-                    ->get();
+        $dataStock = Stock::all();
         return view(
             'feature.produksi',
             compact([
                 'dataResep',
-                'dataMenu',
+                'dataStock',
                 'dataProduksi'
             ])
         );
@@ -107,6 +106,8 @@ class ProduksiController extends Controller
         $data = $request->detail;
         
         $idBarang = $data['menuId'];
+        $beratAkhir = $data['beratAkhir'];
+
         $idBatch = self::generateBatchId();
 
         $produksi = Produksi::create([
@@ -116,7 +117,14 @@ class ProduksiController extends Controller
 
         foreach($data['detail'] as $item):
             if ($item['stock']){
-                Stock::logStock($item['id'], $item['takaran'], 'keluar', 'bahan', 'produksi');
+                $data = new Request([
+                    'sumber' => 'produksi',
+                    'tipe' => 'bahan',
+                    'jumlah' => $item['takaran'],
+                    'id_barang' => $item['id']
+                ]);
+                JurnalBarangController::tambahStock($data);
+                // JurnalBarang::logStock($produksi->id, $item['id'], $item['takaran'], 'keluar', 'bahan', 'produksi');
             }else{
                 
             }
@@ -131,10 +139,12 @@ class ProduksiController extends Controller
             ];
         })->toArray();
 
+        Stock::tambahStock($idBarang, $beratAkhir);
         HPP::insert(
             $dataInsert
         );
 
+        
         $kiri = new JurnalEntry(Akun::HPP, $request->detail['total'], 0, $idBatch, "Produksi");
         $kanan = new JurnalEntry(Akun::KAS_BESAR, 0, $request->detail['total'], $idBatch, "Produksi");
         Jurnal::doubleEntry($kiri, $kanan, $request->detail['total']);

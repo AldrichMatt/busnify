@@ -11,7 +11,7 @@
 <body class="bg-gradient-to-b from-[#B175FB] to-[#001476] min-h-screen">
 <x-header />
 
-<x-modalMenu />
+<x-modalMenu :dataStock="$allStock" />
   <!-- Hero Section: Back Button and Page Title -->
 <section class="w-full pb-20 pt-10">
 <section id="hero" class="w-full">
@@ -23,13 +23,13 @@
     </a>
     
     <!-- Page Title -->
-    {{-- <h2 class="text-white text-4xl md:text-5xl font-medium">
+    <h2 class="text-white text-4xl font-medium">
       Menus
-    </h2> --}}
+    </h2>
   </div>
 </section>
   <!-- Stats Section: 3 Summary Cards -->
-<section id="stats" class="w-full py-6">
+{{-- <section id="stats" class="w-full py-6">
   <div class="mx-auto px-20 grid grid-cols-1 md:grid-cols-3 gap-4">
     
     <x-card title="Lorem" subtitle="lorem" caption="" />
@@ -37,11 +37,11 @@
     <x-card title="Lorem" subtitle="lorem" caption="" />
 
   </div>
-</section>
+</section> --}}
 
 
   <!-- Tables Section -->
-<section id="tables" class="w-full pb-20">
+<section id="tables" class="w-full pt-4 pb-20">
   <div class="mx-auto px-20 flex flex-col gap-4">
     
     <!-- Table Card 1 -->
@@ -59,6 +59,7 @@
           <div class="w-[5%]">Id</div>
           <div class="w-[25%]">Nama Menu</div>
           <div class="w-[25%]">Harga</div>
+          <div class="w-[25%]">Kuantitas</div>
           <div class="w-[25%]">Gramasi</div>
           <div class="w-[25%]">Tipe</div>
           <div class="w-[25%] text-right">Aksi</div>
@@ -69,6 +70,7 @@
           <div class="w-[5%] text-[#181411]">{{ $menu->id }}</div>
           <div class="w-[25%] text-[#635549]">{{ $menu->nama }}</div>
           <div class="w-[25%] text-[#635549]">{{ $menu->harga_rupiah }}</div>
+          <div class="w-[25%] text-[#635549]">{{ $menu->kuantitas }}</div>
           <div class="w-[25%] text-[#635549]">{{ $menu->gramasi == 1 ? 'Ya' : 'Tidak' }}</div>
           <div class="w-[25%] text-[#635549]">{{ $menu->tipe }}</div>
           <div class="w-[25%] text-end flex row justify-end gap-2">

@@ -24,14 +24,14 @@
             </a>
             
             <!-- Page Title -->
-            <h2 class="text-white text-4xl md:text-5xl font-medium">
+            <h2 class="text-white text-4xl font-medium">
                 Produksi
             </h2>
         </div>
     </section>
 <x-todo text="hubungkan produksi ke stock juga ini how plis..."/>
 
-<section id="stats" class="w-full py-3">
+{{-- <section id="stats" class="w-full py-3">
   <div class="mx-auto px-20 grid grid-cols-1 md:grid-cols-3 gap-4">
     
     <x-card title="Lorem" subtitle="lorem" caption="" />
@@ -39,25 +39,31 @@
     <x-card title="Lorem" subtitle="lorem" caption="" />
 
   </div>
-</section>
+</section> --}}
 
 <section id="stats" class="w-full py-3">
     <div class="mx-20 py-3 my-3 bg-white rounded-xl border-2 border-[#8c8c8c] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col">
-      <div class="text-[#1e1e1e] text-3xl font-bold mb-4 pt-3 px-10">Tambah Resep</div>
+      <div class="text-[#1e1e1e] text-3xl font-bold mb-4 pt-3 px-10">Pilih Barang</div>
       <div class="flex row justify-b">
         <div class="flex flex-col gap-2 grow py-4 px-5 bg-white">
-          <label class="text-black text-sm font-normal">Menu</label>
+          <label class="text-black text-sm font-normal">Barang</label>
           <div class="flex grow-x bg-white border border-[#8c8c8c] rounded-lg py-2 items-center">
             <select name="id_barang" 
             id="menu"
             onchange="fetchBahan()" {{-- HERE HERE --}}
             class="idBarang w-full outline-none text-sm bg-transparent px-2">
             <option selected value="0">------</option>
-            @foreach ($dataMenu as $menu)
-            <option value={{ $menu->id }}>{{ $menu->nama }}</option>
+            @foreach ($dataStock as $stock)
+            <option value={{ $stock->id }}>{{ $stock->nama }}</option>
             @endforeach
             </select>
           </div>         
+          <div class="w-full flex flex-row justify-items-start gap-2 pl-4">
+          <label class="text-black w-[25%]">Berat Akhir</label>
+            <input class="beratAkhir w-full border-b border-[#8c8c8c] focus:outline-none flex items-center h-full text-sm bg-transparent px-2" 
+                  type="number"
+                  required> gr
+        </div>
         </div>
         <div class="flex flex-col grow min-w-100">
           <div class="w-full flex flex-col grow ">
@@ -262,6 +268,7 @@
   function getFormData()
   {
     let menuId = document.querySelector('.idBarang').value;
+    let beratAkhir = document.querySelector('.beratAkhir').value;
 
     if(menuId == 0){
       return;
@@ -270,6 +277,7 @@
 
     let dataBahan = {
       menuId,
+      beratAkhir,
       detail : []
       };        
 
@@ -320,7 +328,7 @@
             })
           });
 
-          location.reload();
+          // location.reload();
     } catch (error) {
         console.error('Server response:', error); // lihat HTML error-nya
         // throw new Error(`Request gagal: ${res.status}`);

@@ -3,9 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\JurnalController;
-use App\Http\Controllers\StockController;
+use App\Http\Controllers\JurnalBarangController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\BahanController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ResepController;
@@ -23,8 +24,12 @@ Route::get('/akun/delete/{id}', [AkunController::class, 'hapusAkun']);
 Route::get('/fetch/akun/{kategori}', [AkunController::class, 'fetchAkunByKategori']);
 Route::get('/fetch/resep/{idBarang}', [ResepController::class, 'getBahanbyMenu']);
 
+Route::get('/barang', [JurnalBarangController::class, 'index']);
+Route::post('/barang/stock', [JurnalBarangController::class, 'tambahStock']);
+
 Route::get('/stock', [StockController::class, 'index']);
 Route::post('/stock/add', [StockController::class, 'tambahStock']);
+// Route::get('/stock/detail/{id}', [StockController::class, 'tambahStock']);
 
 Route::get('/menus', [MenuController::class, 'index']);
 Route::post('/menu/add', [MenuController::class, 'tambahMenu']);

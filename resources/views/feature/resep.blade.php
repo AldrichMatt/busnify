@@ -287,15 +287,15 @@
   function tambahBahan(bahan) {
     let nextIndex = tabelBahan.children.length + 1;     
     if(filterBahan(bahan)){
-      tabelBahan.innerHTML += `
+      tabelBahan.insertAdjacentHTML('beforeend',`
     <div class="bahan-row
     flex justify-between items-center px-6 py-3 text-[#635549] font-normal
     bg-gray-100 border-t text-start" id="bahan${ nextIndex }">
         <div class="w-[5%] text-[#635549] index-bahan">
           <input 
-          class = "bahanId"
+          class="bahanId"
           type="hidden"
-          value = ${bahan.id}
+          value ='${bahan.id}'
           />
           ${ nextIndex }
         </div>
@@ -305,12 +305,12 @@
             <input class="bahanQty w-full h-full outline-none text-sm bg-transparent"
             type="number"
             required>
-            gr 
+            ${bahan.satuan} 
             </div>
           </div>
           <button class="hapus-btn w-[5%] text-white bg-[#e43838] hover:bg-[#bc4343] p-2 rounded">x</button>
         </div>
-        `
+        `);
       }
   }
 
@@ -354,7 +354,6 @@
 
       const data = await res.json();
       location.reload();
-      
     } catch (error) {
       console.error(error)
     }

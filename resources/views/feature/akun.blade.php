@@ -23,7 +23,7 @@
       </a>
       
       <!-- Page Title -->
-      <h2 class="text-white text-4xl md:text-5xl font-medium">
+      <h2 class="text-white text-4xl font-medium">
         Akun
       </h2>
     </div>

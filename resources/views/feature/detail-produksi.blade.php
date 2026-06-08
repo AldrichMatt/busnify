@@ -36,12 +36,12 @@
                 <div class="w-[25%]">#</div>
                 <div class="w-[25%]">Nama</div>
                 <div class="w-[25%]">Takaran</div>
-                <div class="w-[25%] text-right">Modal</div>
+                <div class="w-[25%]">Modal</div>
             </div>
             <!-- Table Data Row -->
             <div class="flex flex-col">
                 @foreach($dataProduksi->data_bahan as $id => $produksi)
-                <div class="odd:bg-white even:bg-gray-200 flex justify-between items-center px-6 py-4 border-t border-gray-100">
+                <div class="odd:bg-white even:bg-gray-200 last:rounded-b-2xl flex justify-between items-center px-6 py-4 border-t border-gray-100">
                     <div class="w-[25%] text-[#635549]">{{ $id }}</div>
                     <div class="w-[25%] text-[#635549]">{{ $produksi->nama_bahan }}</div>
                     <div class="w-[25%] text-[#635549]">{{ $produksi->takaran }}{{ $produksi->satuan }}</div>

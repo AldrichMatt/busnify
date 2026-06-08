@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('akun', function (Blueprint $table) {
+        Schema::create('resep', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('kode')->unique();
-            $table->string('nama');
-            $table->enum('kategori', ['aset','beban','utang','modal','pendapatan']);
-            $table->integer('debit')->default(0);
-            $table->integer('kredit')->default(0);
+            $table->unsignedBigInteger('id_barang');
+            $table->unsignedBigInteger('id_bahan');
+            $table->integer('takaran');
             $table->softDeletes('deleted_at', precision:0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+            $table->foreign('id_barang')->references('id')->on('stock');
+            $table->foreign('id_bahan')->references('id')->on('bahan');
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('akun');
+        Schema::dropIfExists('resep');
     }
 };

@@ -10,7 +10,6 @@ class BahanController extends Controller
     public function index()
     {
         $allBahan = Bahan::with('stocks')
-        ->orderBy('jumlah', 'asc')
         ->get();
 
         return view('feature.bahan', compact('allBahan'));

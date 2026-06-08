@@ -14,9 +14,11 @@ class Menu extends Model
     protected $table = "menu";
 
     protected $fillable = [
+        'id_stock',
         'nama',
         'harga',
         'gramasi',
+        'kuantitas',
         'tipe' //produksi, resell
     ];
 
@@ -24,10 +26,6 @@ class Menu extends Model
         'harga' => 'integer'
     ];
 
-    public function stocks()
-    {
-        return $this->morphMany(Stock::class, 'item');
-    }
 
     // MENU TIDAK DI STOCK (MENU DI STOCK DI TABEL STOCK)
     // public static function updateStock($id, $jumlah, $arah)

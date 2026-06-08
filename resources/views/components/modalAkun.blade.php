@@ -18,10 +18,10 @@
                 name="kategori">
                 <option>-------</option>
                 <option value="aset">Aset</option>
-                <option value="beban">Beban</option>
                 <option value="utang">Utang</option>
-                <option value="modal">Modal</option>
+                <option value="modal">Ekuitas</option>
                 <option value="pendapatan">Pendapatan</option>
+                <option value="beban">Beban</option>
               </select>
             </div>
           </div>

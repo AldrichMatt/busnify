@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\Stock;
 use App\Models\Resep;
 
 class MenuController extends Controller
 {
     public function index(){
         $allMenu = Menu::all();
-        return view('feature.menus',compact('allMenu'));
+        $allStock = Stock::all();
+        return view('feature.menus',compact('allMenu','allStock'));
     }
 
     public function tambahMenu(Request $request)
@@ -26,8 +28,10 @@ class MenuController extends Controller
                 "id" => $request->id,
             ],
             [
+                "id_stock" => $request->id_stock,
                 "nama" => $request->nama,
                 "tipe" => $request->tipe,
+                "kuantitas" => $request->kuantitas,
                 "gramasi" => $request->gramasi == null ? '0' : '1',
                 "harga" => $harga
             ]

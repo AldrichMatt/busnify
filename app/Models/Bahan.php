@@ -28,7 +28,7 @@ class Bahan extends Model
 
     public function stocks()
     {
-        return $this->morphOne(Stock::class, 'item');
+        return $this->morphOne(JurnalBarang::class, 'item');
     }
 
     public static function updateStock($id, $jumlah, $arah)

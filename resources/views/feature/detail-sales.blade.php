@@ -30,9 +30,9 @@
                     {{-- <hr class="bg-gray-200 mb-2"> --}}
                     <div class="text-[#1e1e1e] text-xl mb-1">{{ date_format($dataPenjualan->created_at, 'D, d M Y') }}</div>
                 </div>
-                 <button class="w-10 h-10 ml-auto bg-gray-600 hover:bg-gray-700 rounded flex items-center justify-center">
+                 <a href="/penjualan/struk{{ $dataPenjualan->id }}" class="w-10 h-10 ml-auto bg-gray-600 hover:bg-gray-700 rounded flex items-center justify-center">
                     <i data-feather="printer" class="w-4 h-4 text-white"></i>
-                </button>
+                </a>
             </div>
             <hr>
             <!-- Table Header Row -->

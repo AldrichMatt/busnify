@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('total');
 
             $table->foreign('id_penjualan')->references('id')->on('penjualan');
-            $table->foreign('id_barang')->references('id')->on('barang');
+            $table->foreign('id_barang')->references('id')->on('menu');
         });
     }
 

@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Penjualan;
 use App\Models\Menu;
+use App\Models\Jurnal;
+use App\Models\Akun;
+use App\Models\Stock;
+use App\DTO\JurnalEntry;
 use App\Models\DetailPenjualan;
 
 class PenjualanController extends Controller
@@ -50,6 +54,13 @@ class PenjualanController extends Controller
                 'jumlah' => $detail['jumlah'],
                 'total' => $detail['harga']
             ]);
+
+            Stock::kurangStock($detail['id_stock'], $detail['kuantitas'] * $detail['jumlah']);
         endforeach;
+
+
+        $kiri = new JurnalEntry(Akun::KAS_BESAR, $data['total'], 0, "Transaksi " . $data['nama'], "Transaksi");
+        $kanan = new JurnalEntry(Akun::PENJUALAN, 0, $data['total'], "Transaksi " . $data['nama'], "Transaksi");
+        Jurnal::doubleEntry($kiri, $kanan, $data['total']);
     }
 }

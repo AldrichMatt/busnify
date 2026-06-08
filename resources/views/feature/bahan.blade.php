@@ -20,25 +20,52 @@
       <img src="{{ asset('I13_392_13_83.svg') }}" alt="Back" class="w-18 h-18">
       <span class="text-white text-sm font-medium">Back</span>
     </a>
-    
-    <!-- Page Title -->
-    <h2 class="text-white text-4xl md:text-5xl font-medium">
-      Bahan
-    </h2>
   </div>
 </section>
   <!-- Stats Section: 3 Summary Cards -->
-<section id="stats" class="w-full py-6">
-  <div class="mx-auto px-20 grid grid-cols-1 md:grid-cols-3 gap-4">
+{{-- <section id="stats" class="w-full py-6">
+  <div class="mx-auto px-20 flex flex-col">
     
-    <x-card title="Lorem" subtitle="lorem" caption="lorem"/>
-    <x-card title="Lorem" subtitle="lorem" caption="lorem"/>
-    <x-card title="Lorem" subtitle="lorem" caption="lorem"/>
-
+    <div class="bg-white rounded-xl border-2 border-[#8c8c8c] p-4 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col">
+      <div class="text-[#1e1e1e] text-lg font-bold mb-4">Stock Bahan</div>
+      <hr class="bg-gray-200 mb-2">
+      <div class="flex flex-row gap-2">
+        <div class="flex flex-col gap-2 w-full pb-4">
+        <label class="text-black text-sm font-normal">Nama Bahan</label>
+          <div class="w-full bg-white border border-[#8c8c8c] rounded-lg py-2 flex items-center">
+            <select class="w-full h-full outline-none text-sm bg-transparent px-2" 
+            name="bahan">
+              <option>-------</option>
+              @foreach ($allBahan as $bahan)
+                <option value="{{ $bahan->id }}">{{ $bahan->nama }}</option>
+              @endforeach
+            </select>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2 w-full pb-4">
+        <label class="text-black text-sm font-normal">Kategori</label>
+          <div class="w-full bg-white border border-[#8c8c8c] rounded-lg py-2 flex items-center">
+            <select class="w-full h-full outline-none text-sm bg-transparent px-2" 
+            name="sumber">
+              <option value="pembelian">Pembelian</option>
+              <option value="waste">Terbuang</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex flex-col justify-items-start gap-2 pl-4">
+          <label class="text-black text-sm font-normal">Jumlah</label>
+          <div class="w-full bg-white border-b-2 border-[#8c8c8c] py-2 flex items-center">
+            <input class="w-full h-full outline-none text-sm bg-transparent" 
+                  type="number" name="jumlah" id="jumlah">
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
+</section> --}}
   <!-- Tables Section -->
-<section id="tables" class="w-full pb-20">
+<section id="tables" class="w-full pt-4 pb-20">
   <div class="mx-auto px-20 flex flex-row gap-4">
     
     <!-- Table Card 1 -->
@@ -61,6 +88,7 @@
           <div class="w-[25%] text-end">Aksi</div>
         </div>        
         <!-- Table Data Row -->
+            <div class="w-full max-h-80 overflow-y-scroll">
         @foreach ($allBahan as $bahan)
         <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
           <div class="w-[5%] text-[#181411]">{{ $bahan->id }}</div>
@@ -68,12 +96,15 @@
           <div class="w-[25%] text-[#635549]">{{ $bahan->jumlah }} {{ $bahan->satuan }}</div>
           <div class="w-[25%] text-[#635549]">{{ rupiah($bahan->harga) }}/{{$bahan->satuan}}</div>
           <div class="w-[25%] text-end flex row justify-end gap-2">
+            <x-modalStockBahan :dataBarang="$bahan" modal_id="editStock{{ $bahan->id }}"/>
             <x-modalEditBahan :bahan="$bahan" modal_id="editBahan{{ $bahan->id }}" />
             <x-edit-button modal_id="editBahan{{ $bahan->id }}" />
+            <x-stock-button modal_id="editStock{{ $bahan->id }}" />
             <x-delete-button link="/bahan/delete/{{ $bahan->id }}" />
           </div>
         </div>
         @endforeach
+      </div>
       </div>
     </div>
   </div>

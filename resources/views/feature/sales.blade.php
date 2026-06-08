@@ -22,17 +22,20 @@
     </a>
     
     <!-- Page Title -->
-    <h2 class="text-white text-4xl md:text-5xl font-medium">
+    <h2 class="text-white text-4xl font-medium">
       Penjualan
     </h2>
   </div>
 </section>
+<x-todo text="fitur cetak struk detailPenjualan"/>
   <!-- Stats Section: 3 Summary Cards -->
-<section id="stats" class="w-full py-6">
+{{-- <section id="stats" class="w-full py-6">
   <div class="mx-auto px-20 pb-4 grid grid-cols-1 md:grid-cols-3 gap-4">  
     <x-card title="Ayam Suwir" subtitle="Menu Terlaris" caption="+50 penjualan dalam 1 minggu terakhir" />
   </div>
+</section> --}}
 
+<section class="w-full py-6">
   <div class="mx-20 bg-white rounded-xl border-2 border-[#8c8c8c] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col">
 
     <div class="flex justify-between items-center pt-3 px-10">
@@ -315,6 +318,8 @@
           <div class="w-[5%] text-[#635549]">${indexKeranjang}</div>
           <div class="w-[25%] text-[#635549]">${menu.nama}</div>
           <input type="hidden" class="menu-id" value="${menu.id}"/>
+          <input type="hidden" class="stock-id" value="${menu.id_stock}"/>
+          <input type="hidden" class="kuantitas" value="${menu.kuantitas}"/>
           <div class="w-[25%] text-[#635549] harga-item-keranjang" id="harga-${id}">Rp ${ (menu.harga * jumlahMenu).toLocaleString('en-US') }</div>
           <div class="w-[25%] text-[#635549] px-4 flex flex-row">
             <div class="w-8 border-y-2 border-l-2 rounded-l-2xl border-[#B175FB] text-center">
@@ -411,11 +416,13 @@
     }
     document.querySelectorAll('.keranjang-row').forEach(item => {
       let id = Number(item.querySelector('.menu-id').value);
+      let id_stock = Number(item.querySelector('.stock-id').value);
+      let kuantitas = Number(item.querySelector('.kuantitas').value);
       let harga = Number(item.querySelector('.harga-item-keranjang').innerText.replace('Rp ', '').replaceAll(',', ''));
       let jumlah = Number(item.querySelector('.jumlah-item-keranjang').value);
       
       data.detail.push({
-        id, harga, jumlah
+        id, id_stock, kuantitas, harga, jumlah
       });
 
       data.jumlah_menu += 1;
