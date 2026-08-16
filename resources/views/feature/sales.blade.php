@@ -57,7 +57,8 @@
             <input class="w-full border-b border-[#8c8c8c] focus:outline-none flex items-center h-full text-sm bg-transparent px-2" 
                   type="text"
                   id="nama-cust"
-                  oninput="document.getElementById('warning-user').classList.add('hidden')"
+                  oninput="document.getElementById('warning-user').classList.add('hidden')
+                  unlockSubmit()"
                   required>
             </div>
             <label class="warning-user hidden text-red-500 text-sm pl-4" id="warning-user">Masukkan nama customer</label>
@@ -142,6 +143,7 @@
           <label class="text-black w-[25%]">Charge</label>
           <input class="w-[50%] border-b border-[#8c8c8c] focus:outline-none flex items-center h-full text-sm bg-transparent px-2" 
                 type="text"
+                value='Rp 0'
                 oninput="formatRupiah(this, 'charge')">
           <input type="hidden" name="charge" id="charge">
         </div>
@@ -149,6 +151,7 @@
           <label class="text-black w-[25%]">Ongkos Kirim</label>
           <input class="w-[50%] border-b border-[#8c8c8c] focus:outline-none flex items-center h-full text-sm bg-transparent px-2" 
                 type="text"
+                value='Rp 0'
                 oninput="formatRupiah(this, 'ongkir')">
           <input type="hidden" name="ongkir" id="ongkir">
         </div>
@@ -172,7 +175,12 @@
         <button
           type="button"
           onclick="submitForm(event)"
-          class="inline-flex w-[75%] justify-center rounded-md bg-gradient-to-b from-[#B175FB] to-[#001476] px-3 py-2 mx-3 my-2 text-sm font-semibold text-white hover:opacity-50">
+          id="tombol-submit"
+          class="inline-flex w-[75%] justify-center rounded-md bg-gradient-to-b from-[#B175FB] to-[#001476] px-3 py-2 mx-3 my-2 text-sm font-semibold text-white hover:opacity-50
+          disabled:cursor-not-allowed
+          disabled:opacity-50"
+          disabled
+          >
           Catat Pesanan
         </button>
       </div>
@@ -248,6 +256,13 @@
   function formatRupiah(element, targetId) {
     let angka = element.value.replace(/[^0-9]/g, '');
     let target = document.getElementById(targetId)
+
+    if(angka == ''){
+      element.value = 'Rp ';
+      target.value = 0;
+      totalKeranjang();
+      return;
+    }
   
     let number_string = angka.toString();
     let sisa = number_string.length % 3;
@@ -269,6 +284,16 @@
     input.value = Number(input.value || 0) + 1;
   }
 
+  function unlockSubmit(){
+    let nama = document.getElementById('nama-cust').value
+    if(nama == ''){
+      document.getElementById('tombol-submit').disabled = true;
+      return;
+    }
+    document.getElementById('tombol-submit').disabled = false;
+    return 
+  }
+
   function kurangJumlah(id) {
       const input = document.getElementById(id);
 
@@ -276,17 +301,17 @@
 
       const nilai = Number(input.value || 0);
 
-      if (nilai > 1) {
+      if (nilai => 1) {
           input.value = nilai - 1;
           totalKeranjang();
           return;
       }
       
-      if(nilai == 1){ 
-        input.closest('.keranjang-row').remove();
-        totalKeranjang();
-        return;
-      }
+      // if(nilai == 1){ 
+      //   // input.closest('.keranjang-row').remove();
+      //   totalKeranjang();
+      //   return;
+      // }
   }
 
   function tambahKeranjang(menu, id){
@@ -294,10 +319,15 @@
     let jumlahMenu = document.getElementById(`jumlah${id}`).value;
     let row = document.querySelector(`.item-${id}`);
     
+    unlockSubmit();
+    console.log(jumlahMenu);
+    
     if(jumlahMenu == 0){
+      document.getElementById('tombol-submit').disabled = true;
       return;
     }
     
+
     if(row != null){
       let jumlahKeranjang = document.getElementById(`jumlahKeranjang${id}`);
       
@@ -318,7 +348,7 @@
           <div class="w-[5%] text-[#635549]">${indexKeranjang}</div>
           <div class="w-[25%] text-[#635549]">${menu.nama}</div>
           <input type="hidden" class="menu-id" value="${menu.id}"/>
-          <input type="hidden" class="stock-id" value="${menu.id_stock}"/>
+          <input type="hidden" class="barang-id" value="${menu.id_barang}"/>
           <input type="hidden" class="kuantitas" value="${menu.kuantitas}"/>
           <div class="w-[25%] text-[#635549] harga-item-keranjang" id="harga-${id}">Rp ${ (menu.harga * jumlahMenu).toLocaleString('en-US') }</div>
           <div class="w-[25%] text-[#635549] px-4 flex flex-row">
@@ -416,13 +446,13 @@
     }
     document.querySelectorAll('.keranjang-row').forEach(item => {
       let id = Number(item.querySelector('.menu-id').value);
-      let id_stock = Number(item.querySelector('.stock-id').value);
+      let id_barang = Number(item.querySelector('.barang-id').value);
       let kuantitas = Number(item.querySelector('.kuantitas').value);
       let harga = Number(item.querySelector('.harga-item-keranjang').innerText.replace('Rp ', '').replaceAll(',', ''));
       let jumlah = Number(item.querySelector('.jumlah-item-keranjang').value);
       
       data.detail.push({
-        id, id_stock, kuantitas, harga, jumlah
+        id, id_barang, kuantitas, harga, jumlah
       });
 
       data.jumlah_menu += 1;
@@ -432,6 +462,7 @@
 
   async function submitForm(event)
   {
+    document.getElementById('tombol-submit').disabled = true;
     let total = Number(document.getElementById('total').value);
     if(total == 0){
       return;

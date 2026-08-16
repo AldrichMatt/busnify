@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Menu;
+use App\Models\Barang;
 
 class Produksi extends Model
 {
@@ -20,6 +20,6 @@ class Produksi extends Model
 
     public function barang()
     {
-      return $this->belongsTo(Stock::class, "id_barang", "id");
+      return $this->belongsTo(Barang::class, "id_barang", "id");
     }
 }

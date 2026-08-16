@@ -1,5 +1,5 @@
 @props([
-  'modal_id' => 'akun'
+  'modal_id' => 'setting-akun'
 ])
 <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
 
@@ -10,10 +10,10 @@
     <div tabindex="0" class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
       <el-dialog-panel class="relative transform overflow-hidden rounded-lg bg-gray-800 text-left shadow-xl outline -outline-offset-1 outline-white/10 transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
         <div class="bg-white px-4 py-5">
-          <form action="akun/add" method="post">
+          <form action="akun/pengaturan" method="post">
             @csrf
-            <x-input-field label="Kode Akun" name="kode" type="number" guide="Kode Akun digunakan agar sistem dapat membedakan tiap akun, format yang dianjurkan berupa 3 nomor seperti '101'"/>
-            <x-input-field label="Nama Akun" name="nama" guide="Nama Akun membantu anda untuk mengenali Akun"/>
+            <x-input-field label="Kode Akun" name="kode" type="number"/>
+            <x-input-field label="Nama Akun" name="nama"/>
             <div class="flex flex-col gap-2 w-full pb-4">
               <label class="text-black text-sm font-normal">Kategori</label>
               <div class="w-full bg-white border border-[#8c8c8c] rounded-lg py-2 flex items-center">
@@ -27,7 +27,6 @@
                 <option value="beban">Beban</option>
               </select>
             </div>
-            <label class="text-gray-600 text-xs font-normal">Kategori membantu proses otomatisasi sistem, pastikan memasukkan Akun dalam kategori yang benar</label>
           </div>
           <div class="flex flex-col gap-2 w-full pb-4">
               <label class="text-black text-sm font-normal">Saldo awal</label>

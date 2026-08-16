@@ -5,7 +5,8 @@
     'name',
     'id' => '',
     'value' => '',
-    'required' => TRUE
+    'required' => TRUE,
+    'guide' => ''
 ])
 
     <div class="flex flex-col gap-2 w-full pb-4">
@@ -19,6 +20,9 @@
             value="{{ $value }}"
             {{ $required ? 'required' : ""; }}>
         </div>
+        @if ($guide != '')
+            <label class="text-gray-600 text-xs font-normal">{{$guide}}</label>
+        @endif
     </div>
 
     

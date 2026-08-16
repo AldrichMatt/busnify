@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Barang;
 
 
 class Resep extends Model
@@ -22,7 +23,7 @@ class Resep extends Model
 
     public function barang()
     {
-        return $this->belongsTo(Stock::class, 'id_barang');
+        return $this->belongsTo(Barang::class, 'id_barang');
     }
     
     public function bahan()

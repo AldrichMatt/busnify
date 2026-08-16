@@ -11,7 +11,7 @@ class HPP extends Model
     protected $table = 'hpp';
     //
     protected $fillable = [
-        'id_batch',
+        'id_produksi',
         'id_barang',
         'takaran',
         'modal'

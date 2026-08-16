@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Akun;
 use App\Models\Resep;
 use App\Models\Produksi;
-use App\Models\JurnalBarang;
-use App\Models\Stock;
+use App\Models\Barang;
 use App\Models\HPP;
 use App\Models\Jurnal;
+use App\Models\JurnalBarang;
 
 class ProduksiController extends Controller
 {
@@ -26,12 +26,14 @@ class ProduksiController extends Controller
                         ->get()
                         ;
     
-        $dataStock = Stock::all();
+        $dataBarang = Barang::whereProduksi(1)
+                    ->withExists('resep')
+                    ->get();
         return view(
             'feature.produksi',
             compact([
                 'dataResep',
-                'dataStock',
+                'dataBarang',
                 'dataProduksi'
             ])
         );
@@ -75,61 +77,28 @@ class ProduksiController extends Controller
            'dataProduksi' 
         ));
     }
-
-    public static function generateBatchId()
-    {
-        $today = now()->format('Ymd');
-
-        $lastBatch = Produksi::whereDate('created_at','=',now()->format('Y-m-d'))
-            ->orderByDesc('id')
-            ->first();
-
-        $number = 1;
-
-        if ($lastBatch) {
-
-            $lastNumber = (int) substr(
-                $lastBatch->id_batch,
-                -4
-            );
-
-            $number = $lastNumber + 1;
-        }
-
-        return 'PRD-' .
-            $today . '-' .
-            str_pad($number, 4, '0', STR_PAD_LEFT);
-    }
-
-    public function tambahProduksi(Request $request)
+    public function tambahRestock(Request $request)
     {
         $data = $request->detail;
+
+        if(Akun::HPP() == null || Akun::KAS_BESAR() == null){
+            //tambahkan pesan error
+            return redirect('/barang');
+        };
         
         $idBarang = $data['menuId'];
-        $beratAkhir = $data['beratAkhir'];
+        $jumlah = $data['jumlah'];
 
-        $idBatch = self::generateBatchId();
+        $idBatch = JurnalBarang::generateReStockLogId();
 
+        //buat catatan produksi
         $produksi = Produksi::create([
             'id_batch' => $idBatch,
             'id_barang' => $idBarang
         ]);
 
-        foreach($data['detail'] as $item):
-            if ($item['stock']){
-                $data = new Request([
-                    'sumber' => 'produksi',
-                    'tipe' => 'bahan',
-                    'jumlah' => $item['takaran'],
-                    'id_barang' => $item['id']
-                ]);
-                JurnalBarangController::tambahStock($data);
-                // JurnalBarang::logStock($produksi->id, $item['id'], $item['takaran'], 'keluar', 'bahan', 'produksi');
-            }else{
-                
-            }
-        endforeach;
-
+        // PERLU DIPERBAIKI MODEL HPP
+        // $produksi perlu diganti dengan idBatch
         $dataInsert = collect($data['detail'])->map(function($item) use ($produksi){
             return [
                 'id_produksi' => $produksi->id,
@@ -139,14 +108,79 @@ class ProduksiController extends Controller
             ];
         })->toArray();
 
-        Stock::tambahStock($idBarang, $beratAkhir);
+        //tambah jumlah barang setelah produksi
+        Barang::tambahStock($idBarang, $jumlah);
+        //masukkan data HPP
         HPP::insert(
             $dataInsert
         );
 
+        //catat pengeluaran bahan yang tidak memiliki stock
+        $kiri = new JurnalEntry(Akun::HPP(), $request->detail['total'], 0, $idBatch, "Produksi");
+        $kanan = new JurnalEntry(Akun::KAS_BESAR(), 0, $request->detail['total'], $idBatch, "Produksi");
+        Jurnal::doubleEntry($kiri, $kanan, $request->detail['total']);
+
+        return redirect('/barang');
+    }
+
+    public function tambahProduksi(Request $request)
+    {
+        $data = $request->detail;
+
+        if(Akun::HPP() == null || Akun::KAS_BESAR() == null){
+            //tambahkan pesan error
+            return redirect('/produksi');
+        };
         
-        $kiri = new JurnalEntry(Akun::HPP, $request->detail['total'], 0, $idBatch, "Produksi");
-        $kanan = new JurnalEntry(Akun::KAS_BESAR, 0, $request->detail['total'], $idBatch, "Produksi");
+        $idBarang = $data['menuId'];
+        $beratAkhir = $data['beratAkhir'];
+
+        $idBatch = JurnalBarang::generateProductionLogId();
+
+        //buat catatan produksi
+        $produksi = Produksi::create([
+            'id_batch' => $idBatch,
+            'id_barang' => $idBarang
+        ]);
+
+        //cek setiap item dalam detail bahan produksi
+        foreach($data['detail'] as $item):
+            //kalau bahan ada stocknya, maka kurangi dari stock
+            if ($item['stock']){
+                $data = new Request([
+                    'id_batch' => $idBatch,
+                    'sumber' => 'produksi',
+                    'tipe' => 'bahan',
+                    'jumlah' => $item['takaran'],
+                    'id_barang' => $item['id']
+                ]);
+                //fungsi untuk kurangi dari stock
+                JurnalBarangController::logStock($data);
+            }
+        endforeach;
+        //kalau bahan tidak ada di stock maka akan langsung dicatat sebagai pembelian bahan dan beban produksi
+
+        //$produksi perlu diganti dengan idBatch
+        //pembuatan data untuk pencatatan HPP
+        $dataInsert = collect($data['detail'])->map(function($item) use ($produksi){
+            return [
+                'id_produksi' => $produksi->id,
+                'id_bahan' => $item['id'],
+                'modal' => $item['harga'],
+                'takaran' => $item['takaran']
+            ];
+        })->toArray();
+
+        //tambah jumlah barang setelah produksi
+        Barang::tambahStock($idBarang, $beratAkhir);
+        //masukkan data HPP
+        HPP::insert(
+            $dataInsert
+        );
+
+        //catat pengeluaran bahan yang tidak memiliki stock
+        $kiri = new JurnalEntry(Akun::HPP(), $request->detail['total'], 0, $idBatch, "Produksi");
+        $kanan = new JurnalEntry(Akun::KAS_BESAR(), 0, $request->detail['total'], $idBatch, "Produksi");
         Jurnal::doubleEntry($kiri, $kanan, $request->detail['total']);
 
         return redirect('/produksi');

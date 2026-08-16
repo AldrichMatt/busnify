@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\DTO\JurnalEntry;
 use App\Models\Akun;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -47,7 +48,7 @@ class Jurnal extends Model
         ]);
     }
 
-    public static function doubleEntry($kiri, $kanan, $sum) {
+    public static function doubleEntry(JurnalEntry $kiri, JurnalEntry $kanan, int $sum) {
 
         $ref = generateRefJurnal();
 

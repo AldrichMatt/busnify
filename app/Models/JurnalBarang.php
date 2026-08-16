@@ -32,26 +32,79 @@ class JurnalBarang extends Model
         return $this->morphTo();
     }
 
-    public static function logStock($id_batch,$id_barang, $jumlah, $arah, $tipe, $sumber)
-{
-    return DB::transaction(function () use ($id_batch, $id_barang, $jumlah, $arah, $tipe, $sumber) {
+    public static function generateReStockLogId()
+    {
+        $today = now()->format('Ymd');
 
-        self::Create(
-            [
-                'id_batch' => $id_batch,
-                'item_type' => $tipe,
-                'item_id'   => $id_barang,
-                'jumlah' => $jumlah,
-                'arah'   => $arah,
-                'sumber' => $sumber,
-            ]
-        );
+        $lastBatch = JurnalBarang::whereDate('created_at','=',now()->format('Y-m-d'))
+            ->orderByDesc('id')
+            ->first();
 
-        if ($tipe === "bahan") {
-            Bahan::updateStock($id_barang, $jumlah, $arah);
+        $number = 1;
+
+        if ($lastBatch) {
+
+            $lastNumber = (int) substr(
+                $lastBatch->id_batch,
+                -4
+            );
+
+            $number = $lastNumber + 1;
         }
 
-        return;
-    });
+        return 'RST-' .
+            $today . '-' .
+            str_pad($number, 4, '0', STR_PAD_LEFT);
+    }
+
+    public static function generateProductionLogId()
+    {
+        $today = now()->format('Ymd');
+
+        $lastBatch = JurnalBarang::whereDate('created_at','=',now()->format('Y-m-d'))
+            ->orderByDesc('id')
+            ->first();
+
+        $number = 1;
+
+        if ($lastBatch) {
+
+            $lastNumber = (int) substr(
+                $lastBatch->id_batch,
+                -4
+            );
+
+            $number = $lastNumber + 1;
+        }
+
+        return 'PRD-' .
+            $today . '-' .
+            str_pad($number, 4, '0', STR_PAD_LEFT);
+    }
+
+    public static function logJurnalBarang($id_batch,$id_barang, $jumlah, $arah, $tipe, $sumber)
+    {
+        if($id_batch == NULL){
+            $id_batch = self::generateProductionLogId();
+        };
+        return DB::transaction(function () use ($id_batch, $id_barang, $jumlah, $arah, $tipe, $sumber) {
+
+            self::Create(
+                [
+                    'id_batch' => $id_batch,
+                    'item_type' => $tipe,
+                    'item_id'   => $id_barang,
+                    'jumlah' => $jumlah,
+                    'arah'   => $arah,
+                    'sumber' => $sumber,
+                ]
+            );
+
+            if ($tipe === "bahan") {
+                Bahan::updateStock($id_barang, $jumlah, $arah);
+            }
+
+            return;
+        });
     }
 }

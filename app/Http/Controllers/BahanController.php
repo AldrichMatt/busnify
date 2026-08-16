@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Bahan;
+use App\Models\Jurnal;
+use Illuminate\Support\Facades\DB;
 
 class BahanController extends Controller
 {
@@ -29,7 +31,7 @@ class BahanController extends Controller
 
     public function updateBahan(Request $request)
     {
-        Bahan::whereId($request->id)->lockForUpdate()
+        Bahan::whereId($request->id_bahan)->lockForUpdate()
             ->update([
                 'nama' => $request->nama,
                 'satuan' => $request->satuan,
@@ -39,9 +41,30 @@ class BahanController extends Controller
         return redirect('/bahan');
     }
 
+    public function stockBahan(Request $request)
+    {
+        $bahan = Bahan::whereId($request->id);
+
+        if(!$bahan->exists()){
+            return false;
+        }
+
+        if($request->sumber == "pembelian"){
+            // $bahan->increment('jumlah', $request->jumlah);
+        }else{
+            if($bahan->jumlah < $request->jumlah){
+                return false;
+            }
+            // $bahan->decrement('jumlah', $request->jumlah);
+        }
+
+        JurnalBarangController::logStock($request);
+        return;
+    }
+
     public function hapusBahan(Request $request)
     {
-        Bahan::where('id', $request->id)->delete();
+        Bahan::whereId($request->id)->delete();
         return redirect('/bahan');
     }
 }

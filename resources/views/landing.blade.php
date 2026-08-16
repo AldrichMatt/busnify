@@ -16,7 +16,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
       {{-- <x-quick-btn link="/dashboard" label="Dashboard" /> --}}
       <x-quick-btn link="/akun" label="Akun" />
-      <x-quick-btn link="/stock" label="Stock" />
+      <x-quick-btn link="/barang" label="Produk" />
       <x-quick-btn link="/menus" label="Katalog" />
       <x-quick-btn link="/bahan" label="Bahan" />
       <x-quick-btn link="/resep" label="Resep" />
@@ -46,23 +46,23 @@
     {{-- @dd($itemJurnal) --}}
     
     <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
-        <div class="w-[25%] text-[#181411]">{{ date_format($itemJurnal->kiri->created_at, 'D, d M y H:i') }}</div>
+      <div class="w-[25%] text-[#181411]">{{ date_format($itemJurnal->kiri->created_at, 'D, d M y H:i') }}</div>
       @if ($itemJurnal->kiri->akun->deleted_at !== null)
         <div class="w-[25%] text-[#e43838]">
-      @else
+        @else
         <div class="w-[25%] text-[#181411]">
-      @endif
+        @endif
       #{{ $itemJurnal->kiri->kode }} {{ $itemJurnal->kiri->akun->nama }}</div>
-        <div class="w-[25%] text-[#181411]">{{ $itemJurnal->kiri->debit_rupiah }}</div>
+      <div class="w-[25%] text-[#181411]">{{ $itemJurnal->kiri->debit_rupiah }}</div>
       @if ($itemJurnal->kanan->akun->deleted_at !== null)
         <div class="w-[25%] text-[#e43838]">
-      @else
+        @else
         <div class="w-[25%] text-[#181411]">
-      @endif
-          #{{ $itemJurnal->kanan->kode }} {{ $itemJurnal->kanan->akun->nama }}</div>
-        <div class="w-[25%] text-[#181411]">{{ $itemJurnal->kanan->kredit_rupiah }}</div>
-        <div class="w-[25%] text-[#181411]">{{ $itemJurnal->kiri->uraian }}</div>
-        <div class="w-[25%] text-[#181411]">{{ $itemJurnal->kiri->tujuan }}</div>
+        @endif
+      #{{ $itemJurnal->kanan->kode }} {{ $itemJurnal->kanan->akun->nama }}</div>
+      <div class="w-[25%] text-[#181411]">{{ $itemJurnal->kanan->kredit_rupiah }}</div>
+      <div class="w-[25%] text-[#181411]">{{ $itemJurnal->kiri->uraian }}</div>
+      <div class="w-[25%] text-[#181411]">{{ $itemJurnal->kiri->tujuan }}</div>
     </div>
     @endforeach
   </div>

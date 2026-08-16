@@ -17,7 +17,7 @@
 <section id="hero" class="w-full">
   <div class="mx-20 flex flex-col gap-8">
     <!-- Back Button -->
-    <a href="/" class="flex items-center gap-2 mb-4 cursor-pointer hover:opacity-80 w-fit">
+    <a href="/barang" class="flex items-center gap-2 mb-4 cursor-pointer hover:opacity-80 w-fit">
       <img src="{{ asset('I13_392_13_83.svg') }}" alt="Back" class="w-18 h-18">
       <span class="text-white text-sm font-medium">Back</span>
     </a>
@@ -25,64 +25,14 @@
 </section>
   <!-- Stats Section: 3 Summary Cards -->
   <!-- Tables Section -->
-<section id="tables" class="w-full">
-  <div class="mx-auto px-20 flex flex-row gap-4">
-    
-    <div class="bg-white rounded-xl py-3 grow h-min flex flex-col ">
-      <!-- Card Header -->
-      <div class="flex justify-between items-center px-10 pt-3 mb-3">
-        <h3 class="text-black text-4xl font-bold">Resep</h3>
-      </div>
-      
-      <!-- Table Content -->
-      <div class="w-full flex flex-col">
-        <!-- Table Header Row -->
-        <div class="bg-[#f8f7f5] flex justify-between items-center px-6 py-5 text-[#635549] text-base font-normal">
-          <div class="w-[25%] pl-5">Nama Barang</div>
-          
-          {{-- search bar --}}
-          <div class="w-[25%] pe-3 flex flex-row justify-end gap-3 text-end border-b-2 border-gray-400 pb-2">
-            <i data-feather="search" class="text-gray-400 size-5"></i>
-            <input type="text" class="w-full bg-inherit" placeholder="Nama Barang..." id="search-resep" oninput="search('resep', this.value)">
-          </div>
-
-        </div>        
-        <!-- Table Data Row --> 
-
-        <div class="tempat-resep">
-          @foreach ($allResep as $namaBarang => $items)
-          <div class="flex flex-col">
-            <button onclick="fetchBahan('{{ $items[0]->id_barang }}')">
-              <div class="bg-white flex justify-between items-center px-6 py-4 border-t border-gray-100">
-                <div class="nama-resep w-[75%] text-start pl-5 text-[#635549]">{{ $namaBarang }}</div>
-                <div class="w-[25%] text-end flex row justify-end gap-2">
-                  <a href='resep/edit/{{ $items[0]->id_barang }}'>
-                    <div class="bg-[#f27f0d] hover:bg-[#d37e0d] p-2 rounded">
-                      <i data-feather="edit-2" class="text-white size-5"></i>
-                    </div>
-                  </a>
-                  <i class="chev{{ $items[0]->id_barang }}" data-feather="chevron-down"></i>
-                </div>
-              </div>
-            </button>
-            <div class="detail-resep{{ $items[0]->id_barang }}">
-              
-            </div>
-          </div>
-          @endforeach
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section id="stats" class="w-full pt-3">
+    <input type="hidden" name="id_barang" class="idBarang" value="{{ $barang->id }}">
     <div class="mx-20 py-3 my-3 bg-white rounded-xl border-2 border-[#8c8c8c] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col">
-      <div class="text-[#1e1e1e] text-3xl font-bold mb-4 pt-3 px-10">Tambah Resep</div>
+      <div class="text-[#1e1e1e] text-3xl font-bold mb-4 pt-3 px-10">Resep {{$barang->nama}} </div>
       <div class="flex row justify-b">
         <div class="flex flex-col grow min-w-100">
           <div class="w-full flex flex-col grow ">
-            <h2 class="text-[#1e1e1e] text-lg font-medium px-10">
+            <h2 class="text-[#1e1e1e] text-lg font-medium px-5 pb-3">
               Pilih Bahan
             </h2>
             <!-- Table Header Row -->
@@ -118,30 +68,49 @@
             </div>
           </div>
         </div>
-          <div class="flex flex-col gap-2 grow py-4 px-5 bg-white">
-            <label class="text-black text-sm font-normal">Barang</label>
-            <div class="flex grow-x bg-white border border-[#8c8c8c] rounded-lg py-2 items-center">
-              <select name="id_barang" id=""
-              class="idBarang w-full outline-none text-sm bg-transparent px-2">
-              @foreach ($allBarang as $barang)
-              <option value={{ $barang->id }}>{{ $barang->nama }}</option>
-              @endforeach
-              </select>
-            </div>
-            <div class="w-full pe-3 flex flex-row gap-3 pt-2 text-end border-b-2 border-gray-400 pb-2">
-              <i data-feather="search" class="text-gray-400 size-5"></i>
-              <input type="text" class="w-full" id="search-bahan" oninput="search('bahan', this.value)" placeholder="Nama Bahan...">
+        
+        <div class="flex flex-col gap-2 grow px-5 bg-white">
+          <h2 class="text-[#1e1e1e] text-lg font-medium px-5 pb-3">
+            List Bahan
+          </h2>
+          <div class="w-full pe-3 flex flex-row gap-3 pt-2 text-end border-b-2 border-gray-400 pb-2">
+            <i data-feather="search" class="text-gray-400 size-5"></i>
+            <input type="text" class="w-full" id="search-bahan" oninput="search('bahan', this.value)" placeholder="Nama Bahan...">
           </div>
-            
-            <label class="text-black text-sm font-normal">List Bahan</label>
-            {{-- tabel bahan resep --}}
-            <div class="w-full max-h-[200px] overflow-y-scroll" id="bahan_resep">
+            {{-- tabel bahan resep --}}            
+            <div class="w-full max-h-68.75 overflow-y-scroll" id="bahan_resep">
+              
+            @foreach ($allResep as $index => $resep)
+              <div class="bahan-row
+              flex justify-between items-center px-6 py-3 text-[#635549] font-normal
+              bg-gray-100 border-t text-start" id="bahan{{ $index+1 }}">
+                  <div class="w-[5%] text-[#635549] index-bahan">
+                    <input 
+                    class="bahanId"
+                    type="hidden"
+                    value ='{{ $resep->bahan->id }}'
+                    />
+                    {{ $index+1 }}
+                  </div>
+                  <div class="w-[25%] text-[#635549]">{{$resep->bahan->nama}}</div>
+                  <div class="w-[25%] text-[#635549] flex-row">
+                    <div class="w-92 bg-white border border-[#8c8c8c] rounded-lg py-2 px-2 flex items-center">
+                      <input class="bahanQty w-full h-full outline-none text-sm bg-transparent"
+                      type="number"
+                      value="{{ $resep->takaran }}"
+                      required>
+                      {{ $resep->bahan->satuan }}
+                      </div>
+                    </div>
+                    <button class="hapus-btn w-[5%] text-white bg-[#e43838] hover:bg-[#bc4343] p-2 rounded">x</button>
+                  </div>
+            @endforeach
             </div>
             <button
             type="button"
             onclick="submitForm(event)"
             class="inline-flex w-full justify-center rounded-md bg-gradient-to-b from-[#B175FB] to-[#001476] px-3 py-2 text-sm font-semibold text-white hover:opacity-50 sm:w-auto">
-            Tambah Resep
+            Simpan Resep
             </button>
           </div>
       </div>
@@ -189,60 +158,6 @@
                 : 'none';
     });
 }
-
-  function fetchBahan(idBarang){
-    const container = document.querySelector(`.detail-resep${idBarang}`);
-
-    if (!container) return;
-
-    const icon = document.querySelector(`.chev${idBarang}`);
-
-    if (container.innerHTML.trim() !== "") {
-      container.innerHTML = "";
-      if (icon) {
-        icon.classList.toggle("rotate-180");
-      }
-      return null;
-    }
-    try {
-        fetch(`/fetch/resep/${encodeURIComponent(idBarang)}`)
-        .then(res => res.json())
-        .then(data => showResep(idBarang, data));
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  function showResep(idBarang, data) {
-      const container = document.querySelector(`.detail-resep${idBarang}`);
-      const icon = document.querySelector(`.chev${idBarang}`);
-
-      let html = "";
-
-      if (data.length === 0) {
-        html = `
-          <div class="bg-gray-50 px-6 py-3 text-sm text-gray-500">
-            Tidak ada bahan
-          </div>
-        `;
-      } else {
-        data.forEach(item => {
-          html += `
-            <div class="bg-gray-50 flex justify-between px-6 py-3 border-t border-gray-100">
-              <div>${item.bahan.nama}</div>
-              <div>${item.takaran} ${item.bahan.satuan ?? ""}</div>
-            </div>
-          `;
-        });
-      }
-
-      container.innerHTML = html;
-
-      // rotate icon kalau mau
-      if (icon) {
-        icon.classList.toggle("rotate-180");
-      }
-  }
 
   function reindexBahan(){
     let rows = tabelBahan.querySelectorAll('[id^="bahan"]');

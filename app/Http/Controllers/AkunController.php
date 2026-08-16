@@ -6,35 +6,43 @@ use Illuminate\Http\Request;
 use App\Models\Akun;
 use App\Models\Jurnal;
 use App\DTO\JurnalEntry;
+use App\Models\Pengaturan;
 
 class AkunController extends Controller
 {
     public function index(){
-        $allAkun = Akun::all()
+        $allAkun = Akun::orderBy('kode', 'asc')
+                    ->get()
                     ->groupBy('kategori');
-        // dd($allAkun);
+        $allKredit = Akun::sum('kredit');
+        $allDebit = Akun::sum('debit');
+        $totalSaldo = 0;
+        $totalAset = 0;
+        $selisih = 0;
+
+        // dd(Akun::KAS_BESAR());
 
         $allKredit = Akun::sum('kredit');
         $allDebit = Akun::sum('debit');
-        $totalSaldo = Akun::TotalKode(Akun::KAS_BESAR);
-        $totalAset = Akun::TotalKode(Akun::PERSEDIAAN);
-        
+        if(Akun::KAS_BESAR() != null){
+            $totalSaldo = Akun::TotalKode(Akun::KAS_BESAR());
+        }
+        if(Akun::PERSEDIAAN() != null){
+            $totalAset = Akun::TotalKode(Akun::PERSEDIAAN());
+        }            
         if($allKredit == $allDebit){
             $selisih = 0;
-            $detailSelisih = "Seimbang";
         }elseif($allDebit > $allKredit){
             $selisih = $allKredit - $allDebit;
-            $detailSelisih = "Debit lebih dari Kredit";
         }elseif($allKredit > $allDebit){
             $selisih = $allDebit - $allKredit;
-            $detailSelisih = "Kredit lebih dari Debit";
         }
+        
 
         return view('feature.akun', compact(
             'allAkun',
             'totalSaldo',
             'selisih',
-            'detailSelisih',
             'totalAset'
         ));
     }
@@ -52,8 +60,6 @@ class AkunController extends Controller
         }else{
             $kredit = $saldo;
         }
-
-        // dd($kredit);
         
         Akun::create([
             'kode' => $request->kode,
@@ -78,11 +84,13 @@ class AkunController extends Controller
         $akun->update([
             'kode' => $akun->first()->kode.time()
         ]);
-        dd($akun->first()->kode);
+        // dd($akun->first()->kode);
+        Pengaturan::unset($akun->first()->kode);
 
         if($akun->first()->debit == 0 && $akun->first()->kredit == 0){
             $akun->delete();
         }
+
         return redirect('/akun');
     }
 
@@ -120,5 +128,76 @@ class AkunController extends Controller
                 break;
         endswitch;
         return $akun;
+    }
+
+    public function getApi(){
+        $allAkun = Akun::all()
+                    ->groupBy('kategori');
+        // dd($allAkun);
+
+        $allKredit = Akun::sum('kredit');
+        $allDebit = Akun::sum('debit');
+        $totalSaldo = Akun::TotalKode(Akun::KAS_BESAR()());
+        $totalAset = Akun::TotalKode(Akun::PERSEDIAAN()());
+        
+        if($allKredit == $allDebit){
+            $selisih = 0;
+            $detailSelisih = "Seimbang";
+        }elseif($allDebit > $allKredit){
+            $selisih = $allKredit - $allDebit;
+            $detailSelisih = "Debit lebih dari Kredit";
+        }elseif($allKredit > $allDebit){
+            $selisih = $allDebit - $allKredit;
+            $detailSelisih = "Kredit lebih dari Debit";
+        }
+
+        return compact(
+            'allAkun',
+            'totalSaldo',
+            'selisih',
+            'detailSelisih',
+            'totalAset'
+        );
+    }
+
+    public function viewPengaturan()
+    {
+        $pengaturan = [];
+
+        
+        $keys = Pengaturan::KEYS;
+        foreach($keys as $key) :
+            $pengaturan[$key] = Pengaturan::with('akun')->where('key',$key)->first();
+        endforeach;
+        $aset = Akun::whereKategori('aset')->whereNotIn('kode',Pengaturan::pluck('value'))->get(['kode', 'nama']);
+        $beban = Akun::whereKategori('beban')->whereNotIn('kode', Pengaturan::pluck('value'))->get(['kode', 'nama']);
+        $utang = Akun::whereKategori('utang')->whereNotIn('kode', Pengaturan::pluck('value'))->get(['kode', 'nama']);
+        $modal = Akun::whereKategori('modal')->whereNotIn('kode', Pengaturan::pluck('value'))->get(['kode', 'nama']);
+        $pendapatan = Akun::whereKategori('pendapatan')->whereNotIn('kode', Pengaturan::pluck('value'))->get(['kode', 'nama']);
+
+        // dd(Pengaturan::with('akun')->where('key','KAS_BESAR')->first());
+
+        return view('feature.pengaturan', compact(
+            'pengaturan',
+            'keys',
+            'aset',
+            'beban',
+            'utang',
+            'modal',
+            'pendapatan',
+        ));
+    }
+
+    public function setPengaturanAkun(Request $request)
+    {
+        $nama = $request->nama;
+        $kode = $request->kode;
+
+        Pengaturan::create([
+            'key' => $nama,
+            'value' => $kode
+        ]);
+
+        return;
     }
 }

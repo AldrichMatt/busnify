@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('menu', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_stock');
+            $table->unsignedBigInteger('id_barang');
             $table->string('nama');
             $table->integer('harga');
             $table->boolean('gramasi');
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 
-            $table->foreign('id_stock')->references('id')->on('stock');
+            $table->foreign('id_barang')->references('id')->on('barang');
         });
     }
 

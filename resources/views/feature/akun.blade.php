@@ -11,7 +11,8 @@
 <body class="bg-gradient-to-b from-[#B175FB] to-[#001476] min-h-screen">
 <x-header />
 {{-- MODAL AKUN --}}
-<x-modalAkun />
+<x-modalAkun modal_id="akun" />
+<x-modalSettingAkun modal_id="setting-akun" />
   <!-- Hero Section: Back Button and Page Title -->
 <section class="w-full pb-20 pt-10">
   <section id="hero" class="w-full">
@@ -21,11 +22,6 @@
         <img src="{{ asset('I13_392_13_83.svg') }}" alt="Back" class="w-18 h-18">
         <span class="text-white text-sm font-medium">Back</span>
       </a>
-      
-      <!-- Page Title -->
-      <h2 class="text-white text-4xl font-medium">
-        Akun
-      </h2>
     </div>
   </section>
     <!-- Stats Section: 3 Summary Cards -->
@@ -35,11 +31,7 @@
 
       <x-card :title="rupiah($totalSaldo)" subtitle='Total Uang Tunai' />
       <x-card :title="rupiah($totalAset)" subtitle='Total Aset' />
-      @if ($selisih == 0)
-        <x-card :title="Rupiah($selisih)" subtitle='Difference' :caption="$detailSelisih" />
-      @else
-        <x-card :title="rupiah($selisih)" subtitle='Difference' :caption="$detailSelisih"  type="danger"/>
-      @endif
+      <x-card :title="Rupiah($selisih)" subtitle='Selisih' />
 
     </div>
   </section>
@@ -51,8 +43,22 @@
       <div class="bg-white rounded-xl py-3 w-full">
         <!-- Card Header -->
         <div class="flex justify-between items-center px-10 mb-3">
-          <h3 class="text-black text-4xl font-bold">Akun</h3>
-          <x-modalAddButton modal_id="akun"/>
+          <div class="">
+            <h3 class="text-black text-4xl font-bold">Akun</h3>
+            <h4 class="text-gray-700">
+              Atur akun untuk mengelola keuangan, tekan tombol + untuk menambahkan Akun, </br>
+              dan tombol pengaturan untuk mengatur Akun mana yang dipakai pada transaksi
+            </h4>
+          </div>
+          <div class="flex flex-row gap-4">
+            <a href="/akun/pengaturan"
+            class="w-[49px] h-[49px] rounded-xl flex items-center justify-center text-white text-2xl shadow-md hover:opacity-90 transition-opacity
+                    bg-gray-500
+            ">
+                    <i data-feather="settings" class="text-white size-5"></i>
+            </a>
+            <x-modalAddButton modal_id="akun"/>
+          </div>
         </div>
         
         <!-- Table Content -->
@@ -79,7 +85,7 @@
             <div class="w-[25%] text-[#181411]">{{ $aset->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $aset->kredit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ rupiah($aset->debit - $aset->kredit) }}</div>
-            <div class="w-[25%] text-end flex row justify-end gap-2">
+            <div class="w-[10%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $aset->id }}" />
             </div>
           </div>
@@ -97,7 +103,7 @@
             <div class="w-[25%] text-[#181411]">{{ $utang->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $utang->kredit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ rupiah($utang->kredit - $utang->debit) }}</div>
-            <div class="w-[25%] text-end flex row justify-end gap-2">
+            <div class="w-[10%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $utang->id }}" />
             </div>
           </div>
@@ -115,7 +121,7 @@
             <div class="w-[25%] text-[#181411]">{{ $modal->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $modal->kredit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ rupiah($modal->kredit - $modal->debit) }}</div>
-            <div class="w-[25%] text-end flex row justify-end gap-2">
+            <div class="w-[10%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $modal->id }}" />
             </div>
           </div>
@@ -134,7 +140,7 @@
             <div class="w-[25%] text-[#181411]">{{ $pendapatan->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $pendapatan->kredit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ rupiah($pendapatan->kredit - $pendapatan->debit) }}</div>
-            <div class="w-[25%] text-end flex row justify-end gap-2">
+            <div class="w-[10%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $pendapatan->id }}" />
             </div>
           </div>
@@ -152,7 +158,7 @@
             <div class="w-[25%] text-[#181411]">{{ $beban->debit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ $beban->kredit_rupiah }}</div>
             <div class="w-[25%] text-[#181411]">{{ rupiah($beban->debit - $beban->kredit) }}</div>
-            <div class="w-[25%] text-end flex row justify-end gap-2">
+            <div class="w-[10%] text-end flex row justify-end gap-2">
               <x-delete-button link="/akun/delete/{{ $beban->id }}" />
             </div>
           </div>

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Resep;
 use App\Models\Bahan;
 use App\Models\Menu;
-use App\Models\Stock;
+use App\Models\Barang;
 
 class ResepController extends Controller
 {
@@ -17,7 +17,8 @@ class ResepController extends Controller
                     ->get('id_barang')
                     ->groupBy(fn($item)=> $item->barang->nama);
         $allBahan = Bahan::all();
-        $allMenu = Stock::whereNotIn(
+        $allBarang = Barang::whereProduksi(1)
+                    ->whereNotIn(
                         'id',
                         Resep::select('id_barang')
                     )
@@ -26,7 +27,7 @@ class ResepController extends Controller
         return view('feature.resep', compact(
             'allResep',
             'allBahan',
-            'allMenu'
+            'allBarang'
         ));
     }
 

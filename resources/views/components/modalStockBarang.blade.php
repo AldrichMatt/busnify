@@ -1,6 +1,6 @@
 @props([
   'dataBarang',
-  'modal_id' => 'stockBahan'
+  'modal_id' => 'stockBarang'
 ])
 <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
 
@@ -12,11 +12,11 @@
       <el-dialog-panel class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl outline -outline-offset-1 outline-white/10 transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
         <div class="bg-white mx-5 py-5">
           <section class="stock{{ $dataBarang->id }}">
-            <form action='/bahan/stock/{{ $dataBarang->id }}' method="post">
+            <form action='/barang/stock/{{ $dataBarang->id }}' method="post">
             {{-- tipe, id_barang, sumber, jumlah --}}
             @csrf
             <label class="text-black text-lg font-bold">{{ $dataBarang->nama }}</label>
-            <input type="hidden" name="tipe" value='bahan'>
+            <input type="hidden" name="tipe" value='barang'>
             <input type="hidden" name="id_barang" value='{{ $dataBarang->id }}'>
             <div class="flex flex-col gap-1 w-full pb-4 text-sm">
               <label class="text-black font-normal">Tipe</label>

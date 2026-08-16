@@ -1,5 +1,5 @@
 @props([
-  'dataStock',
+  'dataBarang',
   'modal_id' => 'menu'
 ])
 <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
@@ -34,21 +34,21 @@
                   required>
                     <option>-------</option>
                     <option value="produksi">Produksi</option>
-                    <option value="Resell">Resell</option>
+                    <option value="resell">Resell</option>
                   </select>
                 </div>
               </div>
             </div>
             <div class="flex flex-row gap-2 w-full pb-4">
               <div class="flex flex-col w-full gap-2">
-                <label class="text-black text-sm font-normal">Stock</label>
+                <label class="text-black text-sm font-normal">Barang</label>
                 <div class="w-full text-center bg-white border border-[#8c8c8c] rounded-lg py-2 flex items-center">
                   <select class="w-full h-full outline-none text-sm bg-transparent px-2" 
-                  name="id_stock"
+                  name="id_barang"
                   required>
                   <option>-------</option>
-                  @foreach ($dataStock as $stock)
-                    <option value="{{ $stock->id }}">{{ $stock->nama }}</option>
+                  @foreach ($dataBarang as $barang)
+                    <option value="{{ $barang->id }}">{{ $barang->nama }}</option>
                   @endforeach
                 </select>
               </div>

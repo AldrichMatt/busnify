@@ -9,12 +9,12 @@ use App\Models\Menu;
 use App\Models\Bahan;
 use App\Models\Jurnal;
 use App\DTO\JurnalEntry;
+use App\Models\Pengaturan;
 
 class JurnalBarangController extends Controller
 {
     //
     public function index(){
-        // $dataStock = JurnalBarang::with('item')->get();
         $dataStockMenu = JurnalBarang::whereItemType("menu")->with('item')->get();
         $dataStockBahan = JurnalBarang::whereItemType("bahan")->with('item')->get();
         $dataBarang = (object)['menu' => Menu::all(), 'bahan' => Bahan::all()];
@@ -31,40 +31,35 @@ class JurnalBarangController extends Controller
         ));
     }
 
-    public static function tambahStock(Request $request)
+    public static function logStock(Request $request)
     {
-
         //sumber, tipe, jumlah, id_barang
-        // dd($request);
         if($request->sumber == "pembelian"){
-            $akunKiri = Akun::PERSEDIAAN;
-            $akunKanan = Akun::KAS_BESAR;
+            $akunKiri = Akun::PERSEDIAAN();
+            $akunKanan = Akun::KAS_BESAR();
             $arah = "masuk";
         }else if($request->sumber == "waste"){
-            $akunKiri = Akun::WASTE;
-            $akunKanan = Akun::PERSEDIAAN;
+            $akunKiri = Akun::WASTE();
+            $akunKanan = Akun::PERSEDIAAN();
             $arah = "keluar";
         }else if($request->sumber == "produksi"){
-            $akunKiri = Akun::HPP;
-            $akunKanan = Akun::PERSEDIAAN;
+            $akunKiri = Akun::HPP();
+            $akunKanan = Akun::PERSEDIAAN();
             $arah = "keluar";
         };
-        switch($request->tipe):
-            case "menu" :
+
+        if($request->tipe == 'menu'){
             $item = Menu::whereId($request->id_barang)->first();
-            break;
-            case "bahan" :
+        }else{
             $item = Bahan::whereId($request->id_barang)->first();
-            break;
-        endswitch;
+        }
+        
 
         $totalHarga = $request->jumlah*$item->harga;
         $entryKiri = new JurnalEntry($akunKiri, $totalHarga, 0, $request->tipe, $request->sumber);
         $entryKanan = new JurnalEntry($akunKanan, 0, $totalHarga, $request->tipe, $request->sumber);
 
-        JurnalBarang::logStock(NULL, $request->id_barang, $request->jumlah, $arah, $request->tipe, $request->sumber);
+        JurnalBarang::logJurnalBarang($request->id_batch, $request->id_barang, $request->jumlah, $arah, $request->tipe, $request->sumber);
         Jurnal::doubleEntry($entryKiri, $entryKanan, $totalHarga);
-        
-        return redirect('/bahan');
     }
 }

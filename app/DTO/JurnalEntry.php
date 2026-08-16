@@ -4,18 +4,18 @@ namespace App\DTO;
 
 class JurnalEntry{
 
-    public string $kode;
-    public string $debit;
-    public string $kredit;
-    public string $uraian;
-    public string $tujuan;
+    public mixed $kode;
+    public int $debit;
+    public int $kredit;
+    public String $uraian;
+    public String $tujuan;
 
     public function __construct(
-        $kode,
-        $debit,
-        $kredit,
-        $uraian,
-        $tujuan
+        mixed $kode,
+        int $debit,
+        int $kredit,
+        String $uraian,
+        String $tujuan
     ){
         $this->kode = $kode;
         $this->debit = $debit;

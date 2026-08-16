@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 
-            $table->foreign('id_barang')->references('id')->on('stock');
+            $table->foreign('id_barang')->references('id')->on('barang');
             $table->foreign('id_bahan')->references('id')->on('bahan');
         });
     }

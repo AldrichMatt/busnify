@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\models\Stock;
 
 class Menu extends Model
 {
@@ -14,7 +13,7 @@ class Menu extends Model
     protected $table = "menu";
 
     protected $fillable = [
-        'id_stock',
+        'id_barang',
         'nama',
         'harga',
         'gramasi',
@@ -26,20 +25,10 @@ class Menu extends Model
         'harga' => 'integer'
     ];
 
-
-    // MENU TIDAK DI STOCK (MENU DI STOCK DI TABEL STOCK)
-    // public static function updateStock($id, $jumlah, $arah)
-    // {
-    //     $menu = self::findOrFail($id);
-
-    //     if($arah === "masuk"){
-    //         $menu->increment('jumlah', $jumlah);
-    //     }else{
-    //         $menu->decrement('jumlah', $jumlah);
-    //     }
-
-    //     return $menu;
-    // }
+    public function barang(){
+        return $this->belongsTo(Barang::class, 'id_barang', 'id')
+                    ->withTrashed();
+    }
 
     protected function hargaRupiah(): Attribute
     {

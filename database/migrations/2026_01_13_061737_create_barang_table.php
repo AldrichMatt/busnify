@@ -11,18 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jurnal_barang', function (Blueprint $table) {
+        Schema::create('barang', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_batch')->nullable();
-            $table->morphs('item');
+            $table->string('nama');
             $table->integer('jumlah');
-            $table->enum('arah',['masuk', 'keluar']);
-            $table->enum('sumber',['penjualan', 'produksi', 'pembelian', 'waste']);
+            $table->boolean('produksi')->default(0);
             $table->softDeletes('deleted_at', precision:0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
-            
-            $table->foreign('id_batch')->references('id')->on('produksi');
         });
     }
     /**
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stock');
+        Schema::dropIfExists('barang');
     }
 };
