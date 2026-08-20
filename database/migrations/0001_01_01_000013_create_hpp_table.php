@@ -13,14 +13,10 @@ return new class extends Migration
     {
         Schema::create('hpp', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('id_produksi');
             $table->string('id_batch');
             $table->unsignedBigInteger('id_bahan');
             $table->integer('modal');
             $table->integer('takaran');
-
-            // $table->foreign('id_produksi')->references('id')->on('produksi');
-            $table->foreign('id_bahan')->references('id')->on('bahan');
         });
     }
 

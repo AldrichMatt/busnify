@@ -43,7 +43,7 @@
             Tambah Penjualan
         </div>
 
-        <button type="button">
+        <button type="button" onclick="">
             <i data-feather="chevron-down" class="w-7 h-7 text-[#1e1e1e]"></i>
         </button>
     </div>
@@ -72,6 +72,54 @@
           </div>
           <div class="w-full max-h-[275px] overflow-y-scroll odd:bg-white even:bg-gray-200" id="keranjang">
 
+          </div>
+
+          <div class="flex flex-col">
+            <div class="w-[50%] py-2 flex flex-row justify-items-start gap-2 pl-4">
+              <label class="text-black w-[25%]">Charge</label>
+              <input class="w-[50%] border-b border-[#8c8c8c] focus:outline-none flex items-center h-full text-sm bg-transparent px-2" 
+                    type="text"
+                    value='Rp 0'
+                    oninput="formatRupiah(this, 'charge')">
+              <input type="hidden" name="charge" id="charge">
+            </div>
+            <div class="w-[50%] py-2 flex flex-row justify-items-start gap-2 pl-4">
+              <label class="text-black w-[25%]">Ongkos Kirim</label>
+              <input class="w-[50%] border-b border-[#8c8c8c] focus:outline-none flex items-center h-full text-sm bg-transparent px-2" 
+                    type="text"
+                    value='Rp 0'
+                    oninput="formatRupiah(this, 'ongkir')">
+              <input type="hidden" name="ongkir" id="ongkir">
+            </div>
+            <div class="w-[50%] py-2 flex flex-row justify-items-start gap-2 pl-4">
+              <label class="text-black w-[25%]">Metode</label>
+              <select name="metode" id="metode">
+                <option value="transfer">Transfer</option>
+                <option value="cash">Cash</option>
+              </select>
+            </div>
+            <div class="w-[50%] py-4 flex flex-row justify-items-start gap-2 pl-4">
+              <label class="text-black text-xl font-bold w-[25%]">Total</label>
+              <span 
+              id="teks-total"
+              class="w-[50%] flex font-bold text-xl items-center h-full bg-transparent px-2">
+                Rp
+              </span>
+              <input type="hidden" name="total" id="total">
+            </div>
+            <div class="w-[50%] flex flex-row justify-items-start gap-2">
+            <button
+              type="button"
+              onclick="submitForm(event)"
+              id="tombol-submit"
+              class="inline-flex w-[75%] justify-center rounded-md bg-gradient-to-b from-[#B175FB] to-[#001476] px-3 py-2 mx-3 my-2 text-sm font-semibold text-white hover:opacity-50
+              disabled:cursor-not-allowed
+              disabled:opacity-50"
+              disabled
+              >
+              Catat Pesanan
+            </button>
+          </div>
           </div>
         </div>
       <div class="flex flex-col gap-2 grow py-4 px-3 bg-white">
@@ -138,53 +186,7 @@
           </div>       
       </div>        
       </div>
-      <div class="flex flex-col">
-        <div class="w-[50%] py-2 flex flex-row justify-items-start gap-2 pl-4">
-          <label class="text-black w-[25%]">Charge</label>
-          <input class="w-[50%] border-b border-[#8c8c8c] focus:outline-none flex items-center h-full text-sm bg-transparent px-2" 
-                type="text"
-                value='Rp 0'
-                oninput="formatRupiah(this, 'charge')">
-          <input type="hidden" name="charge" id="charge">
-        </div>
-        <div class="w-[50%] py-2 flex flex-row justify-items-start gap-2 pl-4">
-          <label class="text-black w-[25%]">Ongkos Kirim</label>
-          <input class="w-[50%] border-b border-[#8c8c8c] focus:outline-none flex items-center h-full text-sm bg-transparent px-2" 
-                type="text"
-                value='Rp 0'
-                oninput="formatRupiah(this, 'ongkir')">
-          <input type="hidden" name="ongkir" id="ongkir">
-        </div>
-        <div class="w-[50%] py-2 flex flex-row justify-items-start gap-2 pl-4">
-          <label class="text-black w-[25%]">Metode</label>
-          <select name="metode" id="metode">
-            <option value="transfer">Transfer</option>
-            <option value="cash">Cash</option>
-          </select>
-        </div>
-        <div class="w-[50%] py-4 flex flex-row justify-items-start gap-2 pl-4">
-          <label class="text-black text-xl font-bold w-[25%]">Total</label>
-          <span 
-          id="teks-total"
-          class="w-[50%] flex font-bold text-xl items-center h-full bg-transparent px-2">
-            Rp
-          </span>
-          <input type="hidden" name="total" id="total">
-        </div>
-        <div class="w-[50%] flex flex-row justify-items-start gap-2">
-        <button
-          type="button"
-          onclick="submitForm(event)"
-          id="tombol-submit"
-          class="inline-flex w-[75%] justify-center rounded-md bg-gradient-to-b from-[#B175FB] to-[#001476] px-3 py-2 mx-3 my-2 text-sm font-semibold text-white hover:opacity-50
-          disabled:cursor-not-allowed
-          disabled:opacity-50"
-          disabled
-          >
-          Catat Pesanan
-        </button>
-      </div>
-      </div>
+      
     </div>
 </div>
 </section>
@@ -196,12 +198,7 @@
     <div class="bg-white rounded-xl py-3 w-full">
       <!-- Card Header -->
       <div class="flex justify-between items-center px-10 mb-3">
-        <h3 class="text-black text-4xl font-bold">Sales</h3>
-        <!-- Plus Button with Radial Gradient -->
-        <button class="w-[49px] h-[49px] rounded-xl flex items-center justify-center text-white text-2xl shadow-md hover:opacity-90 transition-opacity"
-                style="background: radial-gradient(circle, rgba(177,117,251,0.5) 0%, rgba(0,20,118,0.5) 100%);">
-          +
-        </button>
+        <h3 class="text-black text-4xl font-bold">Catatan Penjualan</h3>
       </div>
 
       {{-- @dd($dataPenjualan) --}}

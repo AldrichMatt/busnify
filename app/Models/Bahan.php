@@ -25,11 +25,6 @@ class Bahan extends Model
         'harga' => 'integer'
     ];
 
-    public function stocks()
-    {
-        return $this->morphOne(JurnalBarang::class, 'item');
-    }
-
     public static function updateStock($id, $jumlah, $arah)
     {
         $bahan = self::findOrFail($id);

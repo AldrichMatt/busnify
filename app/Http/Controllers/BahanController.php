@@ -11,8 +11,7 @@ class BahanController extends Controller
 {
     public function index()
     {
-        $allBahan = Bahan::with('stocks')
-        ->get();
+        $allBahan = Bahan::all();
 
         return view('feature.bahan', compact('allBahan'));
     }
@@ -59,7 +58,7 @@ class BahanController extends Controller
         }
 
         JurnalBarangController::logStock($request);
-        return;
+        return redirect('/bahan');
     }
 
     public function hapusBahan(Request $request)

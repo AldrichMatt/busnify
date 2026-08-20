@@ -9,6 +9,7 @@ use App\Models\Menu;
 use App\Models\Bahan;
 use App\Models\Jurnal;
 use App\DTO\JurnalEntry;
+use App\Models\JurnalBahan;
 use App\Models\Pengaturan;
 
 class JurnalBarangController extends Controller
@@ -50,16 +51,17 @@ class JurnalBarangController extends Controller
 
         if($request->tipe == 'menu'){
             $item = Menu::whereId($request->id_barang)->first();
+            JurnalBarang::logJurnalBarang($request->id_batch, $request->id_barang, $request->jumlah, $arah, $request->sumber);
         }else{
             $item = Bahan::whereId($request->id_barang)->first();
+            JurnalBahan::logJurnalBahan($request->id_batch, $request->id_barang, $request->jumlah, $arah, $request->sumber);
         }
-        
 
         $totalHarga = $request->jumlah*$item->harga;
         $entryKiri = new JurnalEntry($akunKiri, $totalHarga, 0, $request->tipe, $request->sumber);
         $entryKanan = new JurnalEntry($akunKanan, 0, $totalHarga, $request->tipe, $request->sumber);
+       
 
-        JurnalBarang::logJurnalBarang($request->id_batch, $request->id_barang, $request->jumlah, $arah, $request->tipe, $request->sumber);
         Jurnal::doubleEntry($entryKiri, $entryKanan, $totalHarga);
     }
 }

@@ -21,6 +21,7 @@
       <x-quick-btn link="/bahan" label="Bahan" />
       <x-quick-btn link="/resep" label="Resep" />
       <x-quick-btn link="/produksi" label="Produksi" />
+      <x-quick-btn link="/hpp" label="Laporan HPP" />
       <x-quick-btn link="/sales" label="Input Penjualan" />
     </div>
   </div>

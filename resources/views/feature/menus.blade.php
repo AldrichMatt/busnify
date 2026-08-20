@@ -44,7 +44,7 @@
         <div class="bg-[#f8f7f5] flex justify-between items-center px-6 py-5 text-[#635549] text-base font-normal">
           <div class="w-[5%]">Id</div>
           <div class="w-[25%]">Nama Menu</div>
-          <div class="w-[25%]">Harga</div>
+          <div class="w-[25%]">Harga Jual</div>
           <div class="w-[25%]">Kuantitas</div>
           <div class="w-[25%]">Gramasi</div>
           <div class="w-[25%]">Tipe</div>

@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jurnal_barang', function (Blueprint $table) {
+        Schema::create('jurnal_bahan', function (Blueprint $table) {
             $table->id();
-            $table->String('id_batch')->unique();
-            $table->unsignedBigInteger('id_barang');
+            $table->String('id_batch');
+            $table->unsignedBigInteger('id_bahan');
             $table->integer('jumlah');
             $table->enum('arah',['masuk', 'keluar']);
             $table->enum('sumber',['penjualan', 'produksi', 'pembelian', 'waste']);
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             
-            $table->foreign('id_barang')->references('id')->on('barang');
+            $table->foreign('id_bahan')->references('id')->on('bahan');
         });
     }
     /**
