@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hpp', function (Blueprint $table) {
+        Schema::create('jenis_beban', function (Blueprint $table) {
             $table->id();
-            $table->string('id_batch');
-            $table->unsignedBigInteger('id_bahan');
-            $table->integer('modal');
-            $table->integer('takaran');
+            $table->string("jenis");
         });
     }
 
@@ -25,6 +22,5 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hpp');
     }
 };
