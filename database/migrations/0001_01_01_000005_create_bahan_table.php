@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->integer('jumlah');
             $table->string('satuan');
-            $table->integer('harga');
+            $table->decimal('harga', 15, 2);
             $table->softDeletes('deleted_at', precision:0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

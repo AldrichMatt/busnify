@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_penjualan');
             $table->unsignedBigInteger('id_barang');
             $table->integer('jumlah');
-            $table->integer('total');
+            $table->decimal('total', 15, 2);
 
             $table->foreign('id_penjualan')->references('id')->on('penjualan');
             $table->foreign('id_barang')->references('id')->on('menu');

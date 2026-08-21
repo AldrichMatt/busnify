@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('log_beban', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kode');
-            $table->integer('jumlah');
+            $table->date('periode');
+            $table->decimal('jumlah', 15, 2);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_barang');
             $table->string('nama');
-            $table->integer('harga');
+            $table->decimal('harga', 15, 2);
             $table->boolean('gramasi');
             $table->integer('kuantitas')->default(1);
             $table->enum('tipe',['produksi', 'resell']);

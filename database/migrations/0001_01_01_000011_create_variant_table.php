@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_menu');
             $table->unsignedBigInteger('id_variant')->unique();
             $table->string('nama');
-            $table->integer('harga');
+            $table->decimal('harga', 15, 2);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 

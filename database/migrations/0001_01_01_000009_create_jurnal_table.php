@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('ref');
             $table->unsignedBigInteger('kode');
-            $table->integer('debit');
-            $table->integer('kredit');
+            $table->decimal('debit', 15, 2);
+            $table->decimal('kredit', 15, 2);
             $table->text('uraian');
             $table->text('tujuan');
             $table->timestamp('created_at')->useCurrent();
