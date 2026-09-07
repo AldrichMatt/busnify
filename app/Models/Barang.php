@@ -16,7 +16,8 @@ class Barang extends Model
     //
     protected $fillable = [
         'nama',
-        'jumlah'
+        'jumlah',
+        'produksi'
     ];
 
     protected $casts = [

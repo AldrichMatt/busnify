@@ -18,9 +18,9 @@
               <label class="text-black font-normal">Tipe</label>
               <div class="w-full bg-white gap-2 py-2 flex items-center">
                 <input type="radio" name="produksi" value="1" required>
-                <label for="produksi">Produksi</label>
+                <label>Produksi</label>
                 <input type="radio" name="produksi" value="0" required>
-                <label for="resell">Resell</label>
+                <label>Resell</label>
               </div>
             </div>
 

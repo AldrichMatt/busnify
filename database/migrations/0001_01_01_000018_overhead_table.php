@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengaturan_beban', function (Blueprint $table) {
+        Schema::create('overhead', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kode')->unique();
-            $table->unsignedBigInteger("jenis");
+            $table->decimal('jumlah',15,2);
+            $table->date('periode');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 
             $table->foreign('kode')->references('kode')->on('akun')->cascadeOnUpdate();
-            $table->foreign('jenis')->references('id')->on('jenis_beban')->cascadeOnUpdate();
         });
     }
 

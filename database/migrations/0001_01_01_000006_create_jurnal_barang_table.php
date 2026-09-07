@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('jurnal_barang', function (Blueprint $table) {
             $table->id();
-            $table->String('id_batch');
+            $table->string('id_batch')->unique();
             $table->unsignedBigInteger('id_barang');
             $table->integer('jumlah');
             $table->enum('arah',['masuk', 'keluar']);

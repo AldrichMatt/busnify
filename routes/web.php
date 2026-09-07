@@ -57,6 +57,8 @@ Route::get('/sales', [PenjualanController::class, 'index']);
 Route::get('/sales/{id}', [PenjualanController::class, 'detailPenjualan']);
 Route::post('/sales/add', [PenjualanController::class, 'tambahPenjualan']);
 
+
+
 Route::get('/page', function () {
     return view('page');
 });
